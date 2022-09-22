@@ -54,6 +54,7 @@ input{
 
 .wire-node .wire-node-body .text-field{
     display: flex;
+    margin-bottom: 7px;
 }
 
 .wire-node .wire-node-body .text-field .label{

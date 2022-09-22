@@ -9,3 +9,5 @@ export function bind(_: any, _2: string, descriptor: PropertyDescriptor) {
     };
     return adjDescriptor;
   }
+
+  

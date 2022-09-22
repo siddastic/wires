@@ -1,15 +1,14 @@
+import { NodeElement } from "../interfaces/node";
 import { bind } from "./decos";
 
 export abstract class WireNode {
     name: string;
-    node = {
+    node: NodeElement = {
         element: document.createElement("div"),
         header: document.createElement("div"),
         headerTitle: document.createElement("div"),
         body: document.createElement("div"),
-        textField: document.createElement("div"),
-        label: document.createElement("div"),
-        input: document.createElement("input")
+        fields: [],
     }
     constructor() {
         this.name = this.constructor.name;
@@ -20,17 +19,8 @@ export abstract class WireNode {
         this.node.headerTitle.classList.add("title");
         this.node.headerTitle.innerText = this.name;
         this.node.body.classList.add("wire-node-body");
-        this.node.textField.classList.add("text-field");
-        this.node.label.classList.add("label");
-        this.node.label.innerText = "lang";
-        this.node.input.type = "text";
-        this.node.input.value = "en";
-        this.node.input.classList.add("input");
 
         this.node.header.appendChild(this.node.headerTitle);
-        this.node.textField.appendChild(this.node.label);
-        this.node.textField.appendChild(this.node.input);
-        this.node.body.appendChild(this.node.textField);
         this.node.element.appendChild(this.node.header);
         this.node.element.appendChild(this.node.body);
 
@@ -38,11 +28,11 @@ export abstract class WireNode {
     }
 
     attachDragEvents() {
-        this.node.element.addEventListener("dragstart", (e) => {
+        this.node.element.addEventListener("dragstart", () => {
             console.log("mousedown");
             this.node.element.addEventListener("mousemove", this.onDrag);
         });
-        this.node.element.addEventListener("dragend", (e) => {
+        this.node.element.addEventListener("dragend", () => {
             console.log("mouseup");
             this.node.element.removeEventListener("mousemove", this.onDrag);
         });
@@ -57,6 +47,25 @@ export abstract class WireNode {
 
         this.node.element.style.left = `${left + movementX}px`;
         this.node.element.style.top = `${top + movementY}px`;
+    }
+
+    createField(label: string, onUpdate?: Function) {
+        const textField = document.createElement("div");
+        const labelElement = document.createElement("div");
+        const input = document.createElement("input");
+        textField.classList.add("text-field");
+        labelElement.classList.add("label");
+        labelElement.innerText = label;
+        input.type = "text";
+        input.classList.add("input");
+        textField.appendChild(labelElement);
+        textField.appendChild(input);
+        this.node.body.appendChild(textField);
+        if (onUpdate) {
+            input.oninput = (ev) => {
+                onUpdate(input.value);
+            }
+        }
     }
 
 
