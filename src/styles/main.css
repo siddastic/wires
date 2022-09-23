@@ -36,6 +36,7 @@ body{
     align-items: center;
     font-size: 20px;
     border-bottom: .5px solid #1a1a1a;
+    cursor: move;
 }
 
 input{

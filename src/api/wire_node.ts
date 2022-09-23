@@ -1,6 +1,7 @@
 import { NodeElement } from "../interfaces/node";
 import { NodeFieldController } from "../interfaces/node_field_controller";
 import { bind } from "./decos";
+import { DraggableUIElement } from "./draggable_ui_element";
 
 export abstract class WireNode {
     name: string;
@@ -25,18 +26,7 @@ export abstract class WireNode {
         this.node.element.appendChild(this.node.header);
         this.node.element.appendChild(this.node.body);
 
-        this.attachDragEvents();
-    }
-
-    attachDragEvents() {
-        this.node.element.addEventListener("mousedown", () => {
-            console.log("mousedown");
-            this.node.element.addEventListener("mousemove", this.onDrag);
-        });
-        this.node.element.addEventListener("mouseup", () => {
-            console.log("mouseup");
-            this.node.element.removeEventListener("mousemove", this.onDrag);
-        });
+        new DraggableUIElement(this.node.element, this.node.header);
     }
 
     @bind
@@ -50,7 +40,7 @@ export abstract class WireNode {
         this.node.element.style.top = `${top + movementY}px`;
     }
 
-    createField(field : NodeFieldController) {
+    createField(field: NodeFieldController) {
         const textField = document.createElement("div");
         const labelElement = document.createElement("div");
         const input = document.createElement("input");
@@ -70,6 +60,4 @@ export abstract class WireNode {
         input.value = field.value;
         this.node.fields.push(textField);
     }
-
-
 }

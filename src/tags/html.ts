@@ -5,7 +5,8 @@ export class HTML extends WireNode {
 
     langController: NodeFieldController = {
         label: "lang",
-        value: "",
+        value: "spanish",
+        placeholder: "en",
     };
 
     classController: NodeFieldController = {
