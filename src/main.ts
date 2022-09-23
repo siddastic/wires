@@ -1,13 +1,29 @@
+import { GraphNodeExplorer } from './api/node_explorer';
+import { Vector2 } from './interfaces/vector_2';
 import './styles/main.css';
-import { HTML } from './tags/html';
+import { HTML, Head } from './tags/tags';
 
 
 
+const GlobalNodesRepository = [
+    HTML,
+    Head,
+];
 
+const searchExplorer = new GraphNodeExplorer();
 
-const node = new HTML();
-const node2 = new HTML();
+window.addEventListener('contextmenu', (event) => {
+    event.preventDefault();
 
-document.body.appendChild(node.node.element);
-document.body.appendChild(node2.node.element);
-console.log(node);
+    const instancePoint: Vector2 = { x: event.x, y: event.y };
+    const tag = new GlobalNodesRepository[0](instancePoint);
+    document.body.appendChild(tag.node.element);
+})
+
+window.onkeydown = (k) => {
+    if (k.which == 32 && k.ctrlKey) {
+        searchExplorer.toggleExplorer();
+        
+        document.querySelector(".explorer-container")?.querySelector("input")?.focus();
+    }
+};

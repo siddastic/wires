@@ -3,7 +3,7 @@ import { bind } from "./decos";
 export class DraggableUIElement {
     pos1 = 0; pos2 = 0; pos3 = 0; pos4 = 0;
 
-    constructor(private targetElement: HTMLElement, private triggerElement?: HTMLElement) {
+    constructor(private targetElement: HTMLElement, triggerElement?: HTMLElement) {
         if (triggerElement) triggerElement.onmousedown = this.dragMouseDown;
         else targetElement.onmousedown = this.dragMouseDown;
     }

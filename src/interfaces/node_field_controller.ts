@@ -4,4 +4,5 @@ export interface NodeFieldController {
     onUpdate?: Function;
     placeholder?: string;
     type?: string;
+    element? : HTMLInputElement,
 };
