@@ -1,9 +1,8 @@
 import { WireNode } from "./wire_node";
 
 export class GraphNodeExplorer {
-  public nodes: Array<WireNode> = [];
   visible: boolean = false;
-  constructor() { }
+  constructor(public availableWireNodes : Array<typeof WireNode>) {}
 
   toggleExplorer() {
     if (!this.visible) {
@@ -12,7 +11,7 @@ export class GraphNodeExplorer {
 
       explorerContainer.onclick = (e) => {
         // @ts-ignore
-        if(e.target!.classList.contains('explorer-container')){
+        if (e.target!.classList.contains('explorer-container')) {
           explorerContainer.remove();
           this.visible = false;
         }
@@ -26,23 +25,29 @@ export class GraphNodeExplorer {
       input.type = "text";
       const nodeItems = document.createElement("div");
       nodeItems.classList.add("node-items");
-      const listTile = document.createElement("div");
-      listTile.classList.add("list-tile");
-      const leading = document.createElement("div");
-      leading.classList.add("leading");
-      leading.classList.add("codicon");
-      leading.classList.add("codicon-symbol-property");
-      const title = document.createElement("div");
-      title.classList.add("title");
-      title.innerText = "HTML";
-      const trailing = document.createElement("div");
-      trailing.classList.add("trailing");
-      trailing.innerText = "s";
+      const tiles : Node[] = [];
+      for (var i of this.availableWireNodes) {
+        const listTile = document.createElement("div");
+        listTile.classList.add("list-tile");
+        const leading = document.createElement("div");
+        leading.classList.add("leading");
+        leading.classList.add("codicon");
+        leading.classList.add("codicon-symbol-property");
+        const title = document.createElement("div");
+        title.classList.add("title");
+        title.innerText = i.name;
+        const trailing = document.createElement("div");
+        trailing.classList.add("trailing");
+        trailing.innerText = "tag";
 
-      listTile.appendChild(leading);
-      listTile.appendChild(title);
-      listTile.appendChild(trailing);
-      nodeItems.appendChild(listTile);
+        listTile.appendChild(leading);
+        listTile.appendChild(title);
+        listTile.appendChild(trailing);
+
+        tiles.push(listTile);
+      }
+
+      nodeItems.append(...tiles);
       nodeExplorer.appendChild(header);
       nodeExplorer.appendChild(input);
       nodeExplorer.appendChild(nodeItems);

@@ -1,12 +1,13 @@
 import { NodeElement } from "../interfaces/node";
 import { NodeFieldController } from "../interfaces/node_field_controller";
 import { Vector2 } from "../interfaces/vector_2";
-import { bind } from "./decos";
+import { v4 as uuidv4 } from 'uuid';
 import { DraggableUIElement } from "./draggable_ui_element";
 
 export abstract class WireNode {
     name: string;
-    private nodeFields: NodeFieldController[] = [];
+    public id = uuidv4();
+
     node: NodeElement = {
         element: document.createElement("div"),
         header: document.createElement("div"),
@@ -18,6 +19,7 @@ export abstract class WireNode {
         this.name = this.constructor.name;
     }
     setupNode() {
+        this.node.element.id = this.id;
         this.node.element.classList.add("wire-node");
         this.node.header.classList.add("wire-node-header");
         this.node.headerTitle.classList.add("title");
@@ -32,17 +34,8 @@ export abstract class WireNode {
         this.node.element.style.left = `${this.instantiatedPoint.x}px`;
 
         new DraggableUIElement(this.node.element, this.node.header);
-    }
 
-    @bind
-    onDrag(ev: MouseEvent) {
-        let getStyle = window.getComputedStyle(this.node.element);
-        const { movementX, movementY } = ev;
-        let left = parseFloat(getStyle.left);
-        let top = parseFloat(getStyle.top);
-
-        this.node.element.style.left = `${left + movementX}px`;
-        this.node.element.style.top = `${top + movementY}px`;
+        globalThis.globalNodeRegistry.registerNode(this);
     }
 
     createField(field: NodeFieldController) {
