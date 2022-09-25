@@ -1,14 +1,23 @@
 import { WireNode } from "./wire_node";
 
 export class GlobalNodeRegistry {
-    private _nodes: Array<WireNode> = [];
+    private _current: Array<WireNode> = [];
+    private _available: Array<WireNode> = [];
     constructor() {}
 
-    registerNode(node: WireNode) {
-        this._nodes.push(node);
+    registerInstance(node: WireNode) {
+        this._current.push(node);
     }
 
-    get nodes() {
-        return this._nodes;
+    get instances() {
+        return this._current;
+    }
+
+    addAvailableNode(node: WireNode) {
+        this._current.push(node);
+    }
+
+    get availableNodes() {
+        return this._current;
     }
 }

@@ -35,7 +35,7 @@ export abstract class WireNode {
 
         new DraggableUIElement(this.node.element, this.node.header);
 
-        globalThis.globalNodeRegistry.registerNode(this);
+        globalThis.globalNodeRegistry.registerInstance(this);
     }
 
     createField(field: NodeFieldController) {

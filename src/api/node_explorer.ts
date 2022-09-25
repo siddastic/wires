@@ -1,21 +1,17 @@
+import { bind } from "./decos";
 import { WireNode } from "./wire_node";
 
 export class GraphNodeExplorer {
   visible: boolean = false;
-  constructor(public availableWireNodes : Array<typeof WireNode>) {}
+  private currentExpContainerElement? : HTMLDivElement;
+  constructor(public availableWireNodes: Array<typeof WireNode>) { }
 
   toggleExplorer() {
     if (!this.visible) {
       const explorerContainer = document.createElement("div");
       explorerContainer.classList.add("explorer-container");
-
-      explorerContainer.onclick = (e) => {
-        // @ts-ignore
-        if (e.target!.classList.contains('explorer-container')) {
-          explorerContainer.remove();
-          this.visible = false;
-        }
-      };
+      this.currentExpContainerElement = explorerContainer;
+      explorerContainer.addEventListener('click', this.onContainerClick);
       const nodeExplorer = document.createElement("div");
       nodeExplorer.classList.add("node-explorer");
       const header = document.createElement("div");
@@ -25,7 +21,7 @@ export class GraphNodeExplorer {
       input.type = "text";
       const nodeItems = document.createElement("div");
       nodeItems.classList.add("node-items");
-      const tiles : Node[] = [];
+      const tiles: Node[] = [];
       for (var i of this.availableWireNodes) {
         const listTile = document.createElement("div");
         listTile.classList.add("list-tile");
@@ -57,6 +53,15 @@ export class GraphNodeExplorer {
     }
     else {
       document.querySelector('.explorer-container')?.remove();
+      this.visible = false;
+    }
+  }
+
+  @bind
+  private onContainerClick(e: MouseEvent) {
+    // @ts-ignore
+    if (e.target!.classList.contains('explorer-container')) {
+      this.currentExpContainerElement?.remove();
       this.visible = false;
     }
   }
