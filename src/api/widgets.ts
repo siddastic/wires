@@ -1,5 +1,6 @@
 import { NodeFieldData } from "../interfaces/node";
 import {
+    CustomNodeElementData,
     NodeBodyData,
     NodeFooterData,
     NodeHeaderData,
@@ -99,5 +100,17 @@ export class NodeField extends Widget {
         input.placeholder = this.data.placeholder ?? "";
         input.value = this.data.value;
         return textField;
+    }
+}
+
+export class CustomNodeElement extends Widget {
+    constructor(public data: CustomNodeElementData) {
+        super();
+    }
+
+    build(): HTMLElement {
+        const element = document.createElement(this.data.elementName);
+        if (this.data.innerHTML) element.innerHTML = this.data.innerHTML;
+        return element;
     }
 }

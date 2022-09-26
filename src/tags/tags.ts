@@ -1,4 +1,4 @@
-import { NodeBody, NodeField, NodeHeader, NodeScaffold } from "../api/widgets";
+import { CustomNodeElement, NodeBody, NodeField, NodeHeader, NodeScaffold } from "../api/widgets";
 import { WireNode } from "../api/wire_node";
 import { Vector2 } from "../interfaces/node";
 
@@ -17,6 +17,10 @@ export class HTML extends WireNode {
                     new NodeField({
                         value: "en",
                         label : "lang",
+                    }),
+                    new CustomNodeElement({
+                        elementName : "button",
+                        innerHTML : "Click Me",
                     }),
                 ],
             }),

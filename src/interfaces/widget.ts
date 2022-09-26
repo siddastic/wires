@@ -17,3 +17,8 @@ export interface NodeBodyData{
 export interface NodeFooterData{
     child: Widget;
 }
+
+export interface CustomNodeElementData{
+    elementName : string;
+    innerHTML? : string;
+}
