@@ -1,8 +1,6 @@
-import { NodeBody, NodeHeader, NodeScaffold } from "../api/widgets";
+import { NodeHeader, NodeScaffold } from "../api/widgets";
 import { WireNode } from "../api/wire_node";
 import { Vector2 } from "../interfaces/node";
-
-export { }
 
 // import { WireNode } from "../api/wire_node";
 // import { NodeFieldController } from "../interfaces/node_field_controller";
@@ -22,7 +20,6 @@ export { }
 //     constructor(instantiatedPoint: Vector2) {
 //         super(instantiatedPoint);
 //         this.setupNode();
-
 
 //         this.createField(this.langController);
 //         this.createField(this.classController);
@@ -49,15 +46,12 @@ export class HTML extends WireNode {
         super(instantiatedPoint);
     }
 
-    prebuild() {
-        console.log("Node Pre Build Function called from HTML with override");
-    }
-
     build() {
-        return new NodeScaffold(
-            new NodeHeader("HTML"),
-            new NodeBody([]),
-        );
+        return new NodeScaffold({
+            header: new NodeHeader({
+                title: "HTML",
+            }),
+        });
     }
 }
 export class Head extends WireNode {
@@ -66,9 +60,10 @@ export class Head extends WireNode {
     }
 
     build() {
-        return new NodeScaffold(
-            new NodeHeader("Head"),
-            new NodeBody([]),
-        );
+        return new NodeScaffold({
+            header: new NodeHeader({
+                title: "Head",
+            }),
+        });
     }
 }
