@@ -14,10 +14,10 @@ export class GlobalNodeRegistry {
     }
 
     addAvailableNode(node: WireNode) {
-        this._current.push(node);
+        this._available.push(node);
     }
 
     get availableNodes() {
-        return this._current;
+        return this._available;
     }
 }

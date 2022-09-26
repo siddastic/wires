@@ -1,4 +1,4 @@
-import { bind } from "./decos";
+import { bind } from "./decorators";
 
 export class DraggableUIElement {
     pos1 = 0; pos2 = 0; pos3 = 0; pos4 = 0;

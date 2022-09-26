@@ -1,4 +1,4 @@
-import { bind } from "./decos";
+import { bind } from "./decorators";
 import { WireNode } from "./wire_node";
 
 export class GraphNodeExplorer {

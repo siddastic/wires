@@ -1,9 +1,7 @@
-import { NodeElement } from "../interfaces/node";
-import { NodeFieldController } from "../interfaces/node_field_controller";
-import { Vector2 } from "../interfaces/vector_2";
+import { NodeElement, NodeFieldController, Vector2 } from "../interfaces/node";
 import { v4 as uuidv4 } from 'uuid';
 import { DraggableUIElement } from "./draggable_ui_element";
-import { bind } from "./decos";
+import { bind } from "./decorators";
 import { Widget } from "./widgets";
 
 
@@ -18,6 +16,7 @@ export abstract class WireNode {
         fields: [],
     }
     constructor(private instantiatedPoint: Vector2) {
+        this.setupNode();
     }
 
     prebuild() {
