@@ -1,11 +1,17 @@
-import { NodeBodyData, NodeFooterData, NodeHeaderData, NodeScaffoldData } from "../interfaces/widget";
+import { NodeFieldData } from "../interfaces/node";
+import {
+    NodeBodyData,
+    NodeFooterData,
+    NodeHeaderData,
+    NodeScaffoldData,
+} from "../interfaces/widget";
 
 export abstract class Widget {
     abstract build(): HTMLElement;
 }
 
 export class NodeScaffold extends Widget {
-    constructor(public data : NodeScaffoldData) {
+    constructor(public data: NodeScaffoldData) {
         super();
     }
 
@@ -25,9 +31,8 @@ export class NodeScaffold extends Widget {
     }
 }
 
-
 export class NodeHeader extends Widget {
-    constructor(public data : NodeHeaderData) {
+    constructor(public data: NodeHeaderData) {
         super();
     }
 
@@ -58,7 +63,7 @@ export class NodeBody extends Widget {
 }
 
 export class NodeFooter extends Widget {
-    constructor(public data : NodeFooterData) {
+    constructor(public data: NodeFooterData) {
         super();
     }
 
@@ -67,5 +72,32 @@ export class NodeFooter extends Widget {
         div.classList.add("wire-node-footer");
         div.appendChild(this.data.child.build());
         return div;
+    }
+}
+
+export class NodeField extends Widget {
+    constructor(public data: NodeFieldData) {
+        super();
+    }
+
+    build() {
+        const textField = document.createElement("div");
+        const labelElement = document.createElement("div");
+        const input = document.createElement("input");
+        textField.classList.add("text-field");
+        labelElement.classList.add("label");
+        labelElement.innerText = this.data.label || "...";
+        input.type = this.data.type ?? "text";
+        input.classList.add("input");
+        textField.appendChild(labelElement);
+        textField.appendChild(input);
+        this.data.element = input;
+        input.oninput = (ev) => {
+            this.data.value = (ev.target as HTMLInputElement).value;
+            this.data.onUpdate?.call(input.value);
+        };
+        input.placeholder = this.data.placeholder ?? "";
+        input.value = this.data.value;
+        return textField;
     }
 }

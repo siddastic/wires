@@ -2,7 +2,7 @@
  * This file contains all node related interfaces
  */
 
-export interface NodeFieldController {
+export interface NodeFieldData {
     value: string;
     label?: string;
     onUpdate?: Function;
