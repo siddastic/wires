@@ -2,27 +2,27 @@ import { GlobalNodeRegistry } from './api/global_node_registry';
 import { GraphNodeExplorer } from './api/node_explorer';
 import { Vector2 } from './interfaces/vector_2';
 import './styles/main.css';
-import { HTML, Head } from './tags/tags';
+import { HTML } from './tags/tags';
+// import { HTML, Head } from './tags/tags';
 
 
 
 const GlobalNodesRepository = [
     HTML,
-    Head,
 ];
 
-console.log(GlobalNodesRepository);
+// console.log(GlobalNodesRepository);
 
-const searchExplorer = new GraphNodeExplorer(
-    Array(500).fill(0).map((_, i) => {
-        if(i % 2 == 0) {
-            return HTML;
-        }
-        else {
-            return Head;
-        }
-    }),
-);
+// const searchExplorer = new GraphNodeExplorer(
+//     Array(500).fill(0).map((_, i) => {
+//         if(i % 2 == 0) {
+//             return HTML;
+//         }
+//         else {
+//             return Head;
+//         }
+//     }),
+// );
 
 window.addEventListener('contextmenu', (event) => {
     event.preventDefault();
@@ -32,12 +32,12 @@ window.addEventListener('contextmenu', (event) => {
     document.body.appendChild(tag.node.element);
 })
 
-window.onkeydown = (k) => {
-    if (k.which == 32 && k.ctrlKey) {
-        searchExplorer.toggleExplorer();
-        document.querySelector(".explorer-container")?.querySelector("input")?.focus();
-    }
-};
+// window.onkeydown = (k) => {
+//     if (k.which == 32 && k.ctrlKey) {
+//         searchExplorer.toggleExplorer();
+//         document.querySelector(".explorer-container")?.querySelector("input")?.focus();
+//     }
+// };
 
 const globalNodeRegistry = new GlobalNodeRegistry();
 

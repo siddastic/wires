@@ -1,5 +1,5 @@
 export interface NodeElement {
-    element: HTMLDivElement,
+    element: HTMLElement,
     header: HTMLDivElement,
     headerTitle: HTMLDivElement,
     body: HTMLDivElement,

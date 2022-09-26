@@ -3,9 +3,11 @@ import { NodeFieldController } from "../interfaces/node_field_controller";
 import { Vector2 } from "../interfaces/vector_2";
 import { v4 as uuidv4 } from 'uuid';
 import { DraggableUIElement } from "./draggable_ui_element";
+import { bind } from "./decos";
+import { Widget } from "./widgets";
+
 
 export abstract class WireNode {
-    name: string;
     public id = uuidv4();
 
     node: NodeElement = {
@@ -15,26 +17,34 @@ export abstract class WireNode {
         body: document.createElement("div"),
         fields: [],
     }
-    constructor(private instantiatedPoint : Vector2) {
-        this.name = this.constructor.name;
+    constructor(private instantiatedPoint: Vector2) {
     }
+
+    prebuild() {
+        console.log("Node Pre Build Function called");
+    }
+
+    @bind
+    onDrag() {
+        console.log("Node Dragged");
+    }
+
+    abstract build(): Widget;
+
+    destroy() {
+        console.log("Destroying Node");
+    }
+
     setupNode() {
-        this.node.element.id = this.id;
-        this.node.element.classList.add("wire-node");
-        this.node.header.classList.add("wire-node-header");
-        this.node.headerTitle.classList.add("title");
-        this.node.headerTitle.innerText = this.name;
-        this.node.body.classList.add("wire-node-body");
-
-        this.node.header.appendChild(this.node.headerTitle);
-        this.node.element.appendChild(this.node.header);
-        this.node.element.appendChild(this.node.body);
-
-        this.node.element.style.top = `${this.instantiatedPoint.y}px`;
-        this.node.element.style.left = `${this.instantiatedPoint.x}px`;
-
-        new DraggableUIElement(this.node.element, this.node.header);
-
+        this.prebuild();
+        const instance = this.build();
+        const widget = instance.build();
+        this.node.element = widget;
+        this.node.header = widget.querySelector(".wire-node-header")!;
+        widget.id = this.id;
+        widget.style.top = `${this.instantiatedPoint.y}px`;
+        widget.style.left = `${this.instantiatedPoint.x}px`;
+        new DraggableUIElement(this.node.element, this.onDrag, this.node.header);
         globalThis.globalNodeRegistry.registerInstance(this);
     }
 
@@ -59,6 +69,4 @@ export abstract class WireNode {
         input.value = field.value;
         this.node.fields.push(textField);
     }
-
-    abstract outNode() : string | void;
 }
