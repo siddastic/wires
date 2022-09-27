@@ -10,7 +10,7 @@ import { WireNode } from "../api/wire_node";
 import { Vector2 } from "../interfaces/node";
 
 export class HTML extends WireNode {
-    public langController?: NodeFieldController;
+    public langController!: NodeFieldController;
     constructor(instantiatedPoint: Vector2) {
         super(instantiatedPoint);
     }
@@ -25,7 +25,7 @@ export class HTML extends WireNode {
                     new NodeField({
                         value: "en",
                         label: "lang",
-                        controller: fieldController => {
+                        controller: (fieldController) => {
                             this.langController = fieldController;
                         },
                     }),

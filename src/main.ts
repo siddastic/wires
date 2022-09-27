@@ -29,6 +29,7 @@ window.addEventListener('contextmenu', (event) => {
 
     const instancePoint: Vector2 = { x: event.x, y: event.y };
     const tag = new GlobalNodesRepository[0](instancePoint);
+    tag.setupNode();
     document.body.appendChild(tag.node.element);
 })
 
