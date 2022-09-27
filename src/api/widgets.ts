@@ -6,6 +6,7 @@ import {
     NodeHeaderData,
     NodeScaffoldData,
 } from "../interfaces/widget";
+import { NodeFieldController } from "./node_field_controller";
 
 export abstract class Widget {
     abstract build(): HTMLElement;
@@ -92,13 +93,22 @@ export class NodeField extends Widget {
         input.classList.add("input");
         textField.appendChild(labelElement);
         textField.appendChild(input);
-        this.data.element = input;
         input.oninput = (ev) => {
             this.data.value = (ev.target as HTMLInputElement).value;
             this.data.onUpdate?.call(input.value);
         };
         input.placeholder = this.data.placeholder ?? "";
         input.value = this.data.value;
+        if (this.data.controller) {
+            setTimeout(()=>{
+                // Calling controller callback after 0 timeout because input element is not ready yet, see issue #1
+                this.data.controller!(
+                    new NodeFieldController({
+                        element: input,
+                    })
+                );
+            });
+        }
         return textField;
     }
 }

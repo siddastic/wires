@@ -22,3 +22,7 @@ export interface CustomNodeElementData{
     elementName : string;
     innerHTML? : string;
 }
+
+export interface NodeFieldControllerData{
+    element : HTMLInputElement;
+}

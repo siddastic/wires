@@ -2,21 +2,23 @@
  * This file contains all node related interfaces
  */
 
+import { NodeFieldController } from "../api/node_field_controller";
+
 export interface NodeFieldData {
     value: string;
+    controller?: (fieldController: NodeFieldController) => void;
     label?: string;
     onUpdate?: Function;
     placeholder?: string;
     type?: string;
-    element? : HTMLInputElement,
-};
+}
 
 export interface NodeElement {
-    element: HTMLElement,
-    header: HTMLDivElement,
-    headerTitle: HTMLDivElement,
-    body: HTMLDivElement,
-    fields : Array<HTMLDivElement>,
+    element: HTMLElement;
+    header: HTMLDivElement;
+    headerTitle: HTMLDivElement;
+    body: HTMLDivElement;
+    fields: Array<HTMLDivElement>;
 }
 
 export interface Vector2 {
