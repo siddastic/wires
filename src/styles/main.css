@@ -31,7 +31,8 @@ body {
     background-color: #1a1a1a;
     height: 100vh;
     color: white;
-    background-size: 10px;
+    background-image: linear-gradient(to right, #242424 1px, transparent 1px),linear-gradient(to bottom, #242424 1px, transparent 1px);
+    background-size: 10px 10px;
 }
 
 .wire-node {
@@ -43,6 +44,10 @@ body {
     left: 10px;
     border: 1px solid transparent;
     z-index: 1;
+}
+
+.wire-node:active {
+    opacity: 0.75;
 }
 
 .wire-node:hover {
