@@ -10,6 +10,8 @@ import { NodeFieldController } from "./node_field_controller";
 
 export abstract class Widget {
     abstract build(): HTMLElement;
+
+    postBuild(): void {}
 }
 
 export class NodeScaffold extends Widget {
@@ -59,6 +61,7 @@ export class NodeBody extends Widget {
         div.classList.add("wire-node-body");
         this.data.children.forEach((child) => {
             div.appendChild(child.build());
+            child.postBuild();
         });
         return div;
     }
@@ -78,6 +81,7 @@ export class NodeFooter extends Widget {
 }
 
 export class NodeField extends Widget {
+    input = document.createElement("input");
     constructor(public data: NodeFieldData) {
         super();
     }
@@ -85,31 +89,30 @@ export class NodeField extends Widget {
     build() {
         const textField = document.createElement("div");
         const labelElement = document.createElement("div");
-        const input = document.createElement("input");
         textField.classList.add("text-field");
         labelElement.classList.add("label");
         labelElement.innerText = this.data.label || "...";
-        input.type = this.data.type ?? "text";
-        input.classList.add("input");
+        this.input.type = this.data.type ?? "text";
+        this.input.classList.add("input");
         textField.appendChild(labelElement);
-        textField.appendChild(input);
-        input.oninput = (ev) => {
+        textField.appendChild(this.input);
+        this.input.oninput = (ev) => {
             this.data.value = (ev.target as HTMLInputElement).value;
-            this.data.onUpdate?.call(input.value);
+            this.data.onUpdate?.call(this.input.value);
         };
-        input.placeholder = this.data.placeholder ?? "";
-        input.value = this.data.value;
-        if (this.data.controller) {
-            setTimeout(()=>{
-                // Calling controller callback after 0 timeout because input element is not ready yet, see issue #1
-                this.data.controller!(
-                    new NodeFieldController({
-                        element: input,
-                    })
-                );
-            });
-        }
+        this.input.placeholder = this.data.placeholder ?? "";
+        this.input.value = this.data.value;
         return textField;
+    }
+
+    postBuild() {
+        if (this.data.controller) {
+            this.data.controller!(
+                new NodeFieldController({
+                    element: this.input,
+                })
+            );
+        }
     }
 }
 

@@ -34,6 +34,7 @@ export class HTML extends WireNode {
                         label: "lang",
                         controller: (fieldController) => {
                             this.langController = fieldController;
+                            console.log(this.langController);
                         },
                     }),
                     new CustomNodeElement({
