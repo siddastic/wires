@@ -4,7 +4,10 @@ import { WireNode } from "./wire_node";
 export class GraphNodeExplorer {
   visible: boolean = false;
   private currentExpContainerElement? : HTMLDivElement;
-  constructor(public availableWireNodes: Array<typeof WireNode>) { }
+  availableWireNodes: Array<typeof WireNode>;
+  constructor() {
+    this.availableWireNodes = globalThis.globalNodeRegistry.availableNodes;
+  }
 
   toggleExplorer() {
     if (!this.visible) {
@@ -25,13 +28,14 @@ export class GraphNodeExplorer {
       for (var i of this.availableWireNodes) {
         const listTile = document.createElement("div");
         listTile.classList.add("list-tile");
+        listTile.title = i.doc().documentation ?? "No documentation";
         const leading = document.createElement("div");
         leading.classList.add("leading");
         leading.classList.add("codicon");
         leading.classList.add("codicon-symbol-property");
         const title = document.createElement("div");
         title.classList.add("title");
-        title.innerText = i.name;
+        title.innerText = i.doc().name;
         const trailing = document.createElement("div");
         trailing.classList.add("trailing");
         trailing.innerText = "tag";

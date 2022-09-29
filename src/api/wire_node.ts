@@ -1,4 +1,4 @@
-import { NodeElement, Vector2 } from "../interfaces/node";
+import { NodeData, NodeElement, Vector2 } from "../interfaces/node";
 import { v4 as uuidv4 } from "uuid";
 import { DraggableUIElement } from "./draggable_ui_element";
 import { bind } from "./decorators";
@@ -14,6 +14,11 @@ export abstract class WireNode {
         body: document.createElement("div"),
         fields: [],
     };
+
+    static doc() : NodeData {
+        throw new Error("Node Documentation not implemented");
+    }
+
     constructor(private instantiatedPoint: Vector2) {}
 
     prebuild() {

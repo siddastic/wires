@@ -2,7 +2,7 @@ import { WireNode } from "./wire_node";
 
 export class GlobalNodeRegistry {
     private _current: Array<WireNode> = [];
-    private _available: Array<WireNode> = [];
+    private _available: Array<typeof WireNode> = [];
     constructor() {}
 
     registerInstance(node: WireNode) {
@@ -13,8 +13,8 @@ export class GlobalNodeRegistry {
         return this._current;
     }
 
-    addAvailableNode(node: WireNode) {
-        this._available.push(node);
+    addAvailableNode(nodes: typeof WireNode) {
+        this._available.push(nodes);
     }
 
     get availableNodes() {

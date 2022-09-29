@@ -15,6 +15,13 @@ export class HTML extends WireNode {
         super(instantiatedPoint);
     }
 
+    static doc(){
+        return {
+            name : "HTML",
+            documentation : "This node is used to create HTML elements",
+        }
+    }
+
     build() {
         return new NodeScaffold({
             header: new NodeHeader({
@@ -43,10 +50,37 @@ export class Head extends WireNode {
         super(instantiatedPoint);
     }
 
+    static doc(){
+        return {
+            name : "Head",
+            documentation : "This node is used to create HTML head elements",
+        }
+    }
+
     build() {
         return new NodeScaffold({
             header: new NodeHeader({
                 title: "Head",
+            }),
+        });
+    }
+}
+export class Input extends WireNode {
+    constructor(instantiatedPoint: Vector2) {
+        super(instantiatedPoint);
+    }
+
+    static doc(){
+        return {
+            name : "Input",
+            documentation : "Its represents an input element",
+        }
+    }
+
+    build() {
+        return new NodeScaffold({
+            header: new NodeHeader({
+                title: "Input",
             }),
         });
     }

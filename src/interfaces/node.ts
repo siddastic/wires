@@ -25,3 +25,8 @@ export interface Vector2 {
     x: number;
     y: number;
 }
+
+export interface NodeData{
+    name : string;
+    documentation? : string;
+}
