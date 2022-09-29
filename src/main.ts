@@ -21,7 +21,6 @@ globalThis.searchExplorer = new GraphNodeExplorer();
 
 window.addEventListener("contextmenu", (event) => {
     event.preventDefault();
-
     const instancePoint: Vector2 = { x: event.x, y: event.y };
     const tag = new availableNodes[0](instancePoint);
     tag.setupNode();

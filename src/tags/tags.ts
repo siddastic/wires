@@ -34,7 +34,6 @@ export class HTML extends WireNode {
                         label: "lang",
                         controller: (fieldController) => {
                             this.langController = fieldController;
-                            console.log(this.langController);
                         },
                     }),
                     new CustomNodeElement({
@@ -66,6 +65,7 @@ export class Head extends WireNode {
         });
     }
 }
+
 export class Input extends WireNode {
     constructor(instantiatedPoint: Vector2) {
         super(instantiatedPoint);
@@ -82,6 +82,14 @@ export class Input extends WireNode {
         return new NodeScaffold({
             header: new NodeHeader({
                 title: "Input",
+            }),
+            body : new NodeBody({
+                children : [
+                    new NodeField({
+                        label : "type",
+                        value : "text",
+                    }),
+                ],
             }),
         });
     }
