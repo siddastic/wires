@@ -16,6 +16,8 @@ export class GraphNodeExplorer {
     const tag = new node(instancePoint);
     tag.setupNode();
     document.body.appendChild(tag.node.element);
+
+    this.toggleExplorer();
   }
 
   toggleExplorer() {
