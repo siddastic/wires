@@ -2,6 +2,7 @@ import { NodeFieldData } from "../interfaces/node";
 import {
     CustomNodeElementData,
     NodeBodyData,
+    NodeButtonData,
     NodeFooterData,
     NodeHeaderData,
     NodeScaffoldData,
@@ -113,6 +114,25 @@ export class NodeField extends Widget {
                 })
             );
         }
+    }
+}
+
+export class NodeButton extends Widget {
+    constructor(public data: NodeButtonData) {
+        super();
+    }
+
+    build() {
+        const button = document.createElement("button");
+        button.classList.add("wire-button");
+        button.innerText = this.data.label;
+        if (this.data.onClick !== undefined) {
+            button.addEventListener("click", (event)=>{
+                this.data.onClick?.call(this);
+                event.stopPropagation();
+            });
+        }
+        return button;
     }
 }
 

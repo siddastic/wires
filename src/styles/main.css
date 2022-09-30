@@ -33,6 +33,7 @@ body {
     color: white;
     background-image: linear-gradient(to right, #242424 1px, transparent 1px),linear-gradient(to bottom, #242424 1px, transparent 1px);
     background-size: 10px 10px;
+    user-select: none;
 }
 
 .wire-node {
@@ -46,7 +47,11 @@ body {
     z-index: 1;
 }
 
-.wire-node:active {
+/* .wire-node-header:hover .wire-node {
+    opacity: 0.75;
+} */
+
+.wire-node:has(.wire-node-header:active) {
     opacity: 0.75;
 }
 
@@ -155,4 +160,21 @@ input {
 .list-tile:hover {
     color: #646cff;
     background-color: #1a1a1a;
+}
+
+.wire-button{
+    background-color: #1a1a1a;
+    opacity: 1;
+    width: 100%;
+    border: none;
+    outline: none;
+    color: white;
+    padding: 7px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.wire-button:hover {
+    opacity: .75;
 }

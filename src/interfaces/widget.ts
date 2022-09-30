@@ -26,3 +26,8 @@ export interface CustomNodeElementData{
 export interface NodeFieldControllerData{
     element : HTMLInputElement;
 }
+
+export interface NodeButtonData{
+    label : string;
+    onClick? : () => void;
+}

@@ -2,14 +2,14 @@ import { GlobalNodeRegistry } from "./api/global_node_registry";
 import { GraphNodeExplorer } from "./api/node_explorer";
 import { Vector2 } from "./interfaces/node";
 import "./styles/main.css";
-import { Head, HTML, Input } from "./tags/tags";
+import { AddNode, Head, HTML, Input } from "./tags/tags";
 
 declare global {
     var globalNodeRegistry: GlobalNodeRegistry;
     var searchExplorer: GraphNodeExplorer;
 }
 
-const availableNodes = [HTML, Head, Input];
+const availableNodes = [HTML, Head, Input, AddNode];
 
 globalThis.globalNodeRegistry = new GlobalNodeRegistry();
 availableNodes.forEach((node) => {
@@ -35,13 +35,17 @@ window.addEventListener("keyup", (e) => {
     }
 });
 
-window.addEventListener("wheel", (e) => {
-    if(wheelLocked){
-        e.preventDefault();
+window.addEventListener(
+    "wheel",
+    (e) => {
+        if (wheelLocked) {
+            e.preventDefault();
+        }
+    },
+    {
+        passive: false,
     }
-},{
-    passive: false
-});
+);
 
 window.addEventListener("contextmenu", (event) => {
     event.preventDefault();
