@@ -1,0 +1,17 @@
+"filename", "language", "TypeScript", "CSS", "comment", "blank", "total"
+"c:\Users\XLR8\Documents\node projects\wires\src\api\decorators.ts", "TypeScript", 11, 0, 0, 0, 11
+"c:\Users\XLR8\Documents\node projects\wires\src\api\decos.ts", "TypeScript", -33, 0, -1, -6, -40
+"c:\Users\XLR8\Documents\node projects\wires\src\api\draggable_ui_element.ts", "TypeScript", 1, 0, 0, 2, 3
+"c:\Users\XLR8\Documents\node projects\wires\src\api\node_explorer.ts", "TypeScript", 4, 0, 0, 0, 4
+"c:\Users\XLR8\Documents\node projects\wires\src\api\node_field_controller.ts", "TypeScript", 10, 0, 0, 3, 13
+"c:\Users\XLR8\Documents\node projects\wires\src\api\widgets.ts", "TypeScript", 114, 0, 0, 16, 130
+"c:\Users\XLR8\Documents\node projects\wires\src\api\wire_node.ts", "TypeScript", 1, 0, 0, 4, 5
+"c:\Users\XLR8\Documents\node projects\wires\src\interfaces\node.ts", "TypeScript", 17, 0, 3, 5, 25
+"c:\Users\XLR8\Documents\node projects\wires\src\interfaces\node_details.ts", "TypeScript", -8, 0, 0, -2, -10
+"c:\Users\XLR8\Documents\node projects\wires\src\interfaces\node_field_controller.ts", "TypeScript", -8, 0, 0, 0, -8
+"c:\Users\XLR8\Documents\node projects\wires\src\interfaces\vector_2.ts", "TypeScript", -4, 0, 0, 0, -4
+"c:\Users\XLR8\Documents\node projects\wires\src\interfaces\widget.ts", "TypeScript", 22, 0, 0, 6, 28
+"c:\Users\XLR8\Documents\node projects\wires\src\main.ts", "TypeScript", -6, 0, 0, -4, -10
+"c:\Users\XLR8\Documents\node projects\wires\src\styles\main.css", "CSS", 0, 16, 4, 5, 25
+"c:\Users\XLR8\Documents\node projects\wires\src\tags\tags.ts", "TypeScript", 55, 0, 0, 3, 58
+"Total", "-", 176, 16, 6, 32, 230

@@ -1,3 +1,4 @@
+import { Vector2 } from "../interfaces/node";
 import { bind } from "./decorators";
 import { WireNode } from "./wire_node";
 
@@ -7,6 +8,14 @@ export class GraphNodeExplorer {
   availableWireNodes: Array<typeof WireNode>;
   constructor() {
     this.availableWireNodes = globalThis.globalNodeRegistry.availableNodes;
+  }
+
+  createNode(node : typeof WireNode){
+    const instancePoint: Vector2 = { x: window.innerWidth / 2, y: window.innerHeight / 2 };
+    // @ts-ignore
+    const tag = new node(instancePoint);
+    tag.setupNode();
+    document.body.appendChild(tag.node.element);
   }
 
   toggleExplorer() {
@@ -25,7 +34,7 @@ export class GraphNodeExplorer {
       const nodeItems = document.createElement("div");
       nodeItems.classList.add("node-items");
       const tiles: Node[] = [];
-      for (var i of this.availableWireNodes) {
+      for (let i of this.availableWireNodes) {
         const listTile = document.createElement("div");
         listTile.classList.add("list-tile");
         listTile.title = i.doc().documentation ?? "No documentation";
@@ -43,6 +52,10 @@ export class GraphNodeExplorer {
         listTile.appendChild(leading);
         listTile.appendChild(title);
         listTile.appendChild(trailing);
+
+        listTile.onclick = () => {
+          this.createNode(i);
+        };
 
         tiles.push(listTile);
       }

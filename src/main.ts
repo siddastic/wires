@@ -19,6 +19,30 @@ availableNodes.forEach((node) => {
 
 globalThis.searchExplorer = new GraphNodeExplorer();
 
+// disables page zooming without control key
+let wheelLocked = true;
+
+window.addEventListener("keydown", (e) => {
+    if (e.key === "Control") {
+        wheelLocked = false;
+    }
+});
+
+// release the lock when the user releases the control button
+window.addEventListener("keyup", (e) => {
+    if (e.key === "Control") {
+        wheelLocked = true;
+    }
+});
+
+window.addEventListener("wheel", (e) => {
+    if(wheelLocked){
+        e.preventDefault();
+    }
+},{
+    passive: false
+});
+
 window.addEventListener("contextmenu", (event) => {
     event.preventDefault();
     const instancePoint: Vector2 = { x: event.x, y: event.y };
