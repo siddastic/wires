@@ -181,7 +181,7 @@ export class NodeConnector extends Widget {
         if (lineElement == null) {
             this.line.setAttribute(
                 "style",
-                "stroke:rgb(255,0,0);stroke-width:2"
+                "stroke:#2eaa56;stroke-width:2"
             );
             this.svg.appendChild(this.line);
         } else {

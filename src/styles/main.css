@@ -179,7 +179,7 @@ input {
 .node-connector{
     min-height: 10px;
     min-width: 10px;
-    border: 1px solid tomato;
+    border: 1px solid #2eaa56;
     border-radius: 50%;
     display: flex;
     justify-content: center;
@@ -202,5 +202,5 @@ input {
 }
 
 .node-connector:is(.connected){
-    background-color: tomato;
+    background-color: #2eaa56;
 }
