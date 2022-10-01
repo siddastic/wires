@@ -1,4 +1,4 @@
-import { NodeFieldData } from "../interfaces/node";
+import { NodeFieldData, Vector2 } from "../interfaces/node";
 import {
     CustomNodeElementData,
     NodeBodyData,
@@ -7,6 +7,7 @@ import {
     NodeHeaderData,
     NodeScaffoldData,
 } from "../interfaces/widget";
+import { bind } from "./decorators";
 import { NodeFieldController } from "./node_field_controller";
 
 export abstract class Widget {
@@ -95,6 +96,9 @@ export class NodeField extends Widget {
         labelElement.innerText = this.data.label || "...";
         this.input.type = this.data.type ?? "text";
         this.input.classList.add("input");
+        const connector = new NodeConnector();
+        textField.appendChild(connector.build());
+        connector.postBuild();
         textField.appendChild(labelElement);
         textField.appendChild(this.input);
         this.input.oninput = (ev) => {
@@ -102,7 +106,7 @@ export class NodeField extends Widget {
             this.data.onUpdate?.call(this.input.value);
         };
         this.input.placeholder = this.data.placeholder ?? "";
-        this.input.value = this.data.value;
+        this.input.value = this.data.value.toString();
         return textField;
     }
 
@@ -127,7 +131,7 @@ export class NodeButton extends Widget {
         button.classList.add("wire-button");
         button.innerText = this.data.label;
         if (this.data.onClick !== undefined) {
-            button.addEventListener("click", (event)=>{
+            button.addEventListener("click", (event) => {
                 this.data.onClick?.call(this);
                 event.stopPropagation();
             });
@@ -145,5 +149,79 @@ export class CustomNodeElement extends Widget {
         const element = document.createElement(this.data.elementName);
         if (this.data.innerHTML) element.innerHTML = this.data.innerHTML;
         return element;
+    }
+}
+
+export class NodeConnector extends Widget {
+    connector = document.createElement("span");
+    svg = document.querySelector(".graph-svg-container")!;
+    line = document.createElementNS("http://www.w3.org/2000/svg", "line");
+    lineId = "p" + Math.floor(100000 + Math.random() * 900000);
+    currentPosition: Vector2 = {
+        x: 0,
+        y: 0,
+    };
+    endPosition: Vector2 = {
+        x: 0,
+        y: 0,
+    };
+
+    getElementOffset(el: HTMLElement | SVGSVGElement) {
+        const rect = el.getBoundingClientRect();
+        return {
+            x: rect.left + window.scrollX + (rect.width / 2),
+            y: rect.top + window.scrollY + (rect.height / 2),
+        };
+    }
+
+    setupLine() {
+        const lineElement = this.svg.querySelector<SVGLineElement>(
+            `#${this.lineId}`
+        );
+        if (lineElement == null) {
+            this.line.setAttribute(
+                "style",
+                "stroke:rgb(255,0,0);stroke-width:2"
+            );
+            this.svg.appendChild(this.line);
+        } else {
+            this.line = lineElement;
+        }
+    }
+
+    @bind
+    createLineBetweenConnections(event: MouseEvent) {
+        this.setupLine();
+
+        const { x, y } = event;
+        this.endPosition.x = x;
+        this.endPosition.y = y;
+
+        this.line.setAttribute("x1", this.currentPosition.x.toString());
+        this.line.setAttribute("x2", this.endPosition.x.toString());
+        this.line.setAttribute("y1", this.currentPosition.y.toString());
+        this.line.setAttribute("y2", this.endPosition.y.toString());
+
+        if (!this.connector.classList.contains("connected")) {
+            this.connector.classList.add("connected");
+        }
+    }
+
+    build(): HTMLElement {
+        this.connector.classList.add("node-connector");
+        console.log("Inside build");
+        this.connector.onmousedown = () => {
+            const {x,y} = this.getElementOffset(this.connector);
+            this.currentPosition.x = x;
+            this.currentPosition.y = y;
+
+            window.onmousemove = this.createLineBetweenConnections;
+
+            window.onmouseup = () => {
+                window.onmousemove = null;
+                window.onmouseup = null;
+            };
+        };
+        return this.connector;
     }
 }

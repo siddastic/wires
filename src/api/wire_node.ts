@@ -16,7 +16,10 @@ export abstract class WireNode {
     };
 
     static doc() : NodeData {
-        throw new Error("Node Documentation not implemented");
+        return {
+            name:'Unimplemented',
+            documentation : 'Documentation is not implemented for this node',
+        };
     }
 
     constructor(private instantiatedPoint: Vector2) {}

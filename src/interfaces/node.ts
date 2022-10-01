@@ -5,7 +5,7 @@
 import { NodeFieldController } from "../api/node_field_controller";
 
 export interface NodeFieldData {
-    value: string;
+    value: string | number;
     controller?: (fieldController: NodeFieldController) => void;
     label?: string;
     onUpdate?: Function;

@@ -11,94 +11,6 @@ import {
 import { WireNode } from "../api/wire_node";
 import { Vector2 } from "../interfaces/node";
 
-export class HTML extends WireNode {
-    public langController!: NodeFieldController;
-    constructor(instantiatedPoint: Vector2) {
-        super(instantiatedPoint);
-    }
-
-    static doc() {
-        return {
-            name: "HTML",
-            documentation: "This node is used to create HTML elements",
-        };
-    }
-
-    build() {
-        return new NodeScaffold({
-            header: new NodeHeader({
-                title: "HTML",
-            }),
-            body: new NodeBody({
-                children: [
-                    new NodeField({
-                        value: "en",
-                        label: "lang",
-                        controller: (fieldController) => {
-                            this.langController = fieldController;
-                        },
-                    }),
-                    new NodeButton({
-                        label: "Create",
-                        onClick: () => {
-                            console.log(this.langController.value);
-                        },
-                    }),
-                ],
-            }),
-        });
-    }
-}
-export class Head extends WireNode {
-    constructor(instantiatedPoint: Vector2) {
-        super(instantiatedPoint);
-    }
-
-    static doc() {
-        return {
-            name: "Head",
-            documentation: "This node is used to create HTML head elements",
-        };
-    }
-
-    build() {
-        return new NodeScaffold({
-            header: new NodeHeader({
-                title: "Head",
-            }),
-        });
-    }
-}
-
-export class Input extends WireNode {
-    constructor(instantiatedPoint: Vector2) {
-        super(instantiatedPoint);
-    }
-
-    static doc() {
-        return {
-            name: "Input",
-            documentation: "Its represents an input element",
-        };
-    }
-
-    build() {
-        return new NodeScaffold({
-            header: new NodeHeader({
-                title: "Input",
-            }),
-            body: new NodeBody({
-                children: [
-                    new NodeField({
-                        label: "type",
-                        value: "text",
-                    }),
-                ],
-            }),
-        });
-    }
-}
-
 export class AddNode extends WireNode {
     number1Controller!: NodeFieldController;
     number2Controller!: NodeFieldController;
@@ -183,5 +95,39 @@ export class AddNode extends WireNode {
             }),
         });
         return scaffold;
+    }
+}
+
+export class SubtractNode extends WireNode {
+    numberA!: NodeFieldController;
+    numberB!: NodeFieldController;
+    constructor(instantiatedPoint: Vector2) {
+        super(instantiatedPoint);
+    }
+
+    build(): Widget {
+        return new NodeScaffold({
+            header: new NodeHeader({
+                title: "Subtract Node",
+            }),
+            body: new NodeBody({
+                children: [
+                    new NodeField({
+                        value: 0,
+                        label: "a",
+                        controller: (fieldController) => {
+                            this.numberA = fieldController;
+                        },
+                    }),
+                    new NodeField({
+                        value: 0,
+                        label: "b",
+                        controller: (fieldController) => {
+                            this.numberB = fieldController;
+                        },
+                    }),
+                ],
+            }),
+        });
     }
 }
