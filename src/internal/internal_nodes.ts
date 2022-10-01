@@ -9,7 +9,7 @@ import {
     Widget,
 } from "../api/widgets";
 import { WireNode } from "../api/wire_node";
-import { Vector2 } from "../interfaces/node";
+import { NodeData, Vector2 } from "../interfaces/node";
 
 export class AddNode extends WireNode {
     number1Controller!: NodeFieldController;
@@ -105,6 +105,14 @@ export class SubtractNode extends WireNode {
         super(instantiatedPoint);
     }
 
+    static doc(): NodeData {
+        return {
+            name: "Subtract Node",
+            documentation:
+                "This node is an experiment node used to subtract two numbers",
+        };
+    }
+
     build(): Widget {
         return new NodeScaffold({
             header: new NodeHeader({
@@ -124,6 +132,115 @@ export class SubtractNode extends WireNode {
                         label: "b",
                         controller: (fieldController) => {
                             this.numberB = fieldController;
+                        },
+                    }),
+                    new NodeButton({
+                        label: "Subtract",
+                        onClick: () => {
+                            alert(
+                                Number(this.numberA.value) -
+                                    Number(this.numberB.value)
+                            );
+                        },
+                    }),
+                ],
+            }),
+        });
+    }
+}
+export class MultiplyNode extends WireNode {
+    numberA!: NodeFieldController;
+    numberB!: NodeFieldController;
+    constructor(instantiatedPoint: Vector2) {
+        super(instantiatedPoint);
+    }
+
+    static doc(): NodeData {
+        return {
+            name: "Multiply Node",
+            documentation:
+                "This node is an experiment node used to multiply two numbers",
+        };
+    }
+
+    build(): Widget {
+        return new NodeScaffold({
+            header: new NodeHeader({
+                title: "Multiply Node",
+            }),
+            body: new NodeBody({
+                children: [
+                    new NodeField({
+                        value: 0,
+                        label: "a",
+                        controller: (fieldController) => {
+                            this.numberA = fieldController;
+                        },
+                    }),
+                    new NodeField({
+                        value: 0,
+                        label: "b",
+                        controller: (fieldController) => {
+                            this.numberB = fieldController;
+                        },
+                    }),
+                    new NodeButton({
+                        label: "Multiply",
+                        onClick: () => {
+                            alert(
+                                Number(this.numberA.value) *
+                                    Number(this.numberB.value)
+                            );
+                        },
+                    }),
+                ],
+            }),
+        });
+    }
+}
+export class DivideNode extends WireNode {
+    numberA!: NodeFieldController;
+    numberB!: NodeFieldController;
+    constructor(instantiatedPoint: Vector2) {
+        super(instantiatedPoint);
+    }
+
+    static doc(): NodeData {
+        return {
+            name: "Divide Node",
+            documentation:
+                "This node is an experiment node used to divide two numbers",
+        };
+    }
+
+    build(): Widget {
+        return new NodeScaffold({
+            header: new NodeHeader({
+                title: "Divide Node",
+            }),
+            body: new NodeBody({
+                children: [
+                    new NodeField({
+                        value: 0,
+                        label: "a",
+                        controller: (fieldController) => {
+                            this.numberA = fieldController;
+                        },
+                    }),
+                    new NodeField({
+                        value: 0,
+                        label: "b",
+                        controller: (fieldController) => {
+                            this.numberB = fieldController;
+                        },
+                    }),
+                    new NodeButton({
+                        label: "Divide",
+                        onClick: () => {
+                            alert(
+                                Number(this.numberA.value) /
+                                    Number(this.numberB.value)
+                            );
                         },
                     }),
                 ],

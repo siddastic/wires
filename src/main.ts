@@ -2,14 +2,19 @@ import { GlobalNodeRegistry } from "./api/global_node_registry";
 import { GraphNodeExplorer } from "./api/node_explorer";
 import { Vector2 } from "./interfaces/node";
 import "./styles/main.css";
-import { AddNode, SubtractNode } from "./internal/internal_nodes";
+import {
+    AddNode,
+    DivideNode,
+    MultiplyNode,
+    SubtractNode,
+} from "./internal/internal_nodes";
 
 declare global {
     var globalNodeRegistry: GlobalNodeRegistry;
     var searchExplorer: GraphNodeExplorer;
 }
 
-const availableNodes = [AddNode, SubtractNode];
+const availableNodes = [AddNode, SubtractNode, MultiplyNode, DivideNode];
 
 globalThis.globalNodeRegistry = new GlobalNodeRegistry();
 availableNodes.forEach((node) => {
