@@ -4,6 +4,7 @@ import {
     NodeBody,
     NodeButton,
     NodeField,
+    NodeFooter,
     NodeHeader,
     NodeScaffold,
     Widget,
@@ -184,16 +185,18 @@ export class MultiplyNode extends WireNode {
                             this.numberB = fieldController;
                         },
                     }),
-                    new NodeButton({
-                        label: "Multiply",
-                        onClick: () => {
-                            alert(
-                                Number(this.numberA.value) *
-                                    Number(this.numberB.value)
-                            );
-                        },
-                    }),
                 ],
+            }),
+            footer: new NodeFooter({
+                child: new NodeButton({
+                    label: "Multiply",
+                    onClick: () => {
+                        alert(
+                            Number(this.numberA.value) *
+                                Number(this.numberB.value)
+                        );
+                    },
+                }),
             }),
         });
     }

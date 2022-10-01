@@ -68,11 +68,8 @@ window.onkeydown = (k) => {
             ?.querySelector("input")
             ?.focus();
     }
-};
-
-window.onkeydown = (k) => {
     // Deleting elements and instances on delete key hit
-    if(k.key == "Delete" && globalNodeRegistry.selectedWireNode != undefined) {
+    if (k.key == "Delete" && globalNodeRegistry.selectedWireNode != undefined) {
         globalNodeRegistry.selectedWireNode.destroy();
         globalNodeRegistry.setSelectedWireNode(undefined);
     }
