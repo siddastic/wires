@@ -15,10 +15,10 @@ export abstract class WireNode {
         fields: [],
     };
 
-    static doc() : NodeData {
+    static doc(): NodeData {
         return {
-            name:'Unimplemented',
-            documentation : 'Documentation is not implemented for this node',
+            name: "Unimplemented",
+            documentation: "Documentation is not implemented for this node",
         };
     }
 
@@ -36,7 +36,8 @@ export abstract class WireNode {
     abstract build(): Widget;
 
     destroy() {
-        console.log("Destroying Node");
+        this.node.element.remove();
+        globalThis.globalNodeRegistry.unregisterInstance(this);
     }
 
     rebuild() {
@@ -57,6 +58,15 @@ export abstract class WireNode {
         const instance = this.build();
         const widget = instance.build();
         this.node.element = widget;
+        // when node is clicked add the selectedNode class to it and remove it from all other nodes
+        this.node.element.onclick = event => {
+            const allNodes = document.querySelectorAll(".wire-node");
+            allNodes.forEach(node => {
+                node.classList.remove("wire-node-selected");
+            });
+            this.node.element.classList.add("wire-node-selected");
+            globalNodeRegistry.setSelectedWireNode(this);
+        };
         this.node.header = widget.querySelector(".wire-node-header")!;
         widget.id = this.id;
         widget.style.top = `${this.instantiatedPoint.y}px`;

@@ -204,3 +204,7 @@ input {
 .node-connector:is(.connected){
     background-color: #2eaa56;
 }
+
+.wire-node-selected{
+    border: 1px solid #2eaa56 !important;
+}
