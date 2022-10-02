@@ -36,6 +36,7 @@ export class GraphNodeExplorer {
             header.innerText = "Search Nodes";
             const input = document.createElement("input");
             input.type = "text";
+            input.oninput = this.onSearchInput;
             const nodeItems = document.createElement("div");
             nodeItems.classList.add("node-items");
             const tiles: Node[] = [];
@@ -80,6 +81,20 @@ export class GraphNodeExplorer {
             document.querySelector(".explorer-container")?.remove();
             this.visible = false;
         }
+    }
+    
+    @bind
+    onSearchInput(e: Event) {
+        const input = e.target as HTMLInputElement;
+        const tiles = document.querySelector('.explorer-container')!.querySelectorAll<HTMLDivElement>(".list-tile");
+        tiles.forEach((tile) => {
+            const title = tile.querySelector(".title") as HTMLDivElement;
+            if (title.innerText.toLowerCase().includes(input.value.toLowerCase())) {
+                tile.style.display = "flex";
+            } else {
+                tile.style.display = "none";
+            }
+        });
     }
 
     @bind
