@@ -54,19 +54,16 @@ window.addEventListener(
 
 window.addEventListener("contextmenu", (event) => {
     event.preventDefault();
-    const instancePoint: Vector2 = { x: event.x, y: event.y };
-    const tag = new availableNodes[0](instancePoint);
-    tag.setupNode();
-    document.body.appendChild(tag.node.element);
+    // const instancePoint: Vector2 = { x: event.x, y: event.y };
+    // const tag = new availableNodes[0](instancePoint);
+    // tag.setupNode();
+    // document.body.appendChild(tag.node.element);
+    searchExplorer.toggleExplorer();
 });
 
 window.onkeydown = (k) => {
     if (k.which == 32 && k.ctrlKey) {
         searchExplorer.toggleExplorer();
-        document
-            .querySelector(".explorer-container")
-            ?.querySelector("input")
-            ?.focus();
     }
     // Deleting elements and instances on delete key hit
     if (k.key == "Delete" && globalNodeRegistry.selectedWireNode != undefined) {
