@@ -114,6 +114,10 @@ input {
     z-index: 5;
 }
 
+.explorer-container .centered-view{
+    display: flex;
+}
+
 .node-explorer {
     min-height: 300px;
     width: 300px;
@@ -214,3 +218,9 @@ input {
 .wire-node-selected {
     border: 1px solid #2eaa56 !important;
 }
+
+/* .doc-viewer{
+    min-width: 300px;
+    min-height: 300px;
+    background-color: #1a1a1a;
+} */

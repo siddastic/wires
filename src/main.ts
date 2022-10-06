@@ -54,10 +54,8 @@ window.addEventListener(
 
 window.addEventListener("contextmenu", (event) => {
     event.preventDefault();
-    // const instancePoint: Vector2 = { x: event.x, y: event.y };
-    // const tag = new availableNodes[0](instancePoint);
-    // tag.setupNode();
-    // document.body.appendChild(tag.node.element);
+    const instancePoint: Vector2 = { x: event.x, y: event.y };
+    searchExplorer.nodeSpawnLocation = instancePoint;
     searchExplorer.toggleExplorer();
 });
 
@@ -71,3 +69,4 @@ window.onkeydown = (k) => {
         globalNodeRegistry.setSelectedWireNode(undefined);
     }
 };
+searchExplorer.toggleExplorer();

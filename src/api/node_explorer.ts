@@ -6,15 +6,16 @@ export class GraphNodeExplorer {
     visible: boolean = false;
     private currentExpContainerElement?: HTMLDivElement;
     availableWireNodes: Array<typeof WireNode>;
+    nodeSpawnLocation: Vector2 = {
+        x: window.innerWidth / 2,
+        y: window.innerHeight / 2,
+    };
     constructor() {
         this.availableWireNodes = globalThis.globalNodeRegistry.availableNodes;
     }
 
     createNode(node: typeof WireNode) {
-        const instancePoint: Vector2 = {
-            x: window.innerWidth / 2,
-            y: window.innerHeight / 2,
-        };
+        const instancePoint: Vector2 = this.nodeSpawnLocation;
         // @ts-ignore
         const tag = new node(instancePoint);
         tag.setupNode();
@@ -23,12 +24,25 @@ export class GraphNodeExplorer {
         this.toggleExplorer();
     }
 
+    // createDocumentationViewer() {
+    //     const explorerContainer = document.querySelector(
+    //         ".explorer-container"
+    //     ) as HTMLDivElement;
+    //     const docViewer = document.createElement("div");
+    //     docViewer.classList.add("doc-viewer");
+    //     explorerContainer
+    //         .querySelector(".centered-view")
+    //         ?.appendChild(docViewer);
+    // }
+
     toggleExplorer() {
         if (!this.visible) {
             const explorerContainer = document.createElement("div");
             explorerContainer.classList.add("explorer-container");
             this.currentExpContainerElement = explorerContainer;
             explorerContainer.addEventListener("click", this.onContainerClick);
+            // const centeredView = document.createElement("div");
+            // centeredView.classList.add("centered-view");
             const nodeExplorer = document.createElement("div");
             nodeExplorer.classList.add("node-explorer");
             const header = document.createElement("div");
@@ -70,26 +84,35 @@ export class GraphNodeExplorer {
             nodeExplorer.appendChild(header);
             nodeExplorer.appendChild(input);
             nodeExplorer.appendChild(nodeItems);
+            // centeredView.appendChild(nodeExplorer);
+            // explorerContainer.appendChild(centeredView);
             explorerContainer.appendChild(nodeExplorer);
             document.body.appendChild(explorerContainer);
             this.visible = true;
             document
-                .querySelector(".explorer-container")
-                ?.querySelector("input")
-                ?.focus();
+            .querySelector(".explorer-container")
+            ?.querySelector("input")
+            ?.focus();
+            // this.createDocumentationViewer();
         } else {
             document.querySelector(".explorer-container")?.remove();
             this.visible = false;
         }
     }
-    
+
     @bind
     onSearchInput(e: Event) {
         const input = e.target as HTMLInputElement;
-        const tiles = document.querySelector('.explorer-container')!.querySelectorAll<HTMLDivElement>(".list-tile");
+        const tiles = document
+            .querySelector(".explorer-container")!
+            .querySelectorAll<HTMLDivElement>(".list-tile");
         tiles.forEach((tile) => {
             const title = tile.querySelector(".title") as HTMLDivElement;
-            if (title.innerText.toLowerCase().includes(input.value.toLowerCase())) {
+            if (
+                title.innerText
+                    .toLowerCase()
+                    .includes(input.value.toLowerCase())
+            ) {
                 tile.style.display = "flex";
             } else {
                 tile.style.display = "none";
