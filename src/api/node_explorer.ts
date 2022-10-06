@@ -6,7 +6,7 @@ export class GraphNodeExplorer {
     visible: boolean = false;
     private currentExpContainerElement?: HTMLDivElement;
     availableWireNodes: Array<typeof WireNode>;
-    nodeSpawnLocation: Vector2 = {
+    menuSpawnLocation: Vector2 = {
         x: window.innerWidth / 2,
         y: window.innerHeight / 2,
     };
@@ -15,9 +15,9 @@ export class GraphNodeExplorer {
     }
 
     createNode(node: typeof WireNode) {
-        const instancePoint: Vector2 = this.nodeSpawnLocation;
+        const instancePoint: Vector2 = this.menuSpawnLocation;
         // @ts-ignore
-        const tag = new node(instancePoint);
+        const tag : WireNode = new node(instancePoint);
         tag.setupNode();
         document.body.appendChild(tag.node.element);
 
@@ -45,6 +45,8 @@ export class GraphNodeExplorer {
             // centeredView.classList.add("centered-view");
             const nodeExplorer = document.createElement("div");
             nodeExplorer.classList.add("node-explorer");
+            nodeExplorer.style.top = `${this.menuSpawnLocation.y}px`;
+            nodeExplorer.style.left = `${this.menuSpawnLocation.x}px`;
             const header = document.createElement("div");
             header.classList.add("header");
             header.innerText = "Search Nodes";

@@ -55,12 +55,16 @@ window.addEventListener(
 window.addEventListener("contextmenu", (event) => {
     event.preventDefault();
     const instancePoint: Vector2 = { x: event.x, y: event.y };
-    searchExplorer.nodeSpawnLocation = instancePoint;
+    searchExplorer.menuSpawnLocation = instancePoint;
     searchExplorer.toggleExplorer();
 });
 
 window.onkeydown = (k) => {
     if (k.which == 32 && k.ctrlKey) {
+        searchExplorer.menuSpawnLocation = {
+            x: window.innerWidth / 2,
+            y: window.innerHeight / 2,
+        };
         searchExplorer.toggleExplorer();
     }
     // Deleting elements and instances on delete key hit
