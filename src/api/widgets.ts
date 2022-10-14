@@ -158,6 +158,16 @@ export class CustomNodeElement extends Widget {
     }
 }
 
+export class HTMLToWidget extends Widget{
+    constructor(public element : HTMLElement) {
+        super();
+    }
+
+    build(): HTMLElement {
+        return this.element;
+    }
+}
+
 export class NodeConnector extends Widget {
     connector = document.createElement("span");
     svg = document.querySelector(".graph-svg-container")!;
