@@ -59,7 +59,7 @@ export abstract class WireNode {
         const widget = instance.build();
         this.node.element = widget;
         // when node is clicked add the selectedNode class to it and remove it from all other nodes
-        this.node.element.onclick = event => {
+        this.node.element.onclick = () => {
             const allNodes = document.querySelectorAll(".wire-node");
             allNodes.forEach(node => {
                 node.classList.remove("wire-node-selected");

@@ -1,9 +1,16 @@
 import { bind } from "./decorators";
 
 export class DraggableUIElement {
-    pos1 = 0; pos2 = 0; pos3 = 0; pos4 = 0;
+    pos1 = 0;
+    pos2 = 0;
+    pos3 = 0;
+    pos4 = 0;
 
-    constructor(private targetElement: HTMLElement, private onDrag?: () => void, triggerElement?: HTMLElement) {
+    constructor(
+        private targetElement: HTMLElement,
+        private onDrag?: () => void,
+        triggerElement?: HTMLElement
+    ) {
         if (triggerElement) triggerElement.onmousedown = this.dragMouseDown;
         else targetElement.onmousedown = this.dragMouseDown;
     }
@@ -30,15 +37,21 @@ export class DraggableUIElement {
         this.pos3 = e.clientX;
         this.pos4 = e.clientY;
         // set the element's new position:
-        this.targetElement.style.top = (this.targetElement.offsetTop - this.pos2) + "px";
-        this.targetElement.style.left = (this.targetElement.offsetLeft - this.pos1) + "px";
+        this.targetElement.style.top =
+            this.targetElement.offsetTop - this.pos2 + "px";
+        this.targetElement.style.left =
+            this.targetElement.offsetLeft - this.pos1 + "px";
 
         this.onDrag?.call(this);
-
     }
 
     @bind
     closeDragElement() {
+        // snap element to nearest 10 pixels
+        this.targetElement.style.top =
+            Math.round(this.targetElement.offsetTop / 10) * 10 + "px";
+        this.targetElement.style.left =
+            Math.round(this.targetElement.offsetLeft / 10) * 10 + "px";
         // stop moving when mouse button is released:
         document.onmouseup = null;
         document.onmousemove = null;
