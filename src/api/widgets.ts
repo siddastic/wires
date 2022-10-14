@@ -1,4 +1,4 @@
-import { NodeFieldData, Vector2 } from "../interfaces/node";
+import {NodeFieldData, Vector2} from "../interfaces/node";
 import {
     CustomNodeElementData,
     NodeBodyData,
@@ -7,13 +7,14 @@ import {
     NodeHeaderData,
     NodeScaffoldData,
 } from "../interfaces/widget";
-import { bind } from "./decorators";
-import { NodeFieldController } from "./node_field_controller";
+import {bind} from "./decorators";
+import {NodeFieldController} from "./node_field_controller";
 
 export abstract class Widget {
     abstract build(): HTMLElement;
 
-    postBuild(): void {}
+    postBuild(): void {
+    }
 }
 
 export class NodeScaffold extends Widget {
@@ -26,12 +27,15 @@ export class NodeScaffold extends Widget {
         div.classList.add("wire-node");
         if (this.data.header) {
             div.appendChild(this.data.header.build());
+            this.data.header.postBuild();
         }
         if (this.data.body) {
             div.appendChild(this.data.body.build());
+            this.data.body.postBuild();
         }
         if (this.data.footer) {
             div.appendChild(this.data.footer.build());
+            this.data.footer.postBuild();
         }
         return div;
     }
@@ -78,12 +82,14 @@ export class NodeFooter extends Widget {
         const div = document.createElement("div");
         div.classList.add("wire-node-footer");
         div.appendChild(this.data.child.build());
+        this.data.child.postBuild();
         return div;
     }
 }
 
 export class NodeField extends Widget {
     input = document.createElement("input");
+
     constructor(public data: NodeFieldData) {
         super();
     }
@@ -193,7 +199,7 @@ export class NodeConnector extends Widget {
     createLineBetweenConnections(event: MouseEvent) {
         this.setupLine();
 
-        const { x, y } = event;
+        const {x, y} = event;
         this.endPosition.x = x;
         this.endPosition.y = y;
 
@@ -211,15 +217,19 @@ export class NodeConnector extends Widget {
         this.connector.classList.add("node-connector");
         console.log("Inside build");
         this.connector.onmousedown = () => {
-            const {x,y} = this.getElementOffset(this.connector);
+            const {x, y} = this.getElementOffset(this.connector);
             this.currentPosition.x = x;
             this.currentPosition.y = y;
 
             window.onmousemove = this.createLineBetweenConnections;
 
-            window.onmouseup = () => {
+            window.onmouseup = (e: MouseEvent) => {
                 window.onmousemove = null;
                 window.onmouseup = null;
+
+                if ((e.target as unknown as (HTMLElement | undefined))?.classList.contains("node-connector") || false) {
+//                    Dropped on another connector
+                }
             };
         };
         return this.connector;
