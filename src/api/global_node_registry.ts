@@ -3,7 +3,7 @@ import { WireNode } from "./wire_node";
 export class GlobalNodeRegistry {
     private _current: Array<WireNode> = [];
     private _available: Array<typeof WireNode> = [];
-    private _selectedWireNode?: WireNode;
+    private _selectedWireNodes: WireNode[] = [];
     constructor() {
         // clear node selection when clicking on the non-node area
         window.addEventListener("click", (event) => {
@@ -13,7 +13,7 @@ export class GlobalNodeRegistry {
                 allNodes.forEach((node) => {
                     node.classList.remove("wire-node-selected");
                 });
-                this.setSelectedWireNode(undefined);
+                this._selectedWireNodes = [];
             }
         });
     }
@@ -38,11 +38,18 @@ export class GlobalNodeRegistry {
         return this._available;
     }
 
-    get selectedWireNode() {
-        return this._selectedWireNode;
+    get selectedWireNodes() {
+        return this._selectedWireNodes[0];
     }
 
-    setSelectedWireNode(node: WireNode | undefined) {
-        this._selectedWireNode = node;
+    addSelectedWireNode(node: WireNode) {
+        this._selectedWireNodes.push(node);
+    }
+
+    removeSelectedNodes(){
+        this._selectedWireNodes.forEach(node => {
+            node.destroy();
+        });
+        this._selectedWireNodes = [];
     }
 }

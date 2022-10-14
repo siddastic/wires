@@ -38,7 +38,7 @@ export class AddNode extends WireNode {
             new NodeField({
                 label: "number 1",
                 value: this.number1Controller?.value ?? "0",
-                type: "number",
+                inputType: "number",
                 controller: (fieldController) => {
                     this.number1Controller = fieldController;
                 },
@@ -46,7 +46,7 @@ export class AddNode extends WireNode {
             new NodeField({
                 label: "number 2",
                 value: this.number2Controller?.value ?? "0",
-                type: "number",
+                inputType: "number",
                 controller: (fieldController) => {
                     this.number2Controller = fieldController;
                 },
@@ -69,7 +69,7 @@ export class AddNode extends WireNode {
                 new NodeField({
                     label: "result",
                     value: this.result?.toString() ?? "0",
-                    type: "number",
+                    inputType: "number",
                 })
             );
             children.splice(

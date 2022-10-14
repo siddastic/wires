@@ -224,3 +224,10 @@ input {
     min-height: 300px;
     background-color: #1a1a1a;
 } */
+
+
+.selection-area {
+    background: rgba(46, 115, 252, 0.11);
+    border: .1px solid rgba(98, 155, 255, 0.81);
+    border-radius: .1em;
+}

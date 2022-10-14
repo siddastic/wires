@@ -65,7 +65,7 @@ export abstract class WireNode {
                 node.classList.remove("wire-node-selected");
             });
             this.node.element.classList.add("wire-node-selected");
-            globalNodeRegistry.setSelectedWireNode(this);
+            globalNodeRegistry.addSelectedWireNode(this);
         };
         this.node.header = widget.querySelector(".wire-node-header")!;
         widget.id = this.id;

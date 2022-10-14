@@ -4,13 +4,16 @@
 
 import { NodeFieldController } from "../api/node_field_controller";
 
+type NodeFieldType = "connect" | "input" | "both";
+
 export interface NodeFieldData {
     value: string | number;
     controller?: (fieldController: NodeFieldController) => void;
     label?: string;
     onUpdate?: Function;
     placeholder?: string;
-    type?: string;
+    inputType?: string;
+    fieldType?: NodeFieldType;
 }
 
 export interface NodeElement {
@@ -26,7 +29,7 @@ export interface Vector2 {
     y: number;
 }
 
-export interface NodeData{
-    name : string;
-    documentation? : string;
+export interface NodeData {
+    name: string;
+    documentation?: string;
 }

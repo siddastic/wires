@@ -100,7 +100,7 @@ export class NodeField extends Widget {
         textField.classList.add("text-field");
         labelElement.classList.add("label");
         labelElement.innerText = this.data.label || "...";
-        this.input.type = this.data.type ?? "text";
+        this.input.type = this.data.inputType ?? "text";
         this.input.classList.add("input");
         const connector = new NodeConnector();
         textField.appendChild(connector.build());
