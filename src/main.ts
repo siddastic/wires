@@ -10,6 +10,7 @@ import {
     MultiplyNode,
     SubtractNode,
 } from "./internal/internal_nodes";
+import { DataBoard } from "./api/data_board";
 
 declare global {
     var globalNodeRegistry: GlobalNodeRegistry;
@@ -77,19 +78,19 @@ window.onkeydown = (k) => {
 searchExplorer.toggleExplorer();
 
 const selection = new SelectionArea({
-    selectables: ["body > .wire-node"],
+    selectables: [".wire-node"],
     boundaries: ["body"],
     behaviour: {
         // Specifies what should be done if already selected elements get selected again.
         //   invert: Invert selection for elements which were already selected
         //   keep: Keep selected elements (use clearSelection() to remove those)
         //   drop: Remove stored elements after they have been touched
-        overlap: "invert",
+        // overlap: "invert",
 
         // On which point an element should be selected.
         // Available modes are cover (cover the entire element), center (touch the center) or
         // the default mode is touch (just touching it).
-        intersect: "touch",
+        // intersect: "touch",
 
         // px, how many pixels the point should move before starting the selection (combined distance).
         // Or specifiy the threshold for each axis by passing an object like {x: <number>, y: <number>}.
@@ -122,10 +123,12 @@ const selection = new SelectionArea({
     .on("start", ({ store, event }) => {
         if (!(event as MouseEvent).ctrlKey && !(event as MouseEvent).metaKey) {
             for (const el of store.stored) {
+                console.log("Deselecting", el);
                 el.classList.remove("wire-node-selected");
             }
 
             selection.clearSelection();
+            globalNodeRegistry.deselectAllNodes();
         }
     })
     .on(
@@ -145,3 +148,9 @@ const selection = new SelectionArea({
         }
     )
     .on("stop", ({ store: { stored } }) => console.log(stored));
+
+console.log(selection);
+
+
+const databoard = new DataBoard();
+document.body.appendChild(databoard.build());

@@ -6,16 +6,21 @@ export class GlobalNodeRegistry {
     private _selectedWireNodes: WireNode[] = [];
     constructor() {
         // clear node selection when clicking on the non-node area
-        window.addEventListener("click", (event) => {
-            // @ts-ignore
-            if (event.target!.closest(".wire-node") == null) {
-                const allNodes = document.querySelectorAll(".wire-node");
-                allNodes.forEach((node) => {
-                    node.classList.remove("wire-node-selected");
-                });
-                this._selectedWireNodes = [];
-            }
-        });
+        // window.addEventListener("click", (event) => {
+        //     if (document.querySelector(".selection-area") == null) {
+        //         // if the event wasn't triggered by the selection area
+        //         // if the closest parent is not a node, clear the selection
+        //         if (
+        //             (event.target! as HTMLElement).closest(".wire-node") == null
+        //         ) {
+        //             const allNodes = document.querySelectorAll(".wire-node");
+        //             allNodes.forEach((node) => {
+        //                 node.classList.remove("wire-node-selected");
+        //             });
+        //             this._selectedWireNodes = [];
+        //         }
+        //     }
+        // });
     }
 
     registerInstance(node: WireNode) {
@@ -39,15 +44,21 @@ export class GlobalNodeRegistry {
     }
 
     get selectedWireNodes() {
-        return this._selectedWireNodes[0];
+        return this._selectedWireNodes;
     }
 
     addSelectedWireNode(node: WireNode) {
         this._selectedWireNodes.push(node);
     }
 
-    removeSelectedNodes(){
-        this._selectedWireNodes.forEach(node => {
+    deselectAllNodes() {
+        this._selectedWireNodes.forEach((element) => {
+            element.node.element.classList.remove("wire-node-selected");
+        });
+    }
+
+    removeSelectedNodes() {
+        this._selectedWireNodes.forEach((node) => {
             node.destroy();
         });
         this._selectedWireNodes = [];
