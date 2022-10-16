@@ -59,6 +59,8 @@ body {
     border: .5px solid black;
     z-index: 5;
     opacity: .9;
+    resize: both;
+    overflow: auto;
 }
 
 .wire-node:has(.wire-node-header:active) {
