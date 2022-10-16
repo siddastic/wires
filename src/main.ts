@@ -6,6 +6,7 @@ import SelectionArea from "@viselect/vanilla";
 
 import {
     AddNode,
+    DataNode,
     DivideNode,
     MultiplyNode,
     SubtractNode,
@@ -17,7 +18,7 @@ declare global {
     var searchExplorer: GraphNodeExplorer;
 }
 
-const availableNodes = [AddNode, SubtractNode, MultiplyNode, DivideNode];
+const availableNodes = [AddNode, SubtractNode, MultiplyNode, DivideNode, DataNode];
 
 globalThis.globalNodeRegistry = new GlobalNodeRegistry();
 availableNodes.forEach((node) => {

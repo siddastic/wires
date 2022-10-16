@@ -10,7 +10,7 @@ import {
     Widget,
 } from "../api/widgets";
 import { WireNode } from "../api/wire_node";
-import { NodeData, Vector2 } from "../interfaces/node";
+import { NodeData, Vector2, WireOutData } from "../interfaces/node";
 
 export class AddNode extends WireNode {
     number1Controller!: NodeFieldController;
@@ -249,5 +249,45 @@ export class DivideNode extends WireNode {
                 ],
             }),
         });
+    }
+}
+
+export class DataNode extends WireNode{
+    data!: NodeFieldController;
+    constructor(instantiatedPoint: Vector2) {
+        super(instantiatedPoint);
+    }
+
+    static doc(): NodeData {
+        return {
+            name: "Data Node",
+            documentation:
+                "It can be used to store data, it returns whatever data is stored in it",
+        };
+    }
+
+    build(): Widget {
+        return new NodeScaffold({
+            header: new NodeHeader({
+                title: "Data Node",
+            }),
+            body: new NodeBody({
+                children: [
+                    new NodeField({
+                        value: "",
+                        label: "x",
+                        controller: (fieldController) => {
+                            this.data = fieldController;
+                        },
+                    }),
+                ],
+            }),
+        });
+    }
+
+    out(): WireOutData {
+        return {
+            data: this.data.value,
+        };
     }
 }

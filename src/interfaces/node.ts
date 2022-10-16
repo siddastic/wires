@@ -4,7 +4,7 @@
 
 import { NodeFieldController } from "../api/node_field_controller";
 
-type NodeFieldType = "connect" | "input" | "both";
+type NodeFieldType = "connect" | "input";
 
 export interface NodeFieldData {
     value: string | number;
@@ -32,4 +32,8 @@ export interface Vector2 {
 export interface NodeData {
     name: string;
     documentation?: string;
+}
+
+export interface WireOutData{
+    data: string | undefined;
 }
