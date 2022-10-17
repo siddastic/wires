@@ -32,7 +32,3 @@ export interface NodeButtonData {
     label: string;
     onClick?: () => void;
 }
-
-export interface NodeInConnectorData {
-    onConnect: (data: WireOutData) => void;
-}

@@ -6,7 +6,7 @@ import SelectionArea from "@viselect/vanilla";
 
 import {
     AddNode,
-    DataNode,
+    VariableNode,
     DivideNode,
     MultiplyNode,
     SubtractNode,
@@ -22,7 +22,7 @@ declare global {
     var uniqueIdGenerator : UniqueIdGenerator;
 }
 
-const availableNodes = [AddNode, SubtractNode, MultiplyNode, DivideNode, DataNode];
+const availableNodes = [AddNode, SubtractNode, MultiplyNode, DivideNode, VariableNode];
 
 globalThis.globalNodeRegistry = new GlobalNodeRegistry();
 availableNodes.forEach((node) => {

@@ -14,6 +14,7 @@ export interface NodeFieldData {
     placeholder?: string;
     inputType?: string;
     fieldType?: NodeFieldType;
+    onConnect?: (data: WireOutData) => void;
 }
 
 export interface NodeElement {

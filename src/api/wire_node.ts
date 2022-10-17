@@ -34,6 +34,15 @@ export abstract class WireNode {
 
     abstract build(): Widget;
 
+    createNodeMap(){
+        globalThis.graphConnectionMap.addMapIfNotPresent({
+            nodeId: this.id,
+            // fields will be added by the node field widget when it is created
+            fields: [],
+            outFn: this.out,
+        });
+    }
+
     out(): WireOutData {
         return {
             data: undefined,
@@ -85,6 +94,7 @@ export abstract class WireNode {
             this.node.header
         );
         globalThis.globalNodeRegistry.registerInstance(this);
+        this.createNodeMap();
     }
 
     private createOutConnector(){

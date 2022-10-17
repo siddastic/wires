@@ -1,3 +1,4 @@
+import { bind } from "../api/decorators";
 import { NodeFieldController } from "../api/node_field_controller";
 import {
     CustomNodeElement,
@@ -229,6 +230,9 @@ export class DivideNode extends WireNode {
                         controller: (fieldController) => {
                             this.numberA = fieldController;
                         },
+                        onConnect: (data)=>{
+                            this.numberA.value = data.data ?? '';
+                        }
                     }),
                     new NodeField({
                         value: 0,
@@ -236,6 +240,9 @@ export class DivideNode extends WireNode {
                         controller: (fieldController) => {
                             this.numberB = fieldController;
                         },
+                        onConnect: (data)=>{
+                            this.numberB.value = data.data ?? '';
+                        }
                     }),
                     new NodeButton({
                         label: "Divide",
@@ -252,7 +259,7 @@ export class DivideNode extends WireNode {
     }
 }
 
-export class DataNode extends WireNode{
+export class VariableNode extends WireNode{
     data!: NodeFieldController;
     constructor(instantiatedPoint: Vector2) {
         super(instantiatedPoint);
@@ -260,7 +267,7 @@ export class DataNode extends WireNode{
 
     static doc(): NodeData {
         return {
-            name: "Data Node",
+            name: "Variable Node",
             documentation:
                 "It can be used to store data, it returns whatever data is stored in it",
         };
@@ -269,7 +276,7 @@ export class DataNode extends WireNode{
     build(): Widget {
         return new NodeScaffold({
             header: new NodeHeader({
-                title: "Data Node",
+                title: "Variable Node",
             }),
             body: new NodeBody({
                 children: [
@@ -285,6 +292,7 @@ export class DataNode extends WireNode{
         });
     }
 
+    @bind
     out(): WireOutData {
         return {
             data: this.data.value,

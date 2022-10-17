@@ -5,7 +5,6 @@ import {
     NodeButtonData,
     NodeFooterData,
     NodeHeaderData,
-    NodeInConnectorData,
     NodeScaffoldData,
 } from "../interfaces/widget";
 import { bind } from "./decorators";
@@ -89,24 +88,55 @@ export class NodeFooter extends Widget {
 
 export class NodeField extends Widget {
     input = document.createElement("input");
+    fieldId = globalThis.uniqueIdGenerator.create();
 
     constructor(public data: NodeFieldData) {
         super();
+        let onConnect = this.data.onConnect;
+        this.data.onConnect = (data) => {
+            if (data.data !== undefined) {
+                this.input.value = data.data;
+            }
+            onConnect?.call(this, data);
+        };
+    }
+
+    @bind
+    addFieldToGraph() {
+        console.log("adding field to graph");
+        let parent = this.input.parentElement;
+        while (parent) {
+            console.log(parent);
+            if (parent.classList.contains("wire-node")) {
+                let parentId = parent.id;
+                console.log("found parent with id", parentId);
+                let index = graphConnectionMap.list.findIndex(
+                    (x) => x.nodeId === parentId
+                )!;
+                var fields = graphConnectionMap.list[index].fields;
+                if (fields.findIndex((x) => x.fieldId === this.fieldId) == -1) {
+                    graphConnectionMap.list[index].fields.push({
+                        fieldId: this.fieldId,
+                        instance: this,
+                    });
+                }
+                break;
+            }
+            parent = parent.parentElement;
+        }
+        return null;
     }
 
     build() {
         const textField = document.createElement("div");
         const labelElement = document.createElement("div");
+        textField.id = this.fieldId;
         textField.classList.add("text-field");
         labelElement.classList.add("label");
         labelElement.innerText = this.data.label || "...";
         this.input.type = this.data.inputType ?? "text";
         this.input.classList.add("input");
-        const connector = new NodeInputConnector({
-            onConnect : (d)=>{
-                alert(d.data);
-            }
-        });
+        const connector = new NodeInputConnector();
         textField.appendChild(connector.build());
         connector.postBuild();
         textField.appendChild(labelElement);
@@ -128,6 +158,7 @@ export class NodeField extends Widget {
                 })
             );
         }
+        setTimeout(this.addFieldToGraph, 0);
     }
 }
 
@@ -173,18 +204,10 @@ export class HTMLToWidget extends Widget {
 }
 
 export class NodeInputConnector extends Widget {
-    constructor(public data : NodeInConnectorData){
-        super();
-    }
     connector = document.createElement("span");
     build(): HTMLElement {
         this.connector.classList.add("node-connector");
         this.connector.classList.add("node-in-connector");
-        this.connector.onmouseup = ()=>{
-            this.data.onConnect({
-                data : "random text",
-            });
-        };
         return this.connector;
     }
 }
@@ -194,6 +217,7 @@ export class NodeOutConnector extends Widget {
     svg = document.querySelector(".graph-svg-container")!;
     line = document.createElementNS("http://www.w3.org/2000/svg", "line");
     lineId = uniqueIdGenerator.create();
+    outConnectorId = uniqueIdGenerator.create();
     currentPosition: Vector2 = {
         x: 0,
         y: 0,
@@ -245,6 +269,7 @@ export class NodeOutConnector extends Widget {
     build(): HTMLElement {
         this.connector.classList.add("node-connector");
         this.connector.classList.add("node-out-connector");
+        this.connector.id = this.outConnectorId;
         this.connector.onmousedown = () => {
             const { x, y } = this.getElementOffset(this.connector);
             this.currentPosition.x = x;
@@ -256,20 +281,44 @@ export class NodeOutConnector extends Widget {
                 window.onmousemove = null;
                 window.onmouseup = null;
 
+                let targetInConnector = e.target as unknown as HTMLElement;
+
                 if (
                     (
                         e.target as unknown as HTMLElement | undefined
                     )?.classList.contains("node-in-connector") ||
                     false
                 ) {
-                    if (
-                        !(
-                            e.target as unknown as HTMLElement
-                        ).classList.contains("connected")
-                    ) {
-                        (e.target as unknown as HTMLElement).classList.add(
-                            "connected"
+                    if (!targetInConnector.classList.contains("connected")) {
+                        // get out function reference of this connector
+                        const outConnectorParentNodeId =
+                            this.connector.closest(".wire-node")!.id;
+                        let index1 = graphConnectionMap.list.findIndex(
+                            (item) => item.nodeId === outConnectorParentNodeId
                         );
+
+                        // Connection established with another field, call the onConnect function of the other field
+                        let targetParentNodeId =
+                            targetInConnector.closest(".wire-node")!.id;
+                        let index2 = graphConnectionMap.list.findIndex(
+                            (item) => item.nodeId === targetParentNodeId
+                        );
+                        var fieldIndex = graphConnectionMap.list[
+                            index2
+                        ].fields.findIndex(
+                            (item) =>
+                                item.fieldId ===
+                                targetInConnector.closest(".text-field")!.id
+                        );
+                        console.log(
+                            graphConnectionMap.list[index2].fields[fieldIndex]
+                                .instance.data.onConnect
+                        );
+                        graphConnectionMap.list[index2].fields[fieldIndex]
+                            .instance.data.onConnect!({
+                            data: graphConnectionMap.list[index1].outFn().data,
+                        });
+                        targetInConnector.classList.add("connected");
                     }
                 } else {
                     this.connector.classList.remove("connected");
