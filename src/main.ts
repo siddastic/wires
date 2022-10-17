@@ -154,7 +154,11 @@ const selection = new SelectionArea({
             }
         }
     )
-    .on("stop", ({ store: { stored } }) => console.log(stored));
+    .on("stop", ({ store: { stored } }) => {
+        if(stored.length == 0){
+            globalNodeRegistry.deselectAllNodes();
+        }
+    });
 
 console.log(selection);
 

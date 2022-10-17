@@ -4,10 +4,10 @@
 
 import { NodeFieldController } from "../api/node_field_controller";
 
-type NodeFieldType = "connect" | "input" | "both";
+type NodeFieldType = "connect" | "input";
 
 export interface NodeFieldData {
-    value: string | number;
+    value?: string | number;
     controller?: (fieldController: NodeFieldController) => void;
     label?: string;
     onUpdate?: Function;
@@ -36,5 +36,5 @@ export interface NodeData {
 }
 
 export interface WireOutData{
-    data: string | undefined;
+    data: string | number | undefined;
 }

@@ -93,6 +93,8 @@ export abstract class WireNode {
             this.onDrag,
             this.node.header
         );
+        // remove all previous selections when new is created
+        globalNodeRegistry.deselectAllNodes();
         globalThis.globalNodeRegistry.registerInstance(this);
         this.createNodeMap();
     }

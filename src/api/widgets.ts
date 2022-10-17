@@ -95,10 +95,15 @@ export class NodeField extends Widget {
         let onConnect = this.data.onConnect;
         this.data.onConnect = (data) => {
             if (data.data !== undefined) {
-                this.input.value = data.data;
+                this.input.value = String(data.data);
             }
             onConnect?.call(this, data);
         };
+
+        // set fieldType to connect only if not provided
+        if(this.data.fieldType === undefined){
+            this.data.fieldType = "connect";
+        }
     }
 
     @bind
@@ -146,7 +151,12 @@ export class NodeField extends Widget {
             this.data.onUpdate?.call(this.input.value);
         };
         this.input.placeholder = this.data.placeholder ?? "";
-        this.input.value = this.data.value.toString();
+        this.input.value = (this.data.value ?? 0).toString();
+
+        // hide input if fieldType is connect only
+        if (this.data.fieldType == "connect") {
+            this.input.style.display = "none";
+        }
         return textField;
     }
 

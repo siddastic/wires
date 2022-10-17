@@ -55,6 +55,7 @@ export class GlobalNodeRegistry {
         this._selectedWireNodes.forEach((element) => {
             element.node.element.classList.remove("wire-node-selected");
         });
+        this._selectedWireNodes = [];
     }
 
     removeSelectedNodes() {
