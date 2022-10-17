@@ -6,6 +6,11 @@ import { NodeFieldController } from "../api/node_field_controller";
 
 type NodeFieldType = "connect" | "input";
 
+export interface GraphData{
+    availableNodes: any[];
+    enableDataboard: boolean;
+}
+
 export interface NodeFieldData {
     value?: string | number;
     controller?: (fieldController: NodeFieldController) => void;

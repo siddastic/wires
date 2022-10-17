@@ -1,0 +1,15 @@
+"filename", "language", "TypeScript", "CSS", "comment", "blank", "total"
+"c:\Users\XLR8\Documents\node projects\wires\src\api\data_board.ts", "TypeScript", 28, 0, 0, 8, 36
+"c:\Users\XLR8\Documents\node projects\wires\src\api\draggable_ui_element.ts", "TypeScript", 13, 0, 1, 0, 14
+"c:\Users\XLR8\Documents\node projects\wires\src\api\global_node_registry.ts", "TypeScript", -3, 0, 14, 1, 12
+"c:\Users\XLR8\Documents\node projects\wires\src\api\node_field_controller.ts", "TypeScript", 3, 0, 0, 1, 4
+"c:\Users\XLR8\Documents\node projects\wires\src\api\unique_id_gen.ts", "TypeScript", 8, 0, 0, 0, 8
+"c:\Users\XLR8\Documents\node projects\wires\src\api\widgets.ts", "TypeScript", 85, 0, 3, 6, 94
+"c:\Users\XLR8\Documents\node projects\wires\src\api\wire_node.ts", "TypeScript", 32, 0, 2, 7, 41
+"c:\Users\XLR8\Documents\node projects\wires\src\interfaces\node.ts", "TypeScript", 4, 0, 0, 0, 4
+"c:\Users\XLR8\Documents\node projects\wires\src\interfaces\widget.ts", "TypeScript", 1, 0, 0, 1, 2
+"c:\Users\XLR8\Documents\node projects\wires\src\internal\internal_nodes.ts", "TypeScript", -12, 0, 0, 8, -4
+"c:\Users\XLR8\Documents\node projects\wires\src\main.ts", "TypeScript", 13, 0, 4, 2, 19
+"c:\Users\XLR8\Documents\node projects\wires\src\styles\main.css", "CSS", 0, 22, 0, 3, 25
+"c:\Users\XLR8\Documents\node projects\wires\src\transpiler\graph_connection_map.ts", "TypeScript", 18, 0, 0, 3, 21
+"Total", "-", 190, 22, 24, 40, 276
