@@ -108,13 +108,10 @@ export class NodeField extends Widget {
 
     @bind
     addFieldToGraph() {
-        console.log("adding field to graph");
         let parent = this.input.parentElement;
         while (parent) {
-            console.log(parent);
             if (parent.classList.contains("wire-node")) {
                 let parentId = parent.id;
-                console.log("found parent with id", parentId);
                 let index = graphConnectionMap.list.findIndex(
                     (x) => x.nodeId === parentId
                 )!;
@@ -319,10 +316,6 @@ export class NodeOutConnector extends Widget {
                             (item) =>
                                 item.fieldId ===
                                 targetInConnector.closest(".text-field")!.id
-                        );
-                        console.log(
-                            graphConnectionMap.list[index2].fields[fieldIndex]
-                                .instance.data.onConnect
                         );
                         graphConnectionMap.list[index2].fields[fieldIndex]
                             .instance.data.onConnect!({

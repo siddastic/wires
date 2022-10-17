@@ -133,7 +133,6 @@ export class WireGraph {
                     !(event as MouseEvent).metaKey
                 ) {
                     for (const el of store.stored) {
-                        console.log("Deselecting", el);
                         el.classList.remove("wire-node-selected");
                     }
 

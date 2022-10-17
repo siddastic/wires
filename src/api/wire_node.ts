@@ -24,12 +24,12 @@ export abstract class WireNode {
     constructor(private instantiatedPoint: Vector2) {}
 
     prebuild() {
-        console.log("Node Pre Build Function called");
+        // this function is called before the node is built
     }
 
     @bind
     onDrag() {
-        console.log("Node Dragged");
+        // this function is called when the node is being dragged
     }
 
     abstract build(): Widget;
