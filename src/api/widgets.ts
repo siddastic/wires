@@ -1,20 +1,20 @@
-import {NodeFieldData, Vector2} from "../interfaces/node";
+import { NodeFieldData, Vector2 } from "../interfaces/node";
 import {
     CustomNodeElementData,
     NodeBodyData,
     NodeButtonData,
     NodeFooterData,
     NodeHeaderData,
+    NodeInConnectorData,
     NodeScaffoldData,
 } from "../interfaces/widget";
-import {bind} from "./decorators";
-import {NodeFieldController} from "./node_field_controller";
+import { bind } from "./decorators";
+import { NodeFieldController } from "./node_field_controller";
 
 export abstract class Widget {
     abstract build(): HTMLElement;
 
-    postBuild(): void {
-    }
+    postBuild(): void {}
 }
 
 export class NodeScaffold extends Widget {
@@ -102,7 +102,11 @@ export class NodeField extends Widget {
         labelElement.innerText = this.data.label || "...";
         this.input.type = this.data.inputType ?? "text";
         this.input.classList.add("input");
-        const connector = new NodeConnector();
+        const connector = new NodeInputConnector({
+            onConnect : (d)=>{
+                alert(d.data);
+            }
+        });
         textField.appendChild(connector.build());
         connector.postBuild();
         textField.appendChild(labelElement);
@@ -158,8 +162,8 @@ export class CustomNodeElement extends Widget {
     }
 }
 
-export class HTMLToWidget extends Widget{
-    constructor(public element : HTMLElement) {
+export class HTMLToWidget extends Widget {
+    constructor(public element: HTMLElement) {
         super();
     }
 
@@ -168,11 +172,28 @@ export class HTMLToWidget extends Widget{
     }
 }
 
-export class NodeConnector extends Widget {
+export class NodeInputConnector extends Widget {
+    constructor(public data : NodeInConnectorData){
+        super();
+    }
+    connector = document.createElement("span");
+    build(): HTMLElement {
+        this.connector.classList.add("node-connector");
+        this.connector.classList.add("node-in-connector");
+        this.connector.onmouseup = ()=>{
+            this.data.onConnect({
+                data : "random text",
+            });
+        };
+        return this.connector;
+    }
+}
+
+export class NodeOutConnector extends Widget {
     connector = document.createElement("span");
     svg = document.querySelector(".graph-svg-container")!;
     line = document.createElementNS("http://www.w3.org/2000/svg", "line");
-    lineId = "p" + Math.floor(100000 + Math.random() * 900000);
+    lineId = uniqueIdGenerator.create();
     currentPosition: Vector2 = {
         x: 0,
         y: 0,
@@ -185,8 +206,8 @@ export class NodeConnector extends Widget {
     getElementOffset(el: HTMLElement | SVGSVGElement) {
         const rect = el.getBoundingClientRect();
         return {
-            x: rect.left + window.scrollX + (rect.width / 2),
-            y: rect.top + window.scrollY + (rect.height / 2),
+            x: rect.left + window.scrollX + rect.width / 2,
+            y: rect.top + window.scrollY + rect.height / 2,
         };
     }
 
@@ -195,10 +216,8 @@ export class NodeConnector extends Widget {
             `#${this.lineId}`
         );
         if (lineElement == null) {
-            this.line.setAttribute(
-                "style",
-                "stroke:#2eaa56;stroke-width:2"
-            );
+            this.line.setAttribute("style", "stroke:#2eaa56;stroke-width:2");
+            this.line.id = this.lineId;
             this.svg.appendChild(this.line);
         } else {
             this.line = lineElement;
@@ -209,7 +228,7 @@ export class NodeConnector extends Widget {
     createLineBetweenConnections(event: MouseEvent) {
         this.setupLine();
 
-        const {x, y} = event;
+        const { x, y } = event;
         this.endPosition.x = x;
         this.endPosition.y = y;
 
@@ -225,9 +244,9 @@ export class NodeConnector extends Widget {
 
     build(): HTMLElement {
         this.connector.classList.add("node-connector");
-        console.log("Inside build");
+        this.connector.classList.add("node-out-connector");
         this.connector.onmousedown = () => {
-            const {x, y} = this.getElementOffset(this.connector);
+            const { x, y } = this.getElementOffset(this.connector);
             this.currentPosition.x = x;
             this.currentPosition.y = y;
 
@@ -237,8 +256,24 @@ export class NodeConnector extends Widget {
                 window.onmousemove = null;
                 window.onmouseup = null;
 
-                if ((e.target as unknown as (HTMLElement | undefined))?.classList.contains("node-connector") || false) {
-//                    Dropped on another connector
+                if (
+                    (
+                        e.target as unknown as HTMLElement | undefined
+                    )?.classList.contains("node-in-connector") ||
+                    false
+                ) {
+                    if (
+                        !(
+                            e.target as unknown as HTMLElement
+                        ).classList.contains("connected")
+                    ) {
+                        (e.target as unknown as HTMLElement).classList.add(
+                            "connected"
+                        );
+                    }
+                } else {
+                    this.connector.classList.remove("connected");
+                    this.line.remove();
                 }
             };
         };

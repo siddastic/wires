@@ -12,10 +12,14 @@ import {
     SubtractNode,
 } from "./internal/internal_nodes";
 import { DataBoard } from "./api/data_board";
+import { GraphConnectionMap } from "./transpiler/graph_connection_map";
+import { UniqueIdGenerator } from "./api/unique_id_gen";
 
 declare global {
     var globalNodeRegistry: GlobalNodeRegistry;
     var searchExplorer: GraphNodeExplorer;
+    var graphConnectionMap: GraphConnectionMap;
+    var uniqueIdGenerator : UniqueIdGenerator;
 }
 
 const availableNodes = [AddNode, SubtractNode, MultiplyNode, DivideNode, DataNode];
@@ -26,7 +30,9 @@ availableNodes.forEach((node) => {
     globalNodeRegistry.addAvailableNode(node);
 });
 
+globalThis.uniqueIdGenerator = new UniqueIdGenerator();
 globalThis.searchExplorer = new GraphNodeExplorer();
+globalThis.graphConnectionMap = new GraphConnectionMap();
 
 // disables page zooming without control key
 let wheelLocked = true;

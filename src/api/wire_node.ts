@@ -1,11 +1,10 @@
 import { NodeData, NodeElement, Vector2, WireOutData } from "../interfaces/node";
-import { v4 as uuidv4 } from "uuid";
 import { DraggableUIElement } from "./draggable_ui_element";
 import { bind } from "./decorators";
-import { NodeConnector, Widget } from "./widgets";
+import { NodeOutConnector, Widget } from "./widgets";
 
 export abstract class WireNode {
-    public id = uuidv4();
+    public id = uniqueIdGenerator.create();
 
     node: NodeElement = {
         element: document.createElement("div"),
@@ -90,7 +89,7 @@ export abstract class WireNode {
 
     private createOutConnector(){
         const outContainer = document.createElement("div");
-        const element = new NodeConnector();
+        const element = new NodeOutConnector();
         const outLabel = document.createElement("div");
 
         outContainer.style.display = "flex";
