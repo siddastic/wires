@@ -153,5 +153,5 @@ const selection = new SelectionArea({
 console.log(selection);
 
 
-const databoard = new DataBoard();
-document.body.appendChild(databoard.build());
+// const databoard = new DataBoard();
+// document.body.appendChild(databoard.build());
