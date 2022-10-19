@@ -1,5 +1,4 @@
 import { Widget } from "../api/widgets";
-import { WireOutData } from "./node";
 
 export interface NodeScaffoldData {
     header?: Widget;
