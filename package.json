@@ -1,8 +1,20 @@
 {
   "name": "wires",
   "private": true,
-  "version": "0.0.0",
+  "version": "0.0.2",
   "type": "module",
+  "files": [
+    "dist"
+  ],
+  "main": "./dist/wires.umd.cjs",
+  "module": "./dist/wires.js",
+  "exports": {
+    ".": {
+      "import": "./dist/wires.js",
+      "require": "./dist/wires.umd.cjs"
+    },
+    "./dist/style.css": "./dist/style.css"
+  },
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
@@ -11,7 +23,8 @@
   "devDependencies": {
     "@types/uuid": "^8.3.4",
     "typescript": "^4.6.4",
-    "vite": "^3.1.0"
+    "vite": "^3.1.0",
+    "vite-plugin-dts": "^1.6.6"
   },
   "dependencies": {
     "@viselect/vanilla": "^3.1.1"

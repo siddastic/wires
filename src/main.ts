@@ -12,4 +12,9 @@ import { WireGraph } from "./api/wires";
 export const availableNodes = [AddNode, SubtractNode, MultiplyNode, DivideNode, VariableNode];
 
 
+new WireGraph({
+    availableNodes,
+    enableDataboard: true,
+});
+
 export {WireGraph};

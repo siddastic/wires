@@ -1,4 +1,9 @@
-import { NodeData, NodeElement, Vector2, WireOutData } from "../interfaces/node";
+import {
+    NodeData,
+    NodeElement,
+    Vector2,
+    WireOutData,
+} from "../interfaces/node";
 import { DraggableUIElement } from "./draggable_ui_element";
 import { bind } from "./decorators";
 import { NodeOutConnector, Widget } from "./widgets";
@@ -34,7 +39,7 @@ export abstract class WireNode {
 
     abstract build(): Widget;
 
-    createNodeMap(){
+    createNodeMap() {
         globalThis.graphConnectionMap.addMapIfNotPresent({
             nodeId: this.id,
             // fields will be added by the node field widget when it is created
@@ -54,6 +59,10 @@ export abstract class WireNode {
         globalThis.globalNodeRegistry.unregisterInstance(this);
     }
 
+    postBuild() {
+        // this function is called after the node is built
+    }
+
     rebuild() {
         var newInstance = this.build().build();
 
@@ -65,6 +74,8 @@ export abstract class WireNode {
         this.node.element
             .querySelector(".wire-node-footer")
             ?.replaceWith(newInstance.querySelector(".wire-node-footer")!);
+
+        this.postBuild();
     }
 
     setupNode() {
@@ -85,7 +96,7 @@ export abstract class WireNode {
         widget.id = this.id;
         widget.style.top = `${this.instantiatedPoint.y}px`;
         widget.style.left = `${this.instantiatedPoint.x}px`;
-        if(this.out().data !== undefined) {
+        if (this.out().data !== undefined) {
             this.createOutConnector();
         }
         new DraggableUIElement(
@@ -96,10 +107,11 @@ export abstract class WireNode {
         // remove all previous selections when new is created
         globalNodeRegistry.deselectAllNodes();
         globalThis.globalNodeRegistry.registerInstance(this);
+        this.postBuild();
         this.createNodeMap();
     }
 
-    private createOutConnector(){
+    private createOutConnector() {
         const outContainer = document.createElement("div");
         const element = new NodeOutConnector();
         const outLabel = document.createElement("div");
@@ -112,7 +124,6 @@ export abstract class WireNode {
 
         outLabel.innerText = "out";
         outLabel.style.marginRight = "5px";
-
 
         outContainer.appendChild(outLabel);
         outContainer.appendChild(element.build());
