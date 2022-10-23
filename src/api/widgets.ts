@@ -222,8 +222,8 @@ export class NodeInputConnector extends Widget {
 export class NodeOutConnector extends Widget {
     connector = document.createElement("span");
     svg = document.querySelector(".graph-svg-container")!;
-    line = document.createElementNS("http://www.w3.org/2000/svg", "line");
-    lineId = uniqueIdGenerator.create();
+    path = document.createElementNS("http://www.w3.org/2000/svg", "path");
+    pathId = uniqueIdGenerator.create();
     outConnectorId = uniqueIdGenerator.create();
     currentPosition: Vector2 = {
         x: 0,
@@ -244,14 +244,14 @@ export class NodeOutConnector extends Widget {
 
     setupLine() {
         const lineElement = this.svg.querySelector<SVGLineElement>(
-            `#${this.lineId}`
+            `#${this.pathId}`
         );
         if (lineElement == null) {
-            this.line.setAttribute("style", "stroke:#2eaa56;stroke-width:2");
-            this.line.id = this.lineId;
-            this.svg.appendChild(this.line);
+            this.path.setAttribute("style", "stroke:#2eaa56;stroke-width:2;fill:none");
+            this.path.id = this.pathId;
+            this.svg.appendChild(this.path);
         } else {
-            this.line = lineElement;
+            this.path = lineElement;
         }
     }
 
@@ -263,10 +263,19 @@ export class NodeOutConnector extends Widget {
         this.endPosition.x = x;
         this.endPosition.y = y;
 
-        this.line.setAttribute("x1", this.currentPosition.x.toString());
-        this.line.setAttribute("x2", this.endPosition.x.toString());
-        this.line.setAttribute("y1", this.currentPosition.y.toString());
-        this.line.setAttribute("y2", this.endPosition.y.toString());
+        
+        // this.path.setAttribute("d", `M ${this.currentPosition.x} ${this.currentPosition.y}  L ${this.endPosition.x} ${this.endPosition.y}`);
+        // I learnt playing with paths from this video : https://www.youtube.com/watch?v=pKMLPHfLN7k
+        // refer to it again if some is changing the lines below, also shout out to the guy who made the video
+        const currentPosition = this.currentPosition;
+        const endPosition = this.endPosition;
+        // TODO : make line end points curved
+        // let startPointCurve = `Q ${currentPosition.x + 55} ${currentPosition.y} ${currentPosition.x + 55} ${currentPosition.y + (endPosition.y < currentPosition.y ? -5 : 5)}`;
+        let startPointCurve = "";
+        // if(currentPosition.x < endPosition.x - 50){
+        //     // startPointCurve = "";
+        // }
+        this.path.setAttribute("d", `M ${currentPosition.x} ${currentPosition.y}  L ${currentPosition.x + 50} ${currentPosition.y} ${startPointCurve} L ${endPosition.x - 50} ${endPosition.y} L ${endPosition.x} ${endPosition.y}`);
 
         if (!this.connector.classList.contains("connected")) {
             this.connector.classList.add("connected");
@@ -325,7 +334,7 @@ export class NodeOutConnector extends Widget {
                     }
                 } else {
                     this.connector.classList.remove("connected");
-                    this.line.remove();
+                    this.path.remove();
                 }
             };
         };

@@ -1,0 +1,32 @@
+Date : 2022-10-21 09:19:01
+Directory : c:\Users\XLR8\Documents\node projects\wires\src
+Total : 6 files,  29 codes, 5 comments, 5 blanks, all 39 lines
+
+Languages
++------------+------------+------------+------------+------------+------------+
+| language   | files      | code       | comment    | blank      | total      |
++------------+------------+------------+------------+------------+------------+
+| TypeScript |          6 |         29 |          5 |          5 |         39 |
++------------+------------+------------+------------+------------+------------+
+
+Directories
++----------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| path                                                                 | files      | code       | comment    | blank      | total      |
++----------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| .                                                                    |          6 |         29 |          5 |          5 |         39 |
+| api                                                                  |          3 |        130 |         31 |         21 |        182 |
+| interfaces                                                           |          2 |          3 |          0 |          1 |          4 |
++----------------------------------------------------------------------+------------+------------+------------+------------+------------+
+
+Files
++----------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| filename                                                             | language   | code       | comment    | blank      | total      |
++----------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| c:\Users\XLR8\Documents\node projects\wires\src\api\widgets.ts       | TypeScript |         -5 |          4 |          1 |          0 |
+| c:\Users\XLR8\Documents\node projects\wires\src\api\wire_node.ts     | TypeScript |          7 |          3 |          1 |         11 |
+| c:\Users\XLR8\Documents\node projects\wires\src\api\wires.ts         | TypeScript |        128 |         24 |         19 |        171 |
+| c:\Users\XLR8\Documents\node projects\wires\src\interfaces\node.ts   | TypeScript |          4 |          0 |          1 |          5 |
+| c:\Users\XLR8\Documents\node projects\wires\src\interfaces\widget.ts | TypeScript |         -1 |          0 |          0 |         -1 |
+| c:\Users\XLR8\Documents\node projects\wires\src\main.ts              | TypeScript |       -104 |        -26 |        -17 |       -147 |
+| Total                                                                |            |         29 |          5 |          5 |         39 |
++----------------------------------------------------------------------+------------+------------+------------+------------+------------+
