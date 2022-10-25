@@ -349,6 +349,11 @@ export class NodeOutConnector extends Widget {
                 } else {
                     this.connector.classList.remove("connected");
                     this.path.remove();
+                    globalThis.searchExplorer.menuSpawnLocation = {
+                        x: e.clientX,
+                        y: e.clientY,
+                    };
+                    globalThis.searchExplorer.toggleExplorer();
                 }
             };
         };

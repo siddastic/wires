@@ -32,6 +32,8 @@ export class WireGraph {
         if (graphData.enableDataboard) {
             this.setupDataboard();
             window.addEventListener("load", () => {
+                // TODO : remove this line in production
+                // To select the Unititled text
                 // @ts-ignore
                 globalThis.find("Untitled");
             });
