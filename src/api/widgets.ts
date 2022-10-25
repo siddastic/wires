@@ -101,7 +101,7 @@ export class NodeField extends Widget {
         };
 
         // set fieldType to connect only if not provided
-        if(this.data.fieldType === undefined){
+        if (this.data.fieldType === undefined) {
             this.data.fieldType = "connect";
         }
     }
@@ -138,7 +138,12 @@ export class NodeField extends Widget {
         labelElement.innerText = this.data.label || "...";
         this.input.type = this.data.inputType ?? "text";
         this.input.classList.add("input");
-        const connector = new NodeInputConnector();
+        let connector;
+        if (this.data.fieldType === "connect") {
+            connector = new NodeInputConnector();
+        } else {
+            connector = new SizedBox(10,10);
+        }
         textField.appendChild(connector.build());
         connector.postBuild();
         textField.appendChild(labelElement);
@@ -247,7 +252,10 @@ export class NodeOutConnector extends Widget {
             `#${this.pathId}`
         );
         if (lineElement == null) {
-            this.path.setAttribute("style", "stroke:#2eaa56;stroke-width:2;fill:none");
+            this.path.setAttribute(
+                "style",
+                "stroke:#2eaa56;stroke-width:2;fill:none"
+            );
             this.path.id = this.pathId;
             this.svg.appendChild(this.path);
         } else {
@@ -263,7 +271,6 @@ export class NodeOutConnector extends Widget {
         this.endPosition.x = x;
         this.endPosition.y = y;
 
-        
         // this.path.setAttribute("d", `M ${this.currentPosition.x} ${this.currentPosition.y}  L ${this.endPosition.x} ${this.endPosition.y}`);
         // I learnt playing with paths from this video : https://www.youtube.com/watch?v=pKMLPHfLN7k
         // refer to it again if some is changing the lines below, also shout out to the guy who made the video
@@ -275,7 +282,14 @@ export class NodeOutConnector extends Widget {
         // if(currentPosition.x < endPosition.x - 50){
         //     // startPointCurve = "";
         // }
-        this.path.setAttribute("d", `M ${currentPosition.x} ${currentPosition.y}  L ${currentPosition.x + 50} ${currentPosition.y} ${startPointCurve} L ${endPosition.x - 50} ${endPosition.y} L ${endPosition.x} ${endPosition.y}`);
+        this.path.setAttribute(
+            "d",
+            `M ${currentPosition.x} ${currentPosition.y}  L ${
+                currentPosition.x + 50
+            } ${currentPosition.y} ${startPointCurve} L ${endPosition.x - 50} ${
+                endPosition.y
+            } L ${endPosition.x} ${endPosition.y}`
+        );
 
         if (!this.connector.classList.contains("connected")) {
             this.connector.classList.add("connected");
@@ -342,8 +356,8 @@ export class NodeOutConnector extends Widget {
     }
 }
 
-export class SizedBox extends Widget{
-    constructor(public width?: number, public height?: number){
+export class SizedBox extends Widget {
+    constructor(public width?: number, public height?: number) {
         super();
     }
     build(): HTMLElement {
