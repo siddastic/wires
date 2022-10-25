@@ -14,10 +14,9 @@ declare global {
 }
 
 export class WireGraph {
-    // disables page zooming without control key
-    wheelLocked = true;
     databoard?: DataBoard;
-    constructor(public graphData : GraphData) {
+    currentBodyScale = 1;
+    constructor(public graphData: GraphData) {
         globalThis.globalNodeRegistry = new GlobalNodeRegistry();
         graphData.availableNodes.forEach((node) => {
             // @ts-ignore
@@ -36,30 +35,27 @@ export class WireGraph {
     }
 
     attachGlobalListeners() {
-        window.addEventListener("keydown", (e) => {
-            if (e.key === "Control") {
-                this.wheelLocked = false;
-            }
-        });
-
-        // release the lock when the user releases the control button
-        window.addEventListener("keyup", (e) => {
-            if (e.key === "Control") {
-                this.wheelLocked = true;
-            }
-        });
-
-        window.addEventListener(
-            "wheel",
-            (e) => {
-                if (this.wheelLocked) {
-                    e.preventDefault();
-                }
-            },
-            {
-                passive: false,
-            }
-        );
+        // window.addEventListener(
+        //     "wheel",
+        //     (e) => {
+        //         if (e.ctrlKey) {
+        //             if (e.deltaY > 0) {
+        //                 // zoom out
+        //                 this.currentBodyScale -= 0.1;
+        //                 document.body.style.transform = `scale(${this.currentBodyScale})`;
+        //             } else {
+        //                 // zoom in
+        //                 this.currentBodyScale += 0.1;
+        //                 document.querySelector("body")!.style.transform =
+        //                     "scale(" + this.currentBodyScale + ")";
+        //             }
+        //         }
+        //         return e.preventDefault();
+        //     },
+        //     {
+        //         passive: false,
+        //     }
+        // );
 
         window.addEventListener("contextmenu", (event) => {
             event.preventDefault();
@@ -68,7 +64,7 @@ export class WireGraph {
             searchExplorer.toggleExplorer();
         });
 
-        window.onkeydown = (k) => {
+        window.addEventListener("keydown", (k) => {
             if (k.which == 32 && k.ctrlKey) {
                 searchExplorer.menuSpawnLocation = {
                     x: window.innerWidth / 2,
@@ -80,7 +76,7 @@ export class WireGraph {
             if (k.key == "Delete" && globalNodeRegistry.selectedWireNodes) {
                 globalNodeRegistry.removeSelectedNodes();
             }
-        };
+        });
     }
 
     setupSelectionLibrary() {

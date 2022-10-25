@@ -3,7 +3,6 @@ import { WireNode } from "./wire_node";
 export class GlobalNodeRegistry {
     private _current: Array<WireNode> = [];
     private _available: Array<typeof WireNode> = [];
-    private _selectedWireNodes: WireNode[] = [];
     constructor() {
         // clear node selection when clicking on the non-node area
         // window.addEventListener("click", (event) => {
@@ -43,25 +42,29 @@ export class GlobalNodeRegistry {
         return this._available;
     }
 
-    get selectedWireNodes() {
-        return this._selectedWireNodes;
-    }
-
-    addSelectedWireNode(node: WireNode) {
-        this._selectedWireNodes.push(node);
+    get selectedWireNodes() : WireNode[] {
+        const selectedNodeElements = document.querySelectorAll(
+            ".wire-node-selected"
+        );
+        const selectedNodes = Array.from(selectedNodeElements).map(
+            (element) => {
+                const id = element.getAttribute("id");
+                return this._current.find((node) => node.id === id);
+            }
+        );
+        // remove all nulls
+        return selectedNodes.filter((node) => node != undefined) as WireNode[];
     }
 
     deselectAllNodes() {
-        this._selectedWireNodes.forEach((element) => {
+        this.selectedWireNodes.forEach((element) => {
             element.node.element.classList.remove("wire-node-selected");
         });
-        this._selectedWireNodes = [];
     }
 
     removeSelectedNodes() {
-        this._selectedWireNodes.forEach((node) => {
+        this.selectedWireNodes.forEach((node) => {
             node.destroy();
         });
-        this._selectedWireNodes = [];
     }
 }
