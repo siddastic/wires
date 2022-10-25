@@ -341,3 +341,15 @@ export class NodeOutConnector extends Widget {
         return this.connector;
     }
 }
+
+export class SizedBox extends Widget{
+    constructor(public width?: number, public height?: number){
+        super();
+    }
+    build(): HTMLElement {
+        const element = document.createElement("div");
+        element.style.width = (this.width ?? 0) + "px";
+        element.style.height = (this.height ?? 0) + "px";
+        return element;
+    }
+}
