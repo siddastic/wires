@@ -142,7 +142,7 @@ export class NodeField extends Widget {
         if (this.data.fieldType === "connect") {
             connector = new NodeInputConnector();
         } else {
-            connector = new SizedBox(10,10);
+            connector = new SizedBox(10, 10);
         }
         textField.appendChild(connector.build());
         connector.postBuild();
@@ -215,10 +215,23 @@ export class HTMLToWidget extends Widget {
     }
 }
 
+const nodeConnectorColors = [
+    "#FF8B8B",
+    "#99EF91",
+    "#FBCBF4",
+    "#83E4E7",
+    "#F6FF9A",
+];
+
 export class NodeInputConnector extends Widget {
     connector = document.createElement("span");
     build(): HTMLElement {
         this.connector.classList.add("node-connector");
+        this.connector.style.border = `1px solid ${
+            nodeConnectorColors[
+                Math.floor(Math.random() * nodeConnectorColors.length)
+            ]
+        }`;
         this.connector.classList.add("node-in-connector");
         return this.connector;
     }
@@ -254,13 +267,63 @@ export class NodeOutConnector extends Widget {
         if (lineElement == null) {
             this.path.setAttribute(
                 "style",
-                "stroke:url(#path-gradient);stroke-width:2;fill:none"
+                `stroke:${this.connector.style.borderColor};stroke-width:2;fill:none`
             );
             this.path.id = this.pathId;
             this.svg.appendChild(this.path);
         } else {
             this.path = lineElement;
         }
+    }
+
+    createGradientPathForOutInConnector(endElement: HTMLElement) {
+        // check if both colors are same
+        if (this.connector.style.borderColor == endElement.style.borderColor) {
+            return;
+        }
+        // if gradient already exists
+        const gradients =
+            this.svg.querySelectorAll<SVGLinearGradientElement>(
+                "linearGradient"
+            );
+        for (let i = 0; i < gradients.length; i++) {
+            const stopElements =
+                gradients[i].querySelectorAll<SVGStopElement>("stop");
+            if (
+                stopElements[0].style.stopColor ==
+                    this.connector.style.borderColor &&
+                stopElements[1].style.stopColor == endElement.style.borderColor
+            ) {
+                this.path.setAttribute(
+                    "style",
+                    `stroke:url(#${gradients[i].id});stroke-width:2;fill:none`
+                );
+                return;
+            }
+        }
+
+        // else create a new gradient
+        const gradient = document.createElementNS(
+            "http://www.w3.org/2000/svg",
+            "linearGradient"
+        );
+        gradient.id = uniqueIdGenerator.create();
+        const stop1 = document.createElementNS(
+            "http://www.w3.org/2000/svg",
+            "stop"
+        );
+        stop1.setAttribute("offset", "0%");
+        stop1.style.stopColor = this.connector.style.borderColor;
+        const stop2 = document.createElementNS(
+            "http://www.w3.org/2000/svg",
+            "stop"
+        );
+        stop2.setAttribute("offset", "100%");
+        stop2.style.stopColor = endElement.style.borderColor;
+        gradient.appendChild(stop1);
+        gradient.appendChild(stop2);
+        this.svg.appendChild(gradient);
+        this.path.style.stroke = `url(#${gradient.id})`;
     }
 
     @bind
@@ -293,12 +356,19 @@ export class NodeOutConnector extends Widget {
 
         if (!this.connector.classList.contains("connected")) {
             this.connector.classList.add("connected");
+            this.connector.style.backgroundColor =
+                this.connector.style.borderColor;
         }
     }
 
     build(): HTMLElement {
         this.connector.classList.add("node-connector");
         this.connector.classList.add("node-out-connector");
+        this.connector.style.border = `1px solid ${
+            nodeConnectorColors[
+                Math.floor(Math.random() * nodeConnectorColors.length)
+            ]
+        }`;
         this.connector.id = this.outConnectorId;
         this.connector.onmousedown = () => {
             const { x, y } = this.getElementOffset(this.connector);
@@ -345,9 +415,17 @@ export class NodeOutConnector extends Widget {
                             data: graphConnectionMap.list[index1].outFn().data,
                         });
                         targetInConnector.classList.add("connected");
+                        targetInConnector.style.backgroundColor =
+                            targetInConnector.style.borderColor;
+
+                        this.createGradientPathForOutInConnector(
+                            targetInConnector
+                        );
                     }
                 } else {
                     this.connector.classList.remove("connected");
+
+                    this.connector.style.backgroundColor = "transparent";
                     this.path.remove();
                     globalThis.searchExplorer.menuSpawnLocation = {
                         x: e.clientX,

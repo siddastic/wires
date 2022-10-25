@@ -214,7 +214,6 @@ input {
 .node-connector {
     min-height: 10px;
     min-width: 10px;
-    border: 1px solid #2eaa56;
     border-radius: 50%;
     display: flex;
     justify-content: center;
@@ -234,10 +233,6 @@ input {
     overflow: visible;
     pointer-events: none;
     z-index: 1;
-}
-
-.node-connector:is(.connected) {
-    background-color: #2eaa56;
 }
 
 .wire-node-selected {
