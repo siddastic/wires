@@ -254,7 +254,7 @@ export class NodeOutConnector extends Widget {
         if (lineElement == null) {
             this.path.setAttribute(
                 "style",
-                "stroke:#2eaa56;stroke-width:2;fill:none"
+                "stroke:url(#path-gradient);stroke-width:2;fill:none"
             );
             this.path.id = this.pathId;
             this.svg.appendChild(this.path);

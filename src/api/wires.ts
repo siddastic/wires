@@ -31,6 +31,10 @@ export class WireGraph {
         this.setupSelectionLibrary();
         if (graphData.enableDataboard) {
             this.setupDataboard();
+            window.addEventListener("load", () => {
+                // @ts-ignore
+                globalThis.find("Untitled");
+            });
         }
     }
 
