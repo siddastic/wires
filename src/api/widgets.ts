@@ -322,7 +322,7 @@ export class NodeOutConnector extends Widget {
         stop2.style.stopColor = endElement.style.borderColor;
         gradient.appendChild(stop1);
         gradient.appendChild(stop2);
-        this.svg.appendChild(gradient);
+        this.svg.querySelector("defs")!.appendChild(gradient);
         this.path.style.stroke = `url(#${gradient.id})`;
     }
 
