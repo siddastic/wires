@@ -26,7 +26,7 @@ export abstract class WireNode {
         };
     }
 
-    constructor(private instantiatedPoint: Vector2) {}
+    constructor(protected positionInWorld: Vector2) {}
 
     prebuild() {
         // this function is called before the node is built
@@ -94,14 +94,17 @@ export abstract class WireNode {
         };
         this.node.header = widget.querySelector(".wire-node-header")!;
         widget.id = this.id;
-        widget.style.top = `${this.instantiatedPoint.y}px`;
-        widget.style.left = `${this.instantiatedPoint.x}px`;
+        widget.style.top = `${this.positionInWorld.y}px`;
+        widget.style.left = `${this.positionInWorld.x}px`;
         if (this.out().data !== undefined) {
             this.createOutConnector();
         }
         new DraggableUIElement(
             this.node.element,
-            this.onDrag,
+            (pos) => {
+                this.positionInWorld = pos;
+                this.onDrag();
+            },
             this.node.header
         );
         // remove all previous selections when new is created

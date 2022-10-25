@@ -1,3 +1,4 @@
+import { Vector2 } from "../interfaces/node";
 import { bind } from "./decorators";
 
 export class DraggableUIElement {
@@ -8,7 +9,7 @@ export class DraggableUIElement {
 
     constructor(
         private targetElement: HTMLElement,
-        private onDrag?: () => void,
+        private onDrag?: (newPosition: Vector2) => void,
         triggerElement?: HTMLElement
     ) {
         if (triggerElement) triggerElement.onmousedown = this.dragMouseDown;
@@ -36,13 +37,13 @@ export class DraggableUIElement {
         this.pos2 = this.pos4 - e.clientY;
         this.pos3 = e.clientX;
         this.pos4 = e.clientY;
+        let newX = this.targetElement.offsetLeft - this.pos1;
+        let newY = this.targetElement.offsetTop - this.pos2;
         // set the element's new position:
-        this.targetElement.style.top =
-            this.targetElement.offsetTop - this.pos2 + "px";
-        this.targetElement.style.left =
-            this.targetElement.offsetLeft - this.pos1 + "px";
+        this.targetElement.style.top = newY + "px";
+        this.targetElement.style.left = newX + "px";
 
-        this.onDrag?.call(this);
+        this.onDrag?.call(this, { x: newX, y: newY });
     }
 
     @bind
