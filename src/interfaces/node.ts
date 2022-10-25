@@ -9,6 +9,7 @@ type NodeFieldType = "connect" | "input";
 export interface GraphData{
     availableNodes: any[];
     enableDataboard: boolean;
+    graphHostElement: HTMLElement;
 }
 
 export interface NodeFieldData {

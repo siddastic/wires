@@ -20,6 +20,7 @@ export const availableNodes = [
 new WireGraph({
     availableNodes,
     enableDataboard: true,
+    graphHostElement: document.querySelector(".graph")!,
 });
 
 export { WireGraph };

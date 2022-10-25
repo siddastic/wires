@@ -24,8 +24,12 @@ export class WireGraph {
         });
 
         globalThis.uniqueIdGenerator = new UniqueIdGenerator();
-        globalThis.searchExplorer = new GraphNodeExplorer();
+        globalThis.searchExplorer = new GraphNodeExplorer(graphData.graphHostElement);
         globalThis.graphConnectionMap = new GraphConnectionMap();
+
+
+        // add styles class
+        graphData.graphHostElement.classList.add("wire-graph");
 
         this.attachGlobalListeners();
         this.setupSelectionLibrary();
@@ -63,12 +67,15 @@ export class WireGraph {
         //     }
         // );
 
-        window.addEventListener("contextmenu", (event) => {
-            event.preventDefault();
-            const instancePoint: Vector2 = { x: event.x, y: event.y };
-            searchExplorer.menuSpawnLocation = instancePoint;
-            searchExplorer.toggleExplorer();
-        });
+        window.addEventListener(
+            "contextmenu",
+            (event) => {
+                event.preventDefault();
+                const instancePoint: Vector2 = { x: event.x, y: event.y };
+                searchExplorer.menuSpawnLocation = instancePoint;
+                searchExplorer.toggleExplorer();
+            }
+        );
 
         window.addEventListener("keydown", (k) => {
             if (k.which == 32 && k.ctrlKey) {
@@ -88,7 +95,7 @@ export class WireGraph {
     setupSelectionLibrary() {
         const selection = new SelectionArea({
             selectables: [".wire-node"],
-            boundaries: ["body"],
+            boundaries: [this.graphData.graphHostElement],
             behaviour: {
                 // Specifies what should be done if already selected elements get selected again.
                 //   invert: Invert selection for elements which were already selected
@@ -123,7 +130,7 @@ export class WireGraph {
             },
         })
             .on("beforestart", (e) => {
-                if ((e.event?.target as Element).tagName != "BODY") {
+                if ((e.event?.target as Element) != this.graphData.graphHostElement) {
                     // Cancel selection if not initiated directly on body
                     return false;
                 }
@@ -167,6 +174,6 @@ export class WireGraph {
 
     setupDataboard() {
         this.databoard = new DataBoard();
-        document.body.appendChild(this.databoard.build());
+        this.graphData.graphHostElement.appendChild(this.databoard.build());
     }
 }

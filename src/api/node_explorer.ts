@@ -10,7 +10,7 @@ export class GraphNodeExplorer {
         x: window.innerWidth / 2,
         y: window.innerHeight / 2,
     };
-    constructor() {
+    constructor(private hostElement : HTMLElement) {
         this.availableWireNodes = globalThis.globalNodeRegistry.availableNodes;
     }
 
@@ -19,7 +19,7 @@ export class GraphNodeExplorer {
         // @ts-ignore
         const tag : WireNode = new node(instancePoint);
         tag.setupNode();
-        document.body.appendChild(tag.node.element);
+        this.hostElement.appendChild(tag.node.element);
 
         this.toggleExplorer();
     }
@@ -89,7 +89,7 @@ export class GraphNodeExplorer {
             // centeredView.appendChild(nodeExplorer);
             // explorerContainer.appendChild(centeredView);
             explorerContainer.appendChild(nodeExplorer);
-            document.body.appendChild(explorerContainer);
+            this.hostElement.appendChild(explorerContainer);
             this.visible = true;
             document
             .querySelector(".explorer-container")
