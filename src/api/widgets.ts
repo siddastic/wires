@@ -139,7 +139,7 @@ export class NodeField extends Widget {
         this.input.type = this.data.inputType ?? "text";
         this.input.classList.add("input");
         let connector;
-        if (this.data.fieldType === "connect") {
+        if (this.data.fieldType === "connect" || this.data.fieldType === "both") {
             connector = new NodeInputConnector();
         } else {
             connector = new SizedBox(10, 10);

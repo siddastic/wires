@@ -1,26 +1,27 @@
 # Summary
 
-Date : 2022-09-25 13:56:28
+Date : 2022-10-26 03:52:13
 
 Directory c:\\Users\\XLR8\\Documents\\node projects\\wires\\src
 
-Total : 12 files,  413 codes, 8 comments, 67 blanks, all 488 lines
+Total : 16 files,  1415 codes, 120 comments, 204 blanks, all 1739 lines
 
 Summary / [Details](details.md) / [Diff Summary](diff.md) / [Diff Details](diff-details.md)
 
 ## Languages
 | language | files | code | comment | blank | total |
 | :--- | ---: | ---: | ---: | ---: | ---: |
-| TypeScript | 11 | 298 | 8 | 49 | 355 |
-| CSS | 1 | 115 | 0 | 18 | 133 |
+| TypeScript | 15 | 1,207 | 111 | 167 | 1,485 |
+| CSS | 1 | 208 | 9 | 37 | 254 |
 
 ## Directories
 | path | files | code | comment | blank | total |
 | :--- | ---: | ---: | ---: | ---: | ---: |
-| . | 12 | 413 | 8 | 67 | 488 |
-| api | 5 | 201 | 7 | 30 | 238 |
-| interfaces | 4 | 27 | 0 | 2 | 29 |
-| styles | 1 | 115 | 0 | 18 | 133 |
-| tags | 1 | 33 | 0 | 6 | 39 |
+| . | 16 | 1,415 | 120 | 204 | 1,739 |
+| api | 10 | 875 | 108 | 124 | 1,107 |
+| interfaces | 2 | 61 | 3 | 16 | 80 |
+| internal | 1 | 231 | 0 | 19 | 250 |
+| styles | 1 | 208 | 9 | 37 | 254 |
+| transpiler | 1 | 18 | 0 | 3 | 21 |
 
 Summary / [Details](details.md) / [Diff Summary](diff.md) / [Diff Details](diff-details.md)

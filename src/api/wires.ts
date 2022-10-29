@@ -72,22 +72,22 @@ export class WireGraph {
             (event) => {
                 event.preventDefault();
                 const instancePoint: Vector2 = { x: event.x, y: event.y };
-                searchExplorer.menuSpawnLocation = instancePoint;
-                searchExplorer.toggleExplorer();
+                globalThis.searchExplorer.menuSpawnLocation = instancePoint;
+                globalThis.searchExplorer.toggleExplorer();
             }
         );
 
         window.addEventListener("keydown", (k) => {
             if (k.which == 32 && k.ctrlKey) {
-                searchExplorer.menuSpawnLocation = {
+                globalThis.searchExplorer.menuSpawnLocation = {
                     x: window.innerWidth / 2,
                     y: window.innerHeight / 2,
                 };
-                searchExplorer.toggleExplorer();
+                globalThis.searchExplorer.toggleExplorer();
             }
             // Deleting elements and instances on delete key hit
             if (k.key == "Delete" && globalNodeRegistry.selectedWireNodes) {
-                globalNodeRegistry.removeSelectedNodes();
+                globalThis.globalNodeRegistry.removeSelectedNodes();
             }
         });
     }
@@ -146,7 +146,7 @@ export class WireGraph {
                     }
 
                     selection.clearSelection();
-                    globalNodeRegistry.deselectAllNodes();
+                    globalThis.globalNodeRegistry.deselectAllNodes();
                 }
             })
             .on(
@@ -167,7 +167,7 @@ export class WireGraph {
             )
             .on("stop", ({ store: { stored } }) => {
                 if (stored.length == 0) {
-                    globalNodeRegistry.deselectAllNodes();
+                    globalThis.globalNodeRegistry.deselectAllNodes();
                 }
             });
     }

@@ -4,7 +4,7 @@
 
 import { NodeFieldController } from "../api/node_field_controller";
 
-type NodeFieldType = "connect" | "input";
+type NodeFieldType = "connect" | "input" | "both";
 
 export interface GraphData{
     availableNodes: any[];

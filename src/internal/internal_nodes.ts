@@ -230,7 +230,7 @@ export class VariableNode extends WireNode {
                 children: [
                     new NodeField({
                         label: "x",
-                        fieldType: "input",
+                        fieldType: "both",
                         controller: (fieldController) => {
                             this.data = fieldController;
                         },
