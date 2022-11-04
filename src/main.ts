@@ -2,10 +2,10 @@ import "./styles/main.css";
 
 import {
     AddNode,
-    VariableNode,
     DivideNode,
     MultiplyNode,
     SubtractNode,
+    VariableNode,
 } from "./internal/internal_nodes";
 import { WireGraph } from "./api/wires";
 

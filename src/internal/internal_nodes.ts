@@ -208,20 +208,16 @@ export class DivideNode extends WireNode {
 }
 
 export class VariableNode extends WireNode {
-    data!: NodeFieldController;
-    constructor(instantiatedPoint: Vector2) {
-        super(instantiatedPoint);
-    }
+    controller!: NodeFieldController;
 
     static doc(): NodeData {
         return {
             name: "Variable Node",
-            documentation:
-                "It can be used to store data, it returns whatever data is stored in it",
+            documentation: "A node that stores a value",
         };
     }
 
-    build(): Widget {
+    build() {
         return new NodeScaffold({
             header: new NodeHeader({
                 title: "Variable Node",
@@ -229,10 +225,10 @@ export class VariableNode extends WireNode {
             body: new NodeBody({
                 children: [
                     new NodeField({
-                        label: "x",
                         fieldType: "both",
+                        label: "x",
                         controller: (fieldController) => {
-                            this.data = fieldController;
+                            this.controller = fieldController;
                         },
                     }),
                 ],
@@ -243,7 +239,7 @@ export class VariableNode extends WireNode {
     @bind
     out(): WireOutData {
         return {
-            data: this.data.value,
+            data: this.controller.value,
         };
     }
 }

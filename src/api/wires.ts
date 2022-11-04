@@ -16,6 +16,7 @@ declare global {
 export class WireGraph {
     databoard?: DataBoard;
     currentBodyScale = 1;
+    _graphFlowVisible = false;
     constructor(public graphData: GraphData) {
         globalThis.globalNodeRegistry = new GlobalNodeRegistry();
         graphData.availableNodes.forEach((node) => {
@@ -89,7 +90,31 @@ export class WireGraph {
             if (k.key == "Delete" && globalNodeRegistry.selectedWireNodes) {
                 globalThis.globalNodeRegistry.removeSelectedNodes();
             }
+            if (k.key == "D" && k.shiftKey) {
+                this.toggleGraphFlowDirection();
+                this._graphFlowVisible = !this._graphFlowVisible;
+            }
         });
+    }
+
+    toggleGraphFlowDirection() {
+        if (this._graphFlowVisible) {
+            document
+                .querySelectorAll(".flow-circle")
+                .forEach((e) => e.remove());
+        } else {
+            document.querySelectorAll("path").forEach((e) => {
+                const circle = `
+                <circle r="8" fill="#529fd9" class = 'flow-circle'>
+        <animateMotion dur="1.6s" repeatCount="indefinite">
+          <mpath xlink:href="#${e.id}"></mpath>
+        </animateMotion>
+      </circle>`;
+                document
+                    .querySelector(".graph-svg-container")!
+                    .insertAdjacentHTML("beforeend", circle);
+            });
+        }
     }
 
     setupSelectionLibrary() {

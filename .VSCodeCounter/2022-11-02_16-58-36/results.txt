@@ -1,0 +1,46 @@
+Date : 2022-11-02 16:58:36
+Directory : c:\Users\XLR8\Documents\node projects\wires\src
+Total : 16 files,  1393 codes, 120 comments, 199 blanks, all 1712 lines
+
+Languages
++------------+------------+------------+------------+------------+------------+
+| language   | files      | code       | comment    | blank      | total      |
++------------+------------+------------+------------+------------+------------+
+| TypeScript |         15 |      1,181 |        111 |        161 |      1,453 |
+| CSS        |          1 |        212 |          9 |         38 |        259 |
++------------+------------+------------+------------+------------+------------+
+
+Directories
++------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| path                                                                               | files      | code       | comment    | blank      | total      |
++------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| .                                                                                  |         16 |      1,393 |        120 |        199 |      1,712 |
+| api                                                                                |         10 |        888 |        108 |        123 |      1,119 |
+| interfaces                                                                         |          2 |         61 |          3 |         16 |         80 |
+| internal                                                                           |          1 |        194 |          0 |         14 |        208 |
+| styles                                                                             |          1 |        212 |          9 |         38 |        259 |
+| transpiler                                                                         |          1 |         18 |          0 |          3 |         21 |
++------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+
+Files
++------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| filename                                                                           | language   | code       | comment    | blank      | total      |
++------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| c:\Users\XLR8\Documents\node projects\wires\src\api\data_board.ts                  | TypeScript |         28 |          0 |          8 |         36 |
+| c:\Users\XLR8\Documents\node projects\wires\src\api\decorators.ts                  | TypeScript |         11 |          0 |          0 |         11 |
+| c:\Users\XLR8\Documents\node projects\wires\src\api\draggable_ui_element.ts        | TypeScript |         48 |          6 |          7 |         61 |
+| c:\Users\XLR8\Documents\node projects\wires\src\api\global_node_registry.ts        | TypeScript |         44 |         17 |         10 |         71 |
+| c:\Users\XLR8\Documents\node projects\wires\src\api\node_explorer.ts               | TypeScript |        105 |         17 |         12 |        134 |
+| c:\Users\XLR8\Documents\node projects\wires\src\api\node_field_controller.ts       | TypeScript |         13 |          0 |          4 |         17 |
+| c:\Users\XLR8\Documents\node projects\wires\src\api\unique_id_gen.ts               | TypeScript |          8 |          0 |          0 |          8 |
+| c:\Users\XLR8\Documents\node projects\wires\src\api\widgets.ts                     | TypeScript |        403 |         15 |         44 |        462 |
+| c:\Users\XLR8\Documents\node projects\wires\src\api\wire_node.ts                   | TypeScript |        110 |          6 |         20 |        136 |
+| c:\Users\XLR8\Documents\node projects\wires\src\api\wires.ts                       | TypeScript |        118 |         47 |         18 |        183 |
+| c:\Users\XLR8\Documents\node projects\wires\src\interfaces\node.ts                 | TypeScript |         35 |          3 |          8 |         46 |
+| c:\Users\XLR8\Documents\node projects\wires\src\interfaces\widget.ts               | TypeScript |         26 |          0 |          8 |         34 |
+| c:\Users\XLR8\Documents\node projects\wires\src\internal\internal_nodes.ts         | TypeScript |        194 |          0 |         14 |        208 |
+| c:\Users\XLR8\Documents\node projects\wires\src\main.ts                            | TypeScript |         20 |          0 |          5 |         25 |
+| c:\Users\XLR8\Documents\node projects\wires\src\styles\main.css                    | CSS        |        212 |          9 |         38 |        259 |
+| c:\Users\XLR8\Documents\node projects\wires\src\transpiler\graph_connection_map.ts | TypeScript |         18 |          0 |          3 |         21 |
+| Total                                                                              |            |      1,393 |        120 |        199 |      1,712 |
++------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
