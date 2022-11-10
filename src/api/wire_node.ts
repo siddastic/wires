@@ -1,11 +1,15 @@
-import { NodeData, NodeElement, Vector2 } from "../interfaces/node";
-import { v4 as uuidv4 } from "uuid";
+import {
+    NodeData,
+    NodeElement,
+    Vector2,
+    WireOutData,
+} from "../interfaces/node";
 import { DraggableUIElement } from "./draggable_ui_element";
 import { bind } from "./decorators";
-import { Widget } from "./widgets";
+import { NodeOutConnector, Widget } from "./widgets";
 
 export abstract class WireNode {
-    public id = uuidv4();
+    public id = uniqueIdGenerator.create();
 
     node: NodeElement = {
         element: document.createElement("div"),
@@ -22,22 +26,41 @@ export abstract class WireNode {
         };
     }
 
-    constructor(private instantiatedPoint: Vector2) {}
+    constructor(protected positionInWorld: Vector2) {}
 
     prebuild() {
-        console.log("Node Pre Build Function called");
+        // this function is called before the node is built
     }
 
     @bind
     onDrag() {
-        console.log("Node Dragged");
+        // this function is called when the node is being dragged
     }
 
     abstract build(): Widget;
 
+    createNodeMap() {
+        globalThis.graphConnectionMap.addMapIfNotPresent({
+            nodeId: this.id,
+            // fields will be added by the node field widget when it is created
+            fields: [],
+            outFn: this.out,
+        });
+    }
+
+    out(): WireOutData {
+        return {
+            data: undefined,
+        };
+    }
+
     destroy() {
         this.node.element.remove();
         globalThis.globalNodeRegistry.unregisterInstance(this);
+    }
+
+    postBuild() {
+        // this function is called after the node is built
     }
 
     rebuild() {
@@ -51,6 +74,8 @@ export abstract class WireNode {
         this.node.element
             .querySelector(".wire-node-footer")
             ?.replaceWith(newInstance.querySelector(".wire-node-footer")!);
+
+        this.postBuild();
     }
 
     setupNode() {
@@ -61,21 +86,50 @@ export abstract class WireNode {
         // when node is clicked add the selectedNode class to it and remove it from all other nodes
         this.node.element.onclick = () => {
             const allNodes = document.querySelectorAll(".wire-node");
-            allNodes.forEach(node => {
+            allNodes.forEach((node) => {
                 node.classList.remove("wire-node-selected");
             });
             this.node.element.classList.add("wire-node-selected");
-            globalNodeRegistry.addSelectedWireNode(this);
         };
         this.node.header = widget.querySelector(".wire-node-header")!;
         widget.id = this.id;
-        widget.style.top = `${this.instantiatedPoint.y}px`;
-        widget.style.left = `${this.instantiatedPoint.x}px`;
+        widget.style.top = `${this.positionInWorld.y}px`;
+        widget.style.left = `${this.positionInWorld.x}px`;
+        if (this.out().data !== undefined) {
+            this.createOutConnector();
+        }
         new DraggableUIElement(
             this.node.element,
-            this.onDrag,
+            (pos) => {
+                this.positionInWorld = pos;
+                this.onDrag();
+            },
             this.node.header
         );
+        // remove all previous selections when new is created
+        globalNodeRegistry.deselectAllNodes();
         globalThis.globalNodeRegistry.registerInstance(this);
+        this.postBuild();
+        this.createNodeMap();
+    }
+
+    private createOutConnector() {
+        const outContainer = document.createElement("div");
+        const element = new NodeOutConnector();
+        const outLabel = document.createElement("div");
+
+        outContainer.style.display = "flex";
+        outContainer.style.flexDirection = "row";
+        outContainer.style.justifyContent = "end";
+        outContainer.style.alignItems = "center";
+        outContainer.style.marginBottom = "5px";
+
+        outLabel.innerText = "out";
+        outLabel.style.marginRight = "5px";
+
+        outContainer.appendChild(outLabel);
+        outContainer.appendChild(element.build());
+        this.node.element.appendChild(outContainer);
+        element.postBuild();
     }
 }

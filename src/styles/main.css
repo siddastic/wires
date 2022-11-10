@@ -25,7 +25,7 @@
     background: #555;
 }
 
-body {
+.wire-graph {
     font-family: Inter, Avenir, Helvetica, Arial, sans-serif;
     letter-spacing: 1px;
     background-color: #1a1a1a;
@@ -36,8 +36,13 @@ body {
     user-select: none;
 }
 
+html{
+    overflow: hidden;
+}
+
 .wire-node {
     min-height: 300px;
+    min-width: 250px;
     background-color: #242424;
     border-radius: 5px;
     position: absolute;
@@ -48,7 +53,7 @@ body {
     opacity: .9;
 }
 
-.data-board{
+.data-board {
     min-height: 600px;
     min-width: 400px;
     background-color: #242424;
@@ -72,7 +77,8 @@ body {
     z-index: 2;
 }
 
-.wire-node .wire-node-header, .data-board .data-board-header {
+.wire-node .wire-node-header,
+.data-board .data-board-header {
     height: 50px;
     width: 100%;
     background-color: #242424;
@@ -86,12 +92,12 @@ body {
     cursor: move;
 }
 
-.data-board-header{
+.data-board-header {
     width: auto !important;
     cursor: default !important;
     padding-left: 16px;
     padding-right: 16px;
-    
+
     justify-content: space-between !important;
 }
 
@@ -133,9 +139,10 @@ input {
     width: 100%;
     height: 100%;
     z-index: 6;
+    overflow: hidden;
 }
 
-.explorer-container{
+.explorer-container {
     display: flex;
 }
 
@@ -213,7 +220,6 @@ input {
 .node-connector {
     min-height: 10px;
     min-width: 10px;
-    border: 1px solid #2eaa56;
     border-radius: 50%;
     display: flex;
     justify-content: center;
@@ -233,10 +239,6 @@ input {
     overflow: visible;
     pointer-events: none;
     z-index: 1;
-}
-
-.node-connector:is(.connected) {
-    background-color: #2eaa56;
 }
 
 .wire-node-selected {

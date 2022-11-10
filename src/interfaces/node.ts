@@ -6,14 +6,21 @@ import { NodeFieldController } from "../api/node_field_controller";
 
 type NodeFieldType = "connect" | "input" | "both";
 
+export interface GraphData{
+    availableNodes: any[];
+    enableDataboard: boolean;
+    graphHostElement: HTMLElement;
+}
+
 export interface NodeFieldData {
-    value: string | number;
+    value?: string | number;
     controller?: (fieldController: NodeFieldController) => void;
     label?: string;
     onUpdate?: Function;
     placeholder?: string;
     inputType?: string;
     fieldType?: NodeFieldType;
+    onConnect?: (data: WireOutData) => void;
 }
 
 export interface NodeElement {
@@ -32,4 +39,8 @@ export interface Vector2 {
 export interface NodeData {
     name: string;
     documentation?: string;
+}
+
+export interface WireOutData{
+    data: string | number | undefined;
 }

@@ -1,16 +1,14 @@
+import { bind } from "../api/decorators";
 import { NodeFieldController } from "../api/node_field_controller";
 import {
-    CustomNodeElement,
     NodeBody,
-    NodeButton,
     NodeField,
-    NodeFooter,
     NodeHeader,
     NodeScaffold,
     Widget,
 } from "../api/widgets";
 import { WireNode } from "../api/wire_node";
-import { NodeData, Vector2 } from "../interfaces/node";
+import { NodeData, Vector2, WireOutData } from "../interfaces/node";
 
 export class AddNode extends WireNode {
     number1Controller!: NodeFieldController;
@@ -29,73 +27,38 @@ export class AddNode extends WireNode {
     }
 
     build(): Widget {
-        const br = // for one empty line
-            new CustomNodeElement({
-                elementName: "div",
-                innerHTML: "&nbsp;",
-            });
-        var children: Array<Widget> = [
-            new NodeField({
-                label: "number 1",
-                value: this.number1Controller?.value ?? "0",
-                inputType: "number",
-                controller: (fieldController) => {
-                    this.number1Controller = fieldController;
-                },
-            }),
-            new NodeField({
-                label: "number 2",
-                value: this.number2Controller?.value ?? "0",
-                inputType: "number",
-                controller: (fieldController) => {
-                    this.number2Controller = fieldController;
-                },
-            }),
-            br,
-            new NodeButton({
-                label: "Add",
-                onClick: () => {
-                    this.result =
-                        Number(this.number1Controller.value) +
-                        Number(this.number2Controller.value);
-                    this.rebuild();
-                },
-            }),
-        ];
-        if (this.result != undefined) {
-            children.splice(
-                2,
-                0,
-                new NodeField({
-                    label: "result",
-                    value: this.result?.toString() ?? "0",
-                    inputType: "number",
-                })
-            );
-            children.splice(
-                children.length,
-                0,
-                ...[
-                    br,
-                    new NodeButton({
-                        label: "Clear result",
-                        onClick: () => {
-                            this.result = undefined;
-                            this.rebuild();
-                        },
-                    }),
-                ]
-            );
-        }
-        var scaffold = new NodeScaffold({
+        return new NodeScaffold({
             header: new NodeHeader({
                 title: "Add Node",
             }),
             body: new NodeBody({
-                children: children,
+                children: [
+                    new NodeField({
+                        label: "a",
+                        value: this.number1Controller?.value ?? "0",
+                        inputType: "number",
+                        controller: (fieldController) => {
+                            this.number1Controller = fieldController;
+                        },
+                    }),
+                    new NodeField({
+                        label: "b",
+                        value: this.number2Controller?.value ?? "0",
+                        inputType: "number",
+                        controller: (fieldController) => {
+                            this.number2Controller = fieldController;
+                        },
+                    }),
+                ],
             }),
         });
-        return scaffold;
+    }
+
+    @bind
+    out(): WireOutData {
+        return {
+            data: this.number1Controller.numVal + this.number2Controller.numVal,
+        };
     }
 }
 
@@ -135,18 +98,16 @@ export class SubtractNode extends WireNode {
                             this.numberB = fieldController;
                         },
                     }),
-                    new NodeButton({
-                        label: "Subtract",
-                        onClick: () => {
-                            alert(
-                                Number(this.numberA.value) -
-                                    Number(this.numberB.value)
-                            );
-                        },
-                    }),
                 ],
             }),
         });
+    }
+
+    @bind
+    out(): WireOutData {
+        return {
+            data: this.numberA.numVal - this.numberB.numVal,
+        };
     }
 }
 export class MultiplyNode extends WireNode {
@@ -187,18 +148,14 @@ export class MultiplyNode extends WireNode {
                     }),
                 ],
             }),
-            footer: new NodeFooter({
-                child: new NodeButton({
-                    label: "Multiply",
-                    onClick: () => {
-                        alert(
-                            Number(this.numberA.value) *
-                                Number(this.numberB.value)
-                        );
-                    },
-                }),
-            }),
         });
+    }
+
+    @bind
+    out(): WireOutData {
+        return {
+            data: this.numberA.numVal * this.numberB.numVal,
+        };
     }
 }
 export class DivideNode extends WireNode {
@@ -237,17 +194,52 @@ export class DivideNode extends WireNode {
                             this.numberB = fieldController;
                         },
                     }),
-                    new NodeButton({
-                        label: "Divide",
-                        onClick: () => {
-                            alert(
-                                Number(this.numberA.value) /
-                                    Number(this.numberB.value)
-                            );
+                ],
+            }),
+        });
+    }
+
+    @bind
+    out(): WireOutData {
+        return {
+            data: this.numberA.numVal / this.numberB.numVal,
+        };
+    }
+}
+
+export class VariableNode extends WireNode {
+    controller!: NodeFieldController;
+
+    static doc(): NodeData {
+        return {
+            name: "Variable Node",
+            documentation: "This node is used to store data",
+        };
+    }
+    build(): Widget {
+        return new NodeScaffold({
+            header: new NodeHeader({
+                title: "Variable Node",
+            }),
+            body: new NodeBody({
+                children: [
+                    new NodeField({
+                        value: 0,
+                        label: "x",
+                        fieldType : "both",
+                        controller: (fieldController) => {
+                            this.controller = fieldController;
                         },
                     }),
                 ],
             }),
         });
+    }
+
+    @bind
+    out(): WireOutData {
+        return {
+            data: this.controller.value,
+        };
     }
 }

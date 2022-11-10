@@ -7,7 +7,11 @@ export class NodeFieldController{
         return this.data.element.value;
     }
 
-    set value(value : string){
-        this.data.element.value = value;
+    set value(value : string | number){
+        this.data.element.value = String(value);
+    }
+
+    get numVal(){
+        return Number(this.data.element.value);
     }
 }

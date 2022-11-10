@@ -1,33 +1,33 @@
 import { Widget } from "../api/widgets";
 
-export interface NodeScaffoldData{
+export interface NodeScaffoldData {
     header?: Widget;
     body?: Widget;
     footer?: Widget;
 }
 
-export interface NodeHeaderData{
+export interface NodeHeaderData {
     title: string;
 }
 
-export interface NodeBodyData{
+export interface NodeBodyData {
     children: Widget[];
 }
 
-export interface NodeFooterData{
+export interface NodeFooterData {
     child: Widget;
 }
 
-export interface CustomNodeElementData{
-    elementName : string;
-    innerHTML? : string;
+export interface CustomNodeElementData {
+    elementName: string;
+    innerHTML?: string;
 }
 
-export interface NodeFieldControllerData{
-    element : HTMLInputElement;
+export interface NodeFieldControllerData {
+    element: HTMLInputElement;
 }
 
-export interface NodeButtonData{
-    label : string;
-    onClick? : () => void;
+export interface NodeButtonData {
+    label: string;
+    onClick?: () => void;
 }
