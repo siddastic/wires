@@ -213,11 +213,10 @@ export class VariableNode extends WireNode {
     static doc(): NodeData {
         return {
             name: "Variable Node",
-            documentation: "A node that stores a value",
+            documentation: "This node is used to store data",
         };
     }
-
-    build() {
+    build(): Widget {
         return new NodeScaffold({
             header: new NodeHeader({
                 title: "Variable Node",
@@ -225,8 +224,9 @@ export class VariableNode extends WireNode {
             body: new NodeBody({
                 children: [
                     new NodeField({
-                        fieldType: "both",
+                        value: 0,
                         label: "x",
+                        fieldType : "both",
                         controller: (fieldController) => {
                             this.controller = fieldController;
                         },
