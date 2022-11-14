@@ -102,10 +102,10 @@ The node field widget has a callback controller function which accepts a NodeFie
 
 ### Lifecycles
 
-- #### Node Lifecycle
+- #### Widget Lifecycle
     - buid() - main
     - postBuild()
-- #### Widget Lifecycle
+- #### Node Lifecycle
     - prebuild()
     - build() - main
     - postBuild()
