@@ -31,3 +31,9 @@ export interface NodeButtonData {
     label: string;
     onClick?: () => void;
 }
+
+export interface CheckboxData{
+    label?: string;
+    checked?: boolean;
+    onChange?: (value: boolean) => void;
+}

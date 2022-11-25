@@ -1,5 +1,8 @@
+import "../styles/widgets/checkbox.css"
+
 import { NodeFieldData, Vector2 } from "../interfaces/node";
 import {
+    CheckboxData,
     CustomNodeElementData,
     NodeBodyData,
     NodeButtonData,
@@ -458,5 +461,32 @@ export class SizedBox extends Widget {
         element.style.width = (this.width ?? 0) + "px";
         element.style.height = (this.height ?? 0) + "px";
         return element;
+    }
+}
+
+export class Checkbox extends Widget{
+    checkboxId = uniqueIdGenerator.create();
+    constructor(public data : CheckboxData){
+        super();
+    }
+    build(): HTMLElement {
+        const div = document.createElement("div");
+        div.classList.add("checkbox-container");
+        if(this.data.label){
+            const label = document.createElement("label");
+            label.setAttribute("for", this.checkboxId);
+            label.innerText = this.data.label;
+            div.appendChild(label);
+        }
+        const input = document.createElement("input");
+        input.type = "checkbox";
+        input.id = this.checkboxId;
+        input.classList.add("checkbox-widget");
+        input.checked = this.data.checked ?? false;
+        input.onchange = () => {
+            this.data.onChange?.(input.checked);
+        };
+        div.appendChild(input);
+        return div;
     }
 }

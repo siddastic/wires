@@ -1,6 +1,7 @@
 import { bind } from "../api/decorators";
 import { NodeFieldController } from "../api/node_field_controller";
 import {
+    Checkbox,
     NodeBody,
     NodeButton,
     NodeField,
