@@ -2,6 +2,7 @@ import { bind } from "../api/decorators";
 import { NodeFieldController } from "../api/node_field_controller";
 import {
     NodeBody,
+    NodeButton,
     NodeField,
     NodeHeader,
     NodeScaffold,
@@ -226,7 +227,7 @@ export class VariableNode extends WireNode {
                     new NodeField({
                         value: 0,
                         label: "x",
-                        fieldType : "both",
+                        fieldType: "both",
                         controller: (fieldController) => {
                             this.controller = fieldController;
                         },

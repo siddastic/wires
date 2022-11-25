@@ -33,18 +33,99 @@ export abstract class WireNode {
     }
 
     @bind
-    onDrag() {
-        // this function is called when the node is being dragged
+    onDragStart(position: Vector2) {}
+
+    @bind
+    onDrag(dragEvent: MouseEvent) {
+        this.updateConnectedPathsOnDrag();
+    }
+
+    @bind
+    onDragEnd(position: Vector2) {}
+
+    private updateConnectedPathsOnDrag() {
+        this.updatePathElement(
+            globalNodeTree.getNodeById(this.id)?.outPath as
+                | SVGPathElement
+                | undefined,
+            true
+        );
+
+        globalNodeTree.getNodeById(this.id)?.fields.forEach((field) => {
+            field.paths.forEach((path) => {
+                this.updatePathElement(
+                    path as SVGPathElement,
+                    false,
+                    field.instance.input.parentElement?.querySelector(
+                        ".node-in-connector"
+                    ) as HTMLElement
+                );
+            });
+        });
+    }
+
+    private updatePathElement(
+        path: SVGPathElement | undefined,
+        isOutConnector = false,
+        fieldElement?: HTMLElement
+    ) {
+        if (!path) return;
+        let pathData = path.getAttribute("d")!;
+        const pathDataArray = pathData.split(" ").filter((x) => x !== "");
+        const startPoint: Vector2 = {
+            x: parseFloat(pathDataArray[1]),
+            y: parseFloat(pathDataArray[2]),
+        };
+        const endPoint: Vector2 = {
+            x: parseFloat(pathDataArray[pathDataArray.length - 2]),
+            y: parseFloat(pathDataArray[pathDataArray.length - 1]),
+        };
+        if (isOutConnector) {
+            // change the position from current node's out connector side
+            const rect = this.node.element
+                .querySelector(".node-out-connector")!
+                .getBoundingClientRect();
+            const outConnectorPosition = {
+                x: rect.left + window.scrollX + rect.width / 2,
+                y: rect.top + window.scrollY + rect.height / 2,
+            };
+
+            path.setAttribute(
+                "d",
+                `M ${outConnectorPosition.x} ${outConnectorPosition.y}  L ${
+                    outConnectorPosition.x + 50
+                } ${outConnectorPosition.y} L ${endPoint.x - 50} ${
+                    endPoint.y
+                } L ${endPoint.x} ${endPoint.y}`
+            );
+        } else {
+            // change the position from current node's in connector side
+            const rect = fieldElement!.getBoundingClientRect();
+            const inConnectorPosition = {
+                x: rect.left + window.scrollX + rect.width / 2,
+                y: rect.top + window.scrollY + rect.height / 2,
+            };
+
+            path.setAttribute(
+                "d",
+                `M ${startPoint.x} ${startPoint.y}  L ${
+                    startPoint.x + 50
+                } ${startPoint.y} L ${inConnectorPosition.x - 50} ${
+                    inConnectorPosition.y
+                } L ${inConnectorPosition.x} ${inConnectorPosition.y}`
+            );
+        }
     }
 
     abstract build(): Widget;
 
     createNodeMap() {
-        globalThis.graphConnectionMap.addMapIfNotPresent({
+        globalThis.globalNodeTree.addNodeIfNotPresent({
             nodeId: this.id,
             // fields will be added by the node field widget when it is created
             fields: [],
             outFn: this.out,
+            outPath: undefined,
         });
     }
 
@@ -57,6 +138,13 @@ export abstract class WireNode {
     destroy() {
         this.node.element.remove();
         globalThis.globalNodeRegistry.unregisterInstance(this);
+        // remove connected paths
+        globalNodeTree.getNodeById(this.id)?.fields.forEach((field) => {
+            field.paths.forEach((path) => {
+                path.remove();
+            });
+        });
+        globalNodeTree.getNodeById(this.id)?.outPath?.remove();
     }
 
     postBuild() {
@@ -100,10 +188,12 @@ export abstract class WireNode {
         }
         new DraggableUIElement(
             this.node.element,
-            (pos) => {
+            (pos, dragEvent) => {
                 this.positionInWorld = pos;
-                this.onDrag();
+                this.onDrag(dragEvent);
             },
+            this.onDragStart,
+            this.onDragEnd,
             this.node.header
         );
         // remove all previous selections when new is created
