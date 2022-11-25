@@ -340,7 +340,7 @@ export class NodeOutConnector extends Widget {
 
         // this.path.setAttribute("d", `M ${this.currentPosition.x} ${this.currentPosition.y}  L ${this.endPosition.x} ${this.endPosition.y}`);
         // I learnt playing with paths from this video : https://www.youtube.com/watch?v=pKMLPHfLN7k
-        // refer to it again if some is changing the lines below, also shout out to the guy who made the video
+        // refer to it again if someone is changing the lines below, also shout out to the guy who made the video
         const currentPosition = this.currentPosition;
         const endPosition = this.endPosition;
         // TODO : make line end points curved

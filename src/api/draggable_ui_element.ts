@@ -9,7 +9,9 @@ export class DraggableUIElement {
 
     constructor(
         private targetElement: HTMLElement,
-        private onDrag?: (newPosition: Vector2) => void,
+        private onDrag?: (newPosition: Vector2, dragEvent: MouseEvent) => void,
+        private onDragStart?: (elementPosition: Vector2) => void,
+        private onDragEnd?: (elementPosition: Vector2) => void,
         triggerElement?: HTMLElement
     ) {
         if (triggerElement) triggerElement.onmousedown = this.dragMouseDown;
@@ -23,6 +25,7 @@ export class DraggableUIElement {
         // get the mouse cursor position at startup:
         this.pos3 = e.clientX;
         this.pos4 = e.clientY;
+        this.onDragStart?.call(this, { x: e.clientX, y: e.clientY });
         document.onmouseup = this.closeDragElement;
         // call a function whenever the cursor moves:
         document.onmousemove = this.elementDrag;
@@ -43,7 +46,7 @@ export class DraggableUIElement {
         this.targetElement.style.top = newY + "px";
         this.targetElement.style.left = newX + "px";
 
-        this.onDrag?.call(this, { x: newX, y: newY });
+        this.onDrag?.call(this, { x: newX, y: newY }, e);
     }
 
     @bind
@@ -56,5 +59,9 @@ export class DraggableUIElement {
         // stop moving when mouse button is released:
         document.onmouseup = null;
         document.onmousemove = null;
+        this.onDragEnd?.call(this,{
+            x: Math.round(this.targetElement.offsetLeft / 10) * 10,
+            y: Math.round(this.targetElement.offsetTop / 10) * 10,
+        });
     }
 }
