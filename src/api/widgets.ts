@@ -197,7 +197,7 @@ export class NodeButton extends Widget {
     }
 }
 
-export class CustomNodeElement extends Widget {
+export class CustomWidget extends Widget {
     constructor(public data: CustomNodeElementData) {
         super();
     }
