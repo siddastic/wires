@@ -1,4 +1,5 @@
-import "../styles/widgets/checkbox.css"
+import "../styles/widgets/checkbox.css";
+import "../styles/widgets/divider.css";
 
 import { NodeFieldData, Vector2 } from "../interfaces/node";
 import {
@@ -487,6 +488,17 @@ export class Checkbox extends Widget{
             this.data.onChange?.(input.checked);
         };
         div.appendChild(input);
+        return div;
+    }
+}
+
+export class Divider extends Widget{
+    constructor(){
+        super();
+    }
+    build(): HTMLElement {
+        const div = document.createElement("div");
+        div.classList.add("divider");
         return div;
     }
 }
