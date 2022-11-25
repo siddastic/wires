@@ -40,11 +40,12 @@ export abstract class WireNode {
     abstract build(): Widget;
 
     createNodeMap() {
-        globalThis.graphConnectionMap.addMapIfNotPresent({
+        globalThis.globalNodeTree.addNodeIfNotPresent({
             nodeId: this.id,
             // fields will be added by the node field widget when it is created
             fields: [],
             outFn: this.out,
+            outPath: undefined,
         });
     }
 

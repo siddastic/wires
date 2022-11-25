@@ -1,6 +1,6 @@
 import SelectionArea from "@viselect/vanilla";
 import { GraphData, Vector2 } from "../interfaces/node";
-import { GraphConnectionMap } from "../transpiler/graph_connection_map";
+import { GlobalNodeTree } from "../transpiler/node_tree";
 import { DataBoard } from "./data_board";
 import { GlobalNodeRegistry } from "./global_node_registry";
 import { GraphNodeExplorer } from "./node_explorer";
@@ -9,7 +9,7 @@ import { UniqueIdGenerator } from "./unique_id_gen";
 declare global {
     var globalNodeRegistry: GlobalNodeRegistry;
     var searchExplorer: GraphNodeExplorer;
-    var graphConnectionMap: GraphConnectionMap;
+    var globalNodeTree: GlobalNodeTree;
     var uniqueIdGenerator: UniqueIdGenerator;
 }
 
@@ -28,7 +28,7 @@ export class WireGraph {
         globalThis.searchExplorer = new GraphNodeExplorer(
             graphData.graphHostElement
         );
-        globalThis.graphConnectionMap = new GraphConnectionMap();
+        globalThis.globalNodeTree = new GlobalNodeTree();
 
         // add styles class
         graphData.graphHostElement.classList.add("wire-graph");

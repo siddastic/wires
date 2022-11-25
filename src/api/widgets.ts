@@ -112,14 +112,15 @@ export class NodeField extends Widget {
         while (parent) {
             if (parent.classList.contains("wire-node")) {
                 let parentId = parent.id;
-                let index = graphConnectionMap.list.findIndex(
+                let index = globalNodeTree.list.findIndex(
                     (x) => x.nodeId === parentId
                 )!;
-                var fields = graphConnectionMap.list[index].fields;
+                var fields = globalNodeTree.list[index].fields;
                 if (fields.findIndex((x) => x.fieldId === this.fieldId) == -1) {
-                    graphConnectionMap.list[index].fields.push({
+                    globalNodeTree.list[index].fields.push({
                         fieldId: this.fieldId,
                         instance: this,
+                        paths: [],
                     });
                 }
                 break;
@@ -364,6 +365,11 @@ export class NodeOutConnector extends Widget {
         }
     }
 
+    addPathToTree(inConnector : HTMLElement){
+        globalNodeTree.addPathToNode(this.connector.closest(".wire-node")!.id, this.path);
+        globalNodeTree.addPathToField(inConnector.closest(".text-field")!.id, this.path);
+    }
+
     build(): HTMLElement {
         this.connector.classList.add("node-connector");
         this.connector.classList.add("node-out-connector");
@@ -396,26 +402,27 @@ export class NodeOutConnector extends Widget {
                         // get out function reference of this connector
                         const outConnectorParentNodeId =
                             this.connector.closest(".wire-node")!.id;
-                        let index1 = graphConnectionMap.list.findIndex(
+                        let index1 = globalNodeTree.list.findIndex(
                             (item) => item.nodeId === outConnectorParentNodeId
                         );
 
                         // Connection established with another field, call the onConnect function of the other field
                         let targetParentNodeId =
                             targetInConnector.closest(".wire-node")!.id;
-                        let index2 = graphConnectionMap.list.findIndex(
+                        let index2 = globalNodeTree.list.findIndex(
                             (item) => item.nodeId === targetParentNodeId
                         );
-                        var fieldIndex = graphConnectionMap.list[
+                        var fieldIndex = globalNodeTree.list[
                             index2
                         ].fields.findIndex(
                             (item) =>
                                 item.fieldId ===
                                 targetInConnector.closest(".text-field")!.id
                         );
-                        graphConnectionMap.list[index2].fields[fieldIndex]
+                        this.addPathToTree(targetInConnector);
+                        globalNodeTree.list[index2].fields[fieldIndex]
                             .instance.data.onConnect!({
-                            data: graphConnectionMap.list[index1].outFn().data,
+                            data: globalNodeTree.list[index1].outFn().data,
                         });
                         targetInConnector.classList.add("connected");
                         targetInConnector.style.backgroundColor =
