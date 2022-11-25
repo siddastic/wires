@@ -58,6 +58,12 @@ export abstract class WireNode {
     destroy() {
         this.node.element.remove();
         globalThis.globalNodeRegistry.unregisterInstance(this);
+        globalNodeTree.getNodeById(this.id)?.fields.forEach((field) => {
+            field.paths.forEach((path) => {
+                path.remove();
+            });
+        });
+        globalNodeTree.getNodeById(this.id)?.outPath?.remove();
     }
 
     postBuild() {
