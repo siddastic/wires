@@ -37,3 +37,13 @@ export interface CheckboxData{
     checked?: boolean;
     onChange?: (value: boolean) => void;
 }
+
+export interface DropdownMenuData<T>{
+    label?: string;
+    onChange?: (value: T | null) => void;
+    value?: T;
+    options: {
+        label?: string;
+        value: T;
+    }[];
+}

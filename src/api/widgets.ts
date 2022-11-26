@@ -1,10 +1,12 @@
 import "../styles/widgets/checkbox.css";
 import "../styles/widgets/divider.css";
+import "../styles/widgets/dropdown.css";
 
 import { NodeFieldData, Vector2 } from "../interfaces/node";
 import {
     CheckboxData,
     CustomNodeElementData,
+    DropdownMenuData,
     NodeBodyData,
     NodeButtonData,
     NodeFooterData,
@@ -369,9 +371,15 @@ export class NodeOutConnector extends Widget {
         }
     }
 
-    addPathToTree(inConnector : HTMLElement){
-        globalNodeTree.addPathToNode(this.connector.closest(".wire-node")!.id, this.path);
-        globalNodeTree.addPathToField(inConnector.closest(".text-field")!.id, this.path);
+    addPathToTree(inConnector: HTMLElement) {
+        globalNodeTree.addPathToNode(
+            this.connector.closest(".wire-node")!.id,
+            this.path
+        );
+        globalNodeTree.addPathToField(
+            inConnector.closest(".text-field")!.id,
+            this.path
+        );
     }
 
     build(): HTMLElement {
@@ -424,8 +432,8 @@ export class NodeOutConnector extends Widget {
                                 targetInConnector.closest(".text-field")!.id
                         );
                         this.addPathToTree(targetInConnector);
-                        globalNodeTree.list[index2].fields[fieldIndex]
-                            .instance.data.onConnect!({
+                        globalNodeTree.list[index2].fields[fieldIndex].instance
+                            .data.onConnect!({
                             data: globalNodeTree.list[index1].outFn().data,
                         });
                         targetInConnector.classList.add("connected");
@@ -465,15 +473,15 @@ export class SizedBox extends Widget {
     }
 }
 
-export class Checkbox extends Widget{
+export class Checkbox extends Widget {
     checkboxId = uniqueIdGenerator.create();
-    constructor(public data : CheckboxData){
+    constructor(public data: CheckboxData) {
         super();
     }
     build(): HTMLElement {
         const div = document.createElement("div");
         div.classList.add("checkbox-container");
-        if(this.data.label){
+        if (this.data.label) {
             const label = document.createElement("label");
             label.setAttribute("for", this.checkboxId);
             label.innerText = this.data.label;
@@ -492,13 +500,48 @@ export class Checkbox extends Widget{
     }
 }
 
-export class Divider extends Widget{
-    constructor(){
+export class Divider extends Widget {
+    constructor() {
         super();
     }
     build(): HTMLElement {
         const div = document.createElement("div");
         div.classList.add("divider");
+        return div;
+    }
+}
+
+export class DropdownMenu<T> extends Widget {
+    selectId = uniqueIdGenerator.create();
+    constructor(public data: DropdownMenuData<T>) {
+        super();
+    }
+    build(): HTMLElement {
+        const div = document.createElement("div");
+        div.classList.add("dropdown-menu");
+        const select = document.createElement("select");
+        select.id = this.selectId;
+        select.classList.add("dropdown-menu-select");
+        if (this.data.label) {
+            const label = document.createElement("label");
+            label.innerText = this.data.label;
+            label.setAttribute("for", this.selectId);
+            div.appendChild(label);
+        }
+        this.data.options.forEach((option) => {
+            const optionElement = document.createElement("option");
+            optionElement.value = (option.value as Object).toString();
+            optionElement.innerText =
+                option.label ?? (option.value as Object).toString();
+            if (option.value == this.data.value) {
+                optionElement.selected = true;
+            }
+            select.appendChild(optionElement);
+        });
+        select.onchange = () => {
+            this.data.onChange?.(select.value as unknown as T);
+        };
+        div.appendChild(select);
         return div;
     }
 }
