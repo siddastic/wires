@@ -2,7 +2,6 @@ import { bind } from "../api/decorators";
 import { NodeFieldController } from "../api/node_field_controller";
 import {
     NodeBody,
-    NodeButton,
     NodeField,
     NodeHeader,
     NodeScaffold,
