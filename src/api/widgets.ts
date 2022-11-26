@@ -545,3 +545,10 @@ export class DropdownMenu<T> extends Widget {
         return div;
     }
 }
+
+
+export class LineBreak extends Widget {
+    build(): HTMLElement {
+        return document.createElement("br");
+    }
+}
