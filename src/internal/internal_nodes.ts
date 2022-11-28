@@ -228,6 +228,9 @@ export class VariableNode extends WireNode {
                         label: "x",
                         fieldType: "both",
                         multiline: true,
+                        onConnect:({data})=>{
+                            this.controller.value = this.controller.value.toString() + data?.toString() ?? '';
+                        },
                         controller: (fieldController) => {
                             this.controller = fieldController;
                         },

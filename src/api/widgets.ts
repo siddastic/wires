@@ -105,7 +105,7 @@ export class NodeField extends Widget {
             this.input = document.createElement("input");
         }
         this.data.onConnect = (data) => {
-            if (data.data !== undefined) {
+            if (onConnect === undefined) {
                 this.input.value = String(data.data);
             }
             onConnect?.call(this, data);
@@ -267,6 +267,10 @@ export class NodeOutConnector extends Widget {
         y: 0,
     };
 
+    constructor(public isMulticonnect : boolean = false){
+        super();
+    }
+
     getElementOffset(el: HTMLElement | SVGSVGElement) {
         const rect = el.getBoundingClientRect();
         return {
@@ -415,7 +419,7 @@ export class NodeOutConnector extends Widget {
                     )?.classList.contains("node-in-connector") ||
                     false
                 ) {
-                    if (!targetInConnector.classList.contains("connected")) {
+                    if (!targetInConnector.classList.contains("connected") || this.isMulticonnect) {
                         // get out function reference of this connector
                         const outConnectorParentNodeId =
                             this.connector.closest(".wire-node")!.id;
