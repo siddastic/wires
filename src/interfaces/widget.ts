@@ -24,7 +24,7 @@ export interface CustomNodeElementData {
 }
 
 export interface NodeFieldControllerData {
-    element: HTMLInputElement;
+    element: HTMLInputElement | HTMLTextAreaElement;
 }
 
 export interface NodeButtonData {

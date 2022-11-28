@@ -93,12 +93,17 @@ export class NodeFooter extends Widget {
 }
 
 export class NodeField extends Widget {
-    input = document.createElement("input");
     fieldId = globalThis.uniqueIdGenerator.create();
+    input : HTMLInputElement | HTMLTextAreaElement;
 
     constructor(public data: NodeFieldData) {
         super();
         let onConnect = this.data.onConnect;
+        if (data.multiline) {
+            this.input = document.createElement("textarea");
+        } else {
+            this.input = document.createElement("input");
+        }
         this.data.onConnect = (data) => {
             if (data.data !== undefined) {
                 this.input.value = String(data.data);
@@ -143,7 +148,7 @@ export class NodeField extends Widget {
         textField.classList.add("text-field");
         labelElement.classList.add("label");
         labelElement.innerText = this.data.label || "...";
-        this.input.type = this.data.inputType ?? "text";
+        this.input.setAttribute("type", this.data.inputType ?? "text");
         this.input.classList.add("input");
         let connector;
         if (
@@ -163,7 +168,7 @@ export class NodeField extends Widget {
             this.data.onUpdate?.call(this.input.value);
         };
         this.input.placeholder = this.data.placeholder ?? "";
-        this.input.value = (this.data.value ?? 0).toString();
+        this.input.value = (this.data.value ?? '').toString();
 
         // hide input if fieldType is connect only
         if (this.data.fieldType == "connect") {
@@ -545,7 +550,6 @@ export class DropdownMenu<T> extends Widget {
         return div;
     }
 }
-
 
 export class LineBreak extends Widget {
     build(): HTMLElement {
