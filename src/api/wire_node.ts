@@ -205,7 +205,7 @@ export abstract class WireNode {
 
     private createOutConnector() {
         const outContainer = document.createElement("div");
-        const element = new NodeOutConnector();
+        const element = new NodeOutConnector(true);
         const outLabel = document.createElement("div");
 
         outContainer.style.display = "flex";

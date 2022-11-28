@@ -93,14 +93,19 @@ export class NodeFooter extends Widget {
 }
 
 export class NodeField extends Widget {
-    input = document.createElement("input");
     fieldId = globalThis.uniqueIdGenerator.create();
+    input : HTMLInputElement | HTMLTextAreaElement;
 
     constructor(public data: NodeFieldData) {
         super();
         let onConnect = this.data.onConnect;
+        if (data.multiline) {
+            this.input = document.createElement("textarea");
+        } else {
+            this.input = document.createElement("input");
+        }
         this.data.onConnect = (data) => {
-            if (data.data !== undefined) {
+            if (onConnect === undefined) {
                 this.input.value = String(data.data);
             }
             onConnect?.call(this, data);
@@ -143,7 +148,7 @@ export class NodeField extends Widget {
         textField.classList.add("text-field");
         labelElement.classList.add("label");
         labelElement.innerText = this.data.label || "...";
-        this.input.type = this.data.inputType ?? "text";
+        this.input.setAttribute("type", this.data.inputType ?? "text");
         this.input.classList.add("input");
         let connector;
         if (
@@ -163,7 +168,7 @@ export class NodeField extends Widget {
             this.data.onUpdate?.call(this.input.value);
         };
         this.input.placeholder = this.data.placeholder ?? "";
-        this.input.value = (this.data.value ?? 0).toString();
+        this.input.value = (this.data.value ?? '').toString();
 
         // hide input if fieldType is connect only
         if (this.data.fieldType == "connect") {
@@ -261,6 +266,10 @@ export class NodeOutConnector extends Widget {
         x: 0,
         y: 0,
     };
+
+    constructor(public isMulticonnect : boolean = false){
+        super();
+    }
 
     getElementOffset(el: HTMLElement | SVGSVGElement) {
         const rect = el.getBoundingClientRect();
@@ -410,7 +419,7 @@ export class NodeOutConnector extends Widget {
                     )?.classList.contains("node-in-connector") ||
                     false
                 ) {
-                    if (!targetInConnector.classList.contains("connected")) {
+                    if (!targetInConnector.classList.contains("connected") || this.isMulticonnect) {
                         // get out function reference of this connector
                         const outConnectorParentNodeId =
                             this.connector.closest(".wire-node")!.id;
@@ -545,7 +554,6 @@ export class DropdownMenu<T> extends Widget {
         return div;
     }
 }
-
 
 export class LineBreak extends Widget {
     build(): HTMLElement {

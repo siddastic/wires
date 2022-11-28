@@ -101,7 +101,7 @@ html{
     justify-content: space-between !important;
 }
 
-input {
+input,textarea {
     background-color: #1a1a1a;
     border: none;
     outline: none;
