@@ -41,7 +41,7 @@ html{
 }
 
 .wire-node {
-    min-height: 300px;
+    /* min-height: 300px; */
     min-width: 250px;
     background-color: #242424;
     border-radius: 5px;
@@ -113,7 +113,7 @@ input,textarea {
 
 .wire-node .wire-node-body {
     padding: 5px 16px;
-    min-height: 225px;
+    /* min-height: 225px; */
 }
 
 .wire-node .wire-node-body .text-field {
