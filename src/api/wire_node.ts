@@ -22,7 +22,7 @@ export abstract class WireNode {
     static doc(): NodeData {
         return {
             name: "Unimplemented",
-            documentation: "Documentation is not implemented for this node",
+            desc: "Documentation is not implemented for this node",
         };
     }
 

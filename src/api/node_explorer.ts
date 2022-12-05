@@ -59,7 +59,7 @@ export class GraphNodeExplorer {
             for (let i of this.availableWireNodes) {
                 const listTile = document.createElement("div");
                 listTile.classList.add("list-tile");
-                listTile.title = i.doc().documentation ?? "No documentation";
+                listTile.title = i.doc().desc ?? "No documentation";
                 const leading = document.createElement("div");
                 leading.classList.add("leading");
                 leading.classList.add("codicon");

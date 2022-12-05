@@ -39,7 +39,7 @@ export interface Vector2 {
 
 export interface NodeData {
     name: string;
-    documentation?: string;
+    desc?: string;
 }
 
 export interface WireOutData{

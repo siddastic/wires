@@ -1,4 +1,4 @@
-import { bind } from "../api/decorators";
+import { bind, doc } from "../api/decorators";
 import { NodeFieldController } from "../api/node_field_controller";
 import {
     NodeBody,
@@ -10,20 +10,14 @@ import {
 import { WireNode } from "../api/wire_node";
 import { NodeData, Vector2, WireOutData } from "../interfaces/node";
 
+
+@doc("Add Node", "This node is an experiment node used to add two numbers")
 export class AddNode extends WireNode {
     number1Controller!: NodeFieldController;
     number2Controller!: NodeFieldController;
     result?: number;
     constructor(instantiatedPoint: Vector2) {
         super(instantiatedPoint);
-    }
-
-    static doc() {
-        return {
-            name: "Add Node",
-            documentation:
-                "This node is an experiment node used to add two numbers",
-        };
     }
 
     build(): Widget {
@@ -62,19 +56,12 @@ export class AddNode extends WireNode {
     }
 }
 
+@doc("Subtract Node", "This node is an experiment node used to subtract two numbers")
 export class SubtractNode extends WireNode {
     numberA!: NodeFieldController;
     numberB!: NodeFieldController;
     constructor(instantiatedPoint: Vector2) {
         super(instantiatedPoint);
-    }
-
-    static doc(): NodeData {
-        return {
-            name: "Subtract Node",
-            documentation:
-                "This node is an experiment node used to subtract two numbers",
-        };
     }
 
     build(): Widget {
@@ -110,19 +97,13 @@ export class SubtractNode extends WireNode {
         };
     }
 }
+
+@doc("Multiply Node", "This node is an experiment node used to multiply two numbers")
 export class MultiplyNode extends WireNode {
     numberA!: NodeFieldController;
     numberB!: NodeFieldController;
     constructor(instantiatedPoint: Vector2) {
         super(instantiatedPoint);
-    }
-
-    static doc(): NodeData {
-        return {
-            name: "Multiply Node",
-            documentation:
-                "This node is an experiment node used to multiply two numbers",
-        };
     }
 
     build(): Widget {
@@ -158,19 +139,13 @@ export class MultiplyNode extends WireNode {
         };
     }
 }
+
+@doc("Divide Node", "This node is an experiment node used to divide two numbers")
 export class DivideNode extends WireNode {
     numberA!: NodeFieldController;
     numberB!: NodeFieldController;
     constructor(instantiatedPoint: Vector2) {
         super(instantiatedPoint);
-    }
-
-    static doc(): NodeData {
-        return {
-            name: "Divide Node",
-            documentation:
-                "This node is an experiment node used to divide two numbers",
-        };
     }
 
     build(): Widget {
@@ -207,15 +182,10 @@ export class DivideNode extends WireNode {
     }
 }
 
+@doc("Variable Node","This node is an experiment node used to store a variable")
 export class VariableNode extends WireNode {
     controller!: NodeFieldController;
 
-    static doc(): NodeData {
-        return {
-            name: "Variable Node",
-            documentation: "This node is used to store data",
-        };
-    }
     build(): Widget {
         return new NodeScaffold({
             header: new NodeHeader({
