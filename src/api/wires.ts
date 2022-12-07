@@ -4,6 +4,7 @@ import { GlobalNodeTree } from "../transpiler/node_tree";
 import { DataBoard } from "./data_board";
 import { GlobalNodeRegistry } from "./global_node_registry";
 import { GraphNodeExplorer } from "./node_explorer";
+import { StatusBar, StatusBarAlignment } from "./status-bar";
 import { UniqueIdGenerator } from "./unique_id_gen";
 
 declare global {
@@ -11,6 +12,7 @@ declare global {
     var searchExplorer: GraphNodeExplorer;
     var globalNodeTree: GlobalNodeTree;
     var uniqueIdGenerator: UniqueIdGenerator;
+    var statusBar: StatusBar;
 }
 
 export class WireGraph {
@@ -44,6 +46,53 @@ export class WireGraph {
                 globalThis.find("Untitled");
             });
         }
+
+        if (graphData.enableStatusBar) {
+            globalThis.statusBar = new StatusBar();
+
+            this.addDefaultStatusBarItems();
+        }
+    }
+
+    addDefaultStatusBarItems() {
+        let nodeCount = globalThis.statusBar.addStatusBarItem({
+            alignment: StatusBarAlignment.left,
+            text: "Node Count : 0",
+            iconClass: "codicon codicon-git-branch",
+        });
+
+        let graphFlow = globalThis.statusBar.addStatusBarItem({
+            alignment: StatusBarAlignment.right,
+            text: "Graph Flow",
+            iconClass: "codicon codicon-broadcast",
+            onClick: () => {
+                this.toggleGraphFlowDirection();
+                this._graphFlowVisible = !this._graphFlowVisible;
+            },
+        });
+
+        let clearBoard = globalThis.statusBar.addStatusBarItem({
+            alignment: StatusBarAlignment.right,
+            text: "Clear Board",
+            iconClass: "codicon codicon-close",
+            onClick: () => {
+                globalNodeRegistry.instances.forEach((instance) => {
+                    instance.destroy();
+                });
+            },
+        });
+        
+        setInterval(() => {
+            let counter = globalThis.globalNodeRegistry.instances.length;
+            nodeCount.innerText = `Node Count : ${counter}`;
+            if(counter <= 0){
+                graphFlow.style.display = "none";
+                clearBoard.style.display = "none";
+            }else{
+                graphFlow.style.display = "inline-block";   
+                clearBoard.style.display = "inline-block";
+            }
+        }, 100);
     }
 
     attachGlobalListeners() {

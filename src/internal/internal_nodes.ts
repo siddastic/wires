@@ -8,10 +8,10 @@ import {
     Widget,
 } from "../api/widgets";
 import { WireNode } from "../api/wire_node";
-import { NodeData, Vector2, WireOutData } from "../interfaces/node";
+import { Vector2, WireOutData } from "../interfaces/node";
 
 
-// @doc("Add Node", "This node is an experiment node used to add two numbers")
+@doc("Add Node", "This node is an experiment node used to add two numbers")
 export class AddNode extends WireNode {
     number1Controller!: NodeFieldController;
     number2Controller!: NodeFieldController;
