@@ -8,7 +8,8 @@ type NodeFieldType = "connect" | "input" | "both";
 
 export interface GraphData{
     availableNodes: any[];
-    enableDataboard: boolean;
+    enableDataboard?: boolean;
+    enableStatusBar?: boolean;
     graphHostElement: HTMLElement;
 }
 
