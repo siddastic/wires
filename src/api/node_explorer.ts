@@ -104,6 +104,15 @@ export class GraphNodeExplorer {
                 elem.classList.remove("selected");
             }
         });
+
+        this.availableWireNodes.forEach((node, index) => {
+            if (index === Number(this.currentExpContainerElement?.querySelector(".selected")?.getAttribute("data-index"))) {
+                this.docViewer!.querySelector(".doc-viewer-header")!.innerHTML =
+                    node.doc().name;
+                this.docViewer!.querySelector(".doc-viewer-body")!.innerHTML =
+                    node.doc().desc ?? "No documentation";
+            }
+        });
     }
 
     toggleExplorer() {
@@ -112,8 +121,6 @@ export class GraphNodeExplorer {
             explorerContainer.classList.add("explorer-container");
             this.currentExpContainerElement = explorerContainer;
             explorerContainer.addEventListener("click", this.onContainerClick);
-            // const centeredView = document.createElement("div");
-            // centeredView.classList.add("centered-view");
             const nodeExplorer = document.createElement("div");
             nodeExplorer.classList.add("node-explorer");
             nodeExplorer.style.top = `${this.menuSpawnLocation.y}px`;
@@ -131,6 +138,7 @@ export class GraphNodeExplorer {
                 const listTile = document.createElement("div");
                 listTile.classList.add("list-tile");
                 listTile.title = i.doc().desc ?? "No documentation";
+                listTile.setAttribute("data-index", this.availableWireNodes.indexOf(i).toString());
                 const leading = document.createElement("div");
                 leading.classList.add("leading");
                 leading.classList.add("codicon");
@@ -157,8 +165,6 @@ export class GraphNodeExplorer {
             nodeExplorer.appendChild(header);
             nodeExplorer.appendChild(input);
             nodeExplorer.appendChild(nodeItems);
-            // centeredView.appendChild(nodeExplorer);
-            // explorerContainer.appendChild(centeredView);
             explorerContainer.appendChild(nodeExplorer);
             this.hostElement.appendChild(explorerContainer);
             this.visible = true;
