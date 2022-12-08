@@ -57,23 +57,24 @@ export class WireGraph {
     addDefaultStatusBarItems() {
         let nodeCount = globalThis.statusBar.addStatusBarItem({
             alignment: StatusBarAlignment.left,
-            text: "Node Count : 0",
+            label: "Node Count : 0",
             iconClass: "codicon codicon-git-branch",
         });
 
         let graphFlow = globalThis.statusBar.addStatusBarItem({
             alignment: StatusBarAlignment.right,
-            text: "Graph Flow",
+            label: "Graph Flow",
             iconClass: "codicon codicon-broadcast",
             onClick: () => {
                 this.toggleGraphFlowDirection();
+                graphFlow.toggleHighlight();
                 this._graphFlowVisible = !this._graphFlowVisible;
             },
         });
 
         let clearBoard = globalThis.statusBar.addStatusBarItem({
             alignment: StatusBarAlignment.right,
-            text: "Clear Board",
+            label: "Clear Board",
             iconClass: "codicon codicon-close",
             onClick: () => {
                 globalNodeRegistry.instances.forEach((instance) => {
@@ -84,13 +85,13 @@ export class WireGraph {
         
         setInterval(() => {
             let counter = globalThis.globalNodeRegistry.instances.length;
-            nodeCount.innerText = `Node Count : ${counter}`;
+            nodeCount.setLabel(`Node Count : ${counter}`);
             if(counter <= 0){
-                graphFlow.style.display = "none";
-                clearBoard.style.display = "none";
+                graphFlow.hide();
+                clearBoard.hide();
             }else{
-                graphFlow.style.display = "inline-block";   
-                clearBoard.style.display = "inline-block";
+                graphFlow.show();  
+                clearBoard.show();
             }
         }, 100);
     }

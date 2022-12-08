@@ -200,6 +200,11 @@ input,textarea {
     background-color: #1a1a1a;
 }
 
+.list-tile:is(.selected){
+    color: #646cff;
+    background-color: #1a1a1a;
+}
+
 .wire-button {
     background-color: #1a1a1a;
     opacity: 1;

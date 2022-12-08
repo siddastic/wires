@@ -51,3 +51,7 @@
 .status-bar-item:is(.disabled){
     opacity: 0.3;
 }
+
+.status-bar-item:is(.highlight){
+    background-color: rgb(163, 111, 34);
+}
