@@ -55,6 +55,7 @@ html {
 
 .data-board {
     min-height: 600px;
+    height: 600px;
     min-width: 400px;
     background-color: #242424;
     border-radius: 5px;

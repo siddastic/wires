@@ -1,0 +1,46 @@
+.data-board-variable{
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.data-board-variable-left{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.data-board-variable-left div{
+    margin-left: 5px;
+    margin-right: 5px;
+}
+
+.data-board-variable-title{
+    background-color: #38393a;
+    font-size: 16px;
+    border: 1px solid black;
+    padding: 8px 16px;
+    border-radius: 16px;
+}
+
+.data-board-variable-trailing{
+    color: grey;
+    font-size: 14px;
+    margin-right: 8px;
+}
+
+.data-board-variable-value-container{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.data-board-variable-value-container input{
+    margin-left: 10px;
+    padding: 7px 10px;
+    width: 100%;
+}

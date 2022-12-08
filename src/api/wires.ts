@@ -13,10 +13,10 @@ declare global {
     var globalNodeTree: GlobalNodeTree;
     var uniqueIdGenerator: UniqueIdGenerator;
     var statusBar: StatusBar;
+    var databoard : DataBoard | undefined;
 }
 
 export class WireGraph {
-    databoard?: DataBoard;
     currentBodyScale = 1;
     _graphFlowVisible = false;
     constructor(public graphData: GraphData) {
@@ -281,7 +281,7 @@ export class WireGraph {
     }
 
     setupDataboard() {
-        this.databoard = new DataBoard();
-        this.graphData.graphHostElement.appendChild(this.databoard.build());
+        globalThis.databoard = new DataBoard();
+        this.graphData.graphHostElement.appendChild(globalThis.databoard.build());
     }
 }
