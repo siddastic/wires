@@ -1,4 +1,5 @@
 import "../styles/ui/status-bar.css";
+import { Widget } from "./widgets";
 
 export enum StatusBarAlignment {
     left,
@@ -6,7 +7,7 @@ export enum StatusBarAlignment {
 }
 
 interface StatusBarItemData {
-    text: string;
+    label: string;
     alignment: StatusBarAlignment;
     iconClass?: string;
     onClick?: Function;
@@ -35,30 +36,75 @@ export class StatusBar {
     }
 
     public addStatusBarItem(itemData: StatusBarItemData) {
+        let item = new StatusBarItem(itemData);
+        if (itemData.alignment === StatusBarAlignment.left) {
+            this.leftContainer.appendChild(item.build());
+        } else {
+            this.rightContainer.appendChild(item.build());
+        }
+        return item;
+    }
+}
+
+class StatusBarItem extends Widget {
+    id: string = uniqueIdGenerator.create();
+    labelElement!: HTMLSpanElement;
+    isVisible: boolean = true;
+    rootElement!: HTMLElement;
+    constructor(public data: StatusBarItemData) {
+        super();
+    }
+    build(): HTMLElement {
         let item = document.createElement("div");
         let innerContainer = document.createElement("div");
         innerContainer.classList.add("status-bar-item-container");
         item.classList.add("status-bar-item");
-        if (itemData.iconClass) {
+        if (this.data.iconClass) {
             let icon = document.createElement("span");
             icon.classList.add("status-bar-icon");
-            icon.classList.add(...itemData.iconClass.split(" "));
+            icon.classList.add(...this.data.iconClass.split(" "));
             innerContainer.appendChild(icon);
         }
-        let label = document.createElement("span");
-        label.innerText = itemData.text;
+        this.labelElement = document.createElement("span");
+        this.labelElement.innerText = this.data.label;
         item.addEventListener("click", () => {
-            if (itemData.onClick) {
-                itemData.onClick();
+            if (this.data.onClick) {
+                this.data.onClick();
             }
         });
-        if (itemData.alignment === StatusBarAlignment.left) {
-            this.leftContainer.appendChild(item);
-        } else {
-            this.rightContainer.appendChild(item);
-        }
-        innerContainer.appendChild(label);
+        innerContainer.appendChild(this.labelElement);
         item.appendChild(innerContainer);
+        this.rootElement = item;
         return item;
+    }
+
+    setLabel(label: string, transitionValueUpdate?: boolean) {
+        if (this.labelElement.innerText === label) {
+            return;
+        }
+        if (transitionValueUpdate) {
+            this.toggleHighlight();
+
+            setTimeout(() => {
+                this.toggleHighlight();
+            }, 600);
+        }
+
+        this.data.label = label;
+        this.labelElement.innerText = label;
+    }
+
+    hide() {
+        this.isVisible = false;
+        this.rootElement.style.display = "none";
+    }
+
+    show() {
+        this.isVisible = true;
+        this.rootElement.style.display = "inline-block";
+    }
+
+    toggleHighlight() {
+        this.rootElement.classList.toggle("highlight");
     }
 }

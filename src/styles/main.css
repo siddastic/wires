@@ -36,7 +36,7 @@
     user-select: none;
 }
 
-html{
+html {
     overflow: hidden;
 }
 
@@ -101,7 +101,8 @@ html{
     justify-content: space-between !important;
 }
 
-input,textarea {
+input,
+textarea {
     background-color: #1a1a1a;
     border: none;
     outline: none;
@@ -142,15 +143,48 @@ input,textarea {
     overflow: hidden;
 }
 
-.explorer-container {
+.doc-viewer {
+    min-height: 300px;
+    max-height: 300px;
+    width: 300px;
+    background-color: #1a1a1a;
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    user-select: text;
+}
+
+.doc-viewer-header{
+    height: 50px;
+    width: 100%;
     display: flex;
+    justify-content: start;
+    align-items: center;
+    font-size: 14px;
+    padding-left: 16px;
+    font-family: monospace;
+    color: gray;
+}
+
+.doc-viewer-body{
+    height: 100%;
+    max-height: 250px;
+    width: 100%;
+    overflow-y: auto;
+    padding: 10px 16px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: white;
 }
 
 .node-explorer {
     min-height: 300px;
+    max-height: 300px;
     width: 300px;
     background-color: #242424;
-    border-radius: 10px;
+    border-top-left-radius: 10px;
+    border-bottom-left-radius: 10px;
     position: absolute;
     top: 0px;
     left: 0px;
@@ -196,6 +230,11 @@ input,textarea {
 }
 
 .list-tile:hover {
+    color: #646cff;
+    background-color: #1a1a1a;
+}
+
+.list-tile:is(.selected) {
     color: #646cff;
     background-color: #1a1a1a;
 }

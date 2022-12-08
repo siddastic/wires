@@ -1,5 +1,6 @@
 import { Vector2 } from "../interfaces/node";
 import { bind } from "./decorators";
+import { Divider } from "./widgets";
 import { WireNode } from "./wire_node";
 
 export class GraphNodeExplorer {
@@ -10,30 +11,109 @@ export class GraphNodeExplorer {
         x: window.innerWidth / 2,
         y: window.innerHeight / 2,
     };
-    constructor(private hostElement : HTMLElement) {
+    currentSelectedNodeIndex: number = 0;
+    docViewer?: HTMLDivElement;
+    constructor(private hostElement: HTMLElement) {
         this.availableWireNodes = globalThis.globalNodeRegistry.availableNodes;
     }
 
     createNode(node: typeof WireNode) {
         const instancePoint: Vector2 = this.menuSpawnLocation;
         // @ts-ignore
-        const tag : WireNode = new node(instancePoint);
+        const tag: WireNode = new node(instancePoint);
         tag.setupNode();
         this.hostElement.appendChild(tag.node.element);
 
         this.toggleExplorer();
     }
 
-    // createDocumentationViewer() {
-    //     const explorerContainer = document.querySelector(
-    //         ".explorer-container"
-    //     ) as HTMLDivElement;
-    //     const docViewer = document.createElement("div");
-    //     docViewer.classList.add("doc-viewer");
-    //     explorerContainer
-    //         .querySelector(".centered-view")
-    //         ?.appendChild(docViewer);
-    // }
+    createDocumentationViewer() {
+        const explorerContainer = document.querySelector(
+            ".explorer-container"
+        ) as HTMLDivElement;
+        const docViewer = document.createElement("div");
+        docViewer.classList.add("doc-viewer");
+        docViewer.style.top = `${this.menuSpawnLocation.y}px`;
+        docViewer.style.left = `${this.menuSpawnLocation.x + 300}px`;
+
+        const docViewerHeader = document.createElement("div");
+        docViewerHeader.classList.add("doc-viewer-header");
+        docViewerHeader.innerHTML = "Node-Title";
+
+        const docViewerBody = document.createElement("div");
+        docViewerBody.classList.add("doc-viewer-body");
+        docViewerBody.innerHTML = "Node-Description";
+
+        docViewer.appendChild(docViewerHeader);
+        docViewer.appendChild(docViewerBody);
+
+        explorerContainer?.appendChild(docViewer);
+        this.docViewer = docViewer;
+    }
+
+    @bind
+    addKeyboardNavigation({ key }: KeyboardEvent) {
+        if (key === "ArrowDown") {
+            if (
+                this.currentSelectedNodeIndex <
+                this.availableWireNodes.length - 1
+            ) {
+                this.currentSelectedNodeIndex++;
+            } else if (
+                this.currentSelectedNodeIndex ===
+                this.availableWireNodes.length - 1
+            ) {
+                this.currentSelectedNodeIndex = 0;
+            }
+        } else if (key === "ArrowUp") {
+            if (this.currentSelectedNodeIndex > 0) {
+                this.currentSelectedNodeIndex--;
+            } else if (this.currentSelectedNodeIndex === 0) {
+                this.currentSelectedNodeIndex =
+                    this.availableWireNodes.length - 1;
+            }
+        } else if (key === "Enter") {
+            let selectedElement = this.currentExpContainerElement
+                ?.querySelector(".node-items")
+                ?.querySelector<HTMLDivElement>(".list-tile:is(.selected)");
+            selectedElement?.click();
+        }
+        this.updateSelectedNode();
+    }
+
+    @bind
+    updateSelectedNode() {
+        var filteredElements: Array<Element> = [];
+        this.currentExpContainerElement
+            ?.querySelector(".node-items")
+            ?.querySelectorAll(".list-tile")
+            .forEach((elem, index) => {
+                elem.classList.remove("selected");
+                if (getComputedStyle(elem).display === "none") {
+                    return;
+                }
+                filteredElements.push(elem);
+            });
+
+        filteredElements.forEach((elem, index) => {
+            if (index === this.currentSelectedNodeIndex) {
+                if (!elem.classList.contains("selected")) {
+                    elem.classList.add("selected");
+                }
+            } else {
+                elem.classList.remove("selected");
+            }
+        });
+
+        this.availableWireNodes.forEach((node, index) => {
+            if (index === Number(this.currentExpContainerElement?.querySelector(".selected")?.getAttribute("data-index"))) {
+                this.docViewer!.querySelector(".doc-viewer-header")!.innerHTML =
+                    node.doc().name;
+                this.docViewer!.querySelector(".doc-viewer-body")!.innerHTML =
+                    node.doc().desc ?? "No documentation";
+            }
+        });
+    }
 
     toggleExplorer() {
         if (!this.visible) {
@@ -41,8 +121,6 @@ export class GraphNodeExplorer {
             explorerContainer.classList.add("explorer-container");
             this.currentExpContainerElement = explorerContainer;
             explorerContainer.addEventListener("click", this.onContainerClick);
-            // const centeredView = document.createElement("div");
-            // centeredView.classList.add("centered-view");
             const nodeExplorer = document.createElement("div");
             nodeExplorer.classList.add("node-explorer");
             nodeExplorer.style.top = `${this.menuSpawnLocation.y}px`;
@@ -60,6 +138,7 @@ export class GraphNodeExplorer {
                 const listTile = document.createElement("div");
                 listTile.classList.add("list-tile");
                 listTile.title = i.doc().desc ?? "No documentation";
+                listTile.setAttribute("data-index", this.availableWireNodes.indexOf(i).toString());
                 const leading = document.createElement("div");
                 leading.classList.add("leading");
                 leading.classList.add("codicon");
@@ -86,16 +165,17 @@ export class GraphNodeExplorer {
             nodeExplorer.appendChild(header);
             nodeExplorer.appendChild(input);
             nodeExplorer.appendChild(nodeItems);
-            // centeredView.appendChild(nodeExplorer);
-            // explorerContainer.appendChild(centeredView);
             explorerContainer.appendChild(nodeExplorer);
             this.hostElement.appendChild(explorerContainer);
             this.visible = true;
             document
-            .querySelector(".explorer-container")
-            ?.querySelector("input")
-            ?.focus();
-            // this.createDocumentationViewer();
+                .querySelector(".explorer-container")
+                ?.querySelector("input")
+                ?.focus();
+            this.createDocumentationViewer();
+            input.addEventListener("keydown", this.addKeyboardNavigation);
+            this.currentSelectedNodeIndex = 0;
+            this.updateSelectedNode();
         } else {
             document.querySelector(".explorer-container")?.remove();
             this.visible = false;
@@ -108,6 +188,8 @@ export class GraphNodeExplorer {
         const tiles = document
             .querySelector(".explorer-container")!
             .querySelectorAll<HTMLDivElement>(".list-tile");
+        this.currentSelectedNodeIndex = 0;
+        this.updateSelectedNode();
         tiles.forEach((tile) => {
             const title = tile.querySelector(".title") as HTMLDivElement;
             if (

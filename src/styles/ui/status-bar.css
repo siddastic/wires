@@ -29,6 +29,8 @@
     max-width: 40vw;
     vertical-align: top;
     line-height: 25px;
+    transition: background-color 0.2s;
+    user-select: none !important;
 }
 
 .status-bar-icon{
@@ -50,4 +52,8 @@
 
 .status-bar-item:is(.disabled){
     opacity: 0.3;
+}
+
+.status-bar-item:is(.highlight){
+    background-color: rgb(163, 111, 34);
 }
