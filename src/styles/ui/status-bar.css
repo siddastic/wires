@@ -29,6 +29,7 @@
     max-width: 40vw;
     vertical-align: top;
     line-height: 25px;
+    transition: background-color 0.2s;
 }
 
 .status-bar-icon{

@@ -85,7 +85,7 @@ export class WireGraph {
         
         setInterval(() => {
             let counter = globalThis.globalNodeRegistry.instances.length;
-            nodeCount.setLabel(`Node Count : ${counter}`);
+            nodeCount.setLabel(`Node Count : ${counter}`,true);
             if(counter <= 0){
                 graphFlow.hide();
                 clearBoard.hide();

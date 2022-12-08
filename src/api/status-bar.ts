@@ -78,7 +78,18 @@ class StatusBarItem extends Widget {
         return item;
     }
 
-    setLabel(label: string) {
+    setLabel(label: string, transitionValueUpdate?: boolean) {
+        if (this.labelElement.innerText === label) {
+            return;
+        }
+        if (transitionValueUpdate) {
+            this.toggleHighlight();
+
+            setTimeout(() => {
+                this.toggleHighlight();
+            }, 600);
+        }
+
         this.data.label = label;
         this.labelElement.innerText = label;
     }
