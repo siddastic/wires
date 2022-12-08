@@ -1,9 +1,11 @@
+import { DataboardVariableNode } from "../internal/internal_nodes";
 import "../styles/ui/databoard.css";
 import { bind } from "./decorators";
-import { DropdownMenu, Widget } from "./widgets";
+import { DropdownMenu, NodeButton, SizedBox, Widget } from "./widgets";
+import { WireNode } from "./wire_node";
 
 export class DataBoard extends Widget {
-    variables: DataboardVariable[] = [];
+    public variables: DataboardVariable[] = [];
     constructor() {
         super();
     }
@@ -58,7 +60,8 @@ export class DataboardVariable extends Widget {
     id: string = uniqueIdGenerator.create();
     open: boolean = false;
     datatype = "string";
-    value : any = "";
+    value: any = "";
+    nodesCreatedFromThisVar : WireNode[] = [];
     constructor() {
         super();
     }
@@ -164,6 +167,51 @@ export class DataboardVariable extends Widget {
         valueContainer.appendChild(input);
 
         div.appendChild(valueContainer);
+
+        const btnRow = document.createElement("div");
+        btnRow.style.display = "flex";
+        btnRow.style.flexDirection = "row";
+
+        const deleteButton = new NodeButton({
+            label: "delete",
+            onClick: () => {
+                document.querySelector(`.${this.id}-options`)?.remove();
+                document
+                    .querySelector(".data-board")
+                    ?.querySelector(`#${this.id}`)
+                    ?.remove();
+                globalThis.databoard!.variables =
+                    globalThis.databoard!.variables.filter(
+                        (variable) => variable.id !== this.id
+                    );
+
+                this.nodesCreatedFromThisVar.forEach((node) => {
+                    node.destroy();
+                });
+            },
+        });
+        const ejectBtn = new NodeButton({
+            label: "eject",
+            onClick: () => {
+                const node = new DataboardVariableNode(
+                    {
+                        x: window.innerWidth / 2,
+                        y: window.innerHeight / 2,
+                    },
+                    this.label,
+                    this.value
+                );
+                node.setupNode();
+                document.querySelector(".wire-graph")?.appendChild(node.node.element);
+                this.nodesCreatedFromThisVar.push(node);
+            },
+        });
+
+        btnRow.appendChild(deleteButton.build());
+        btnRow.appendChild(new SizedBox(5, 0).build());
+        btnRow.appendChild(ejectBtn.build());
+
+        div.appendChild(btnRow);
 
         return div;
     }

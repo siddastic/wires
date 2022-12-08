@@ -1,6 +1,7 @@
 import { bind, doc } from "../api/decorators";
 import { NodeFieldController } from "../api/node_field_controller";
 import {
+    CustomWidget,
     NodeBody,
     NodeField,
     NodeHeader,
@@ -213,6 +214,34 @@ export class VariableNode extends WireNode {
     out(): WireOutData {
         return {
             data: this.controller.value,
+        };
+    }
+}
+
+export class DataboardVariableNode extends WireNode{
+    constructor(instantiatedPoint: Vector2, public variableName: string, public variableValue: string) {
+        super(instantiatedPoint);
+    }
+    build(): Widget {
+        return new NodeScaffold({
+            header: new NodeHeader({
+                title: this.variableName,
+            }),
+            body: new NodeBody({
+                children: [
+                    new CustomWidget({
+                        elementName: 'center',
+                        innerHTML: '<span style = "color : grey">value reference node<span>',
+                    }),
+                ],
+            }),
+        });
+    }
+
+    @bind
+    out(): WireOutData {
+        return {
+            data: this.variableValue,
         };
     }
 }
