@@ -1,5 +1,6 @@
 import { Vector2 } from "../interfaces/node";
 import { bind } from "./decorators";
+import { Divider } from "./widgets";
 import { WireNode } from "./wire_node";
 
 export class GraphNodeExplorer {
@@ -11,6 +12,7 @@ export class GraphNodeExplorer {
         y: window.innerHeight / 2,
     };
     currentSelectedNodeIndex: number = 0;
+    docViewer?: HTMLDivElement;
     constructor(private hostElement: HTMLElement) {
         this.availableWireNodes = globalThis.globalNodeRegistry.availableNodes;
     }
@@ -25,16 +27,29 @@ export class GraphNodeExplorer {
         this.toggleExplorer();
     }
 
-    // createDocumentationViewer() {
-    //     const explorerContainer = document.querySelector(
-    //         ".explorer-container"
-    //     ) as HTMLDivElement;
-    //     const docViewer = document.createElement("div");
-    //     docViewer.classList.add("doc-viewer");
-    //     explorerContainer
-    //         .querySelector(".centered-view")
-    //         ?.appendChild(docViewer);
-    // }
+    createDocumentationViewer() {
+        const explorerContainer = document.querySelector(
+            ".explorer-container"
+        ) as HTMLDivElement;
+        const docViewer = document.createElement("div");
+        docViewer.classList.add("doc-viewer");
+        docViewer.style.top = `${this.menuSpawnLocation.y}px`;
+        docViewer.style.left = `${this.menuSpawnLocation.x + 300}px`;
+
+        const docViewerHeader = document.createElement("div");
+        docViewerHeader.classList.add("doc-viewer-header");
+        docViewerHeader.innerHTML = "Node-Title";
+
+        const docViewerBody = document.createElement("div");
+        docViewerBody.classList.add("doc-viewer-body");
+        docViewerBody.innerHTML = "Node-Description";
+
+        docViewer.appendChild(docViewerHeader);
+        docViewer.appendChild(docViewerBody);
+
+        explorerContainer?.appendChild(docViewer);
+        this.docViewer = docViewer;
+    }
 
     @bind
     addKeyboardNavigation({ key }: KeyboardEvent) {
@@ -151,7 +166,7 @@ export class GraphNodeExplorer {
                 .querySelector(".explorer-container")
                 ?.querySelector("input")
                 ?.focus();
-            // this.createDocumentationViewer();
+            this.createDocumentationViewer();
             input.addEventListener("keydown", this.addKeyboardNavigation);
             this.currentSelectedNodeIndex = 0;
             this.updateSelectedNode();
