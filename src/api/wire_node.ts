@@ -26,7 +26,7 @@ export abstract class WireNode {
         };
     }
 
-    constructor(protected positionInWorld: Vector2) {}
+    constructor(public positionInWorld: Vector2) {}
 
     prebuild() {
         // this function is called before the node is built

@@ -61,6 +61,14 @@ export class WireGraph {
             iconClass: "codicon codicon-git-branch",
         });
 
+        let currentSelectedItem = globalThis.statusBar.addStatusBarItem({
+            alignment: StatusBarAlignment.left,
+            label: "",
+            iconClass: "codicon codicon-info",
+        });
+
+        currentSelectedItem.hide();
+
         let graphFlow = globalThis.statusBar.addStatusBarItem({
             alignment: StatusBarAlignment.right,
             label: "Graph Flow",
@@ -82,16 +90,38 @@ export class WireGraph {
                 });
             },
         });
-        
+
         setInterval(() => {
             let counter = globalThis.globalNodeRegistry.instances.length;
-            nodeCount.setLabel(`Node Count : ${counter}`,true);
-            if(counter <= 0){
+            nodeCount.setLabel(`Node Count : ${counter}`, true);
+            if (counter <= 0) {
                 graphFlow.hide();
                 clearBoard.hide();
-            }else{
-                graphFlow.show();  
+            } else {
+                graphFlow.show();
                 clearBoard.show();
+            }
+
+            if (globalThis.globalNodeRegistry.selectedWireNodes.length > 0) {
+                currentSelectedItem.show();
+                if (globalNodeRegistry.selectedWireNodes.length > 1) {
+                    currentSelectedItem.setLabel(
+                        `Nodes : ${globalNodeRegistry.selectedWireNodes.length} selected`,
+                        true
+                    );
+                } else if (globalNodeRegistry.selectedWireNodes.length == 1) {
+                    if (
+                        globalNodeRegistry.selectedWireNodes[0].node.header
+                            .textContent != null
+                    ) {
+                        currentSelectedItem.setLabel(
+                            `Node : ${globalNodeRegistry.selectedWireNodes[0].node.header.textContent} <${globalNodeRegistry.selectedWireNodes[0].positionInWorld.x},${globalNodeRegistry.selectedWireNodes[0].positionInWorld.y}>`,
+                            true
+                        );
+                    }
+                }
+            } else {
+                currentSelectedItem.hide();
             }
         }, 100);
     }
