@@ -1,0 +1,22 @@
+"filename", "language", "TypeScript", "CSS", "comment", "blank", "total"
+"c:\Users\XLR8\Documents\node projects\wires\src\api\data_board.ts", "TypeScript", 181, 0, 1, 25, 207
+"c:\Users\XLR8\Documents\node projects\wires\src\api\decorators.ts", "TypeScript", 15, 0, 6, 3, 24
+"c:\Users\XLR8\Documents\node projects\wires\src\api\draggable_ui_element.ts", "TypeScript", 7, 0, 0, 0, 7
+"c:\Users\XLR8\Documents\node projects\wires\src\api\node_explorer.ts", "TypeScript", 89, 0, -15, 8, 82
+"c:\Users\XLR8\Documents\node projects\wires\src\api\status-bar.ts", "TypeScript", 97, 0, 0, 14, 111
+"c:\Users\XLR8\Documents\node projects\wires\src\api\widgets.ts", "TypeScript", 100, 0, 0, 7, 107
+"c:\Users\XLR8\Documents\node projects\wires\src\api\wire_node.ts", "TypeScript", 81, 0, 2, 7, 90
+"c:\Users\XLR8\Documents\node projects\wires\src\api\wires.ts", "TypeScript", 71, 0, 0, 9, 80
+"c:\Users\XLR8\Documents\node projects\wires\src\interfaces\node.ts", "TypeScript", 2, 0, 0, 0, 2
+"c:\Users\XLR8\Documents\node projects\wires\src\interfaces\widget.ts", "TypeScript", 14, 0, 0, 1, 15
+"c:\Users\XLR8\Documents\node projects\wires\src\internal\internal_nodes.ts", "TypeScript", 2, 0, 0, -1, 1
+"c:\Users\XLR8\Documents\node projects\wires\src\main.ts", "TypeScript", 1, 0, 0, 0, 1
+"c:\Users\XLR8\Documents\node projects\wires\src\styles\main.css", "CSS", 0, 35, 2, 3, 40
+"c:\Users\XLR8\Documents\node projects\wires\src\styles\ui\databoard.css", "CSS", 0, 40, 0, 6, 46
+"c:\Users\XLR8\Documents\node projects\wires\src\styles\ui\status-bar.css", "CSS", 0, 50, 1, 8, 59
+"c:\Users\XLR8\Documents\node projects\wires\src\styles\widgets\checkbox.css", "CSS", 0, 42, 0, 5, 47
+"c:\Users\XLR8\Documents\node projects\wires\src\styles\widgets\divider.css", "CSS", 0, 5, 0, 0, 5
+"c:\Users\XLR8\Documents\node projects\wires\src\styles\widgets\dropdown.css", "CSS", 0, 24, 0, 3, 27
+"c:\Users\XLR8\Documents\node projects\wires\src\transpiler\graph_connection_map.ts", "TypeScript", -18, 0, 0, -3, -21
+"c:\Users\XLR8\Documents\node projects\wires\src\transpiler\node_tree.ts", "TypeScript", 43, 0, 0, 7, 50
+"Total", "-", 685, 196, -3, 102, 980
