@@ -20,12 +20,12 @@ export class GraphBackground {
         this.setGridSize(this.backgroundSize);
 
         // add event listeners
-        this.background.addEventListener("pointerdown", this.onPointerDown);
-        this.background.addEventListener("pointerup", this.onPointerUp);
-        this.background.addEventListener("pointermove", this.onPointerMove);
+        document.addEventListener("pointerdown", this.onPointerDown);
+        document.addEventListener("pointerup", this.onPointerUp);
+        document.addEventListener("pointermove", this.onPointerMove);
 
         // add wheel scroll event listener to change grid size
-        this.background.addEventListener("wheel", this.onWheel);
+        document.addEventListener("wheel", this.onWheel);
     }
 
     public setGridColor(color: string) {
