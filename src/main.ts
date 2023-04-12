@@ -1,27 +1,10 @@
-import "./styles/main.css";
+import { WireGraph } from "./api/graph/wire_graph";
 
-import {
-    AddNode,
-    DivideNode,
-    MultiplyNode,
-    SubtractNode,
-    VariableNode,
-} from "./internal/internal_nodes";
-import { WireGraph } from "./api/wires";
+declare global {
+    interface Window {
+        graph: WireGraph;
+    }
+}
 
-export const availableNodes = [
-    AddNode,
-    SubtractNode,
-    MultiplyNode,
-    DivideNode,
-    VariableNode,
-];
-
-new WireGraph({
-    availableNodes,
-    enableDataboard: false,
-    enableStatusBar: true,
-    graphHostElement: document.querySelector(".graph")!,
-});
-
-export { WireGraph };
+const graph = new WireGraph(document.querySelector(".graph") as HTMLDivElement);
+window.graph = graph;
