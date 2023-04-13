@@ -1,5 +1,6 @@
 import { bind } from "../decorators";
 import "../../styles/graph_container.css";
+import { GraphBackground } from "./graph_background";
 
 export class GraphContainer {
     graphContainer!: HTMLDivElement;
@@ -29,8 +30,10 @@ export class GraphContainer {
 
     // set canMoveContainer to true on pointerdown
     @bind
-    private onPointerDown() {
-        this.canMoveContainer = true;
+    private onPointerDown(event : PointerEvent) {
+        if(GraphContainer.wasEventStartedOnContainer(event) || GraphBackground.wasEventStartedOnBackground(event) || GraphContainer.wasEventStartedOnNodeContainer(event)){
+            this.canMoveContainer = true;
+        }
     }
 
     // set canMoveContainer to false on pointerup
@@ -62,5 +65,12 @@ export class GraphContainer {
 
     private updateTransform() {
         this.graphContainer.style.transform = `translate(${this.transform.x}px, ${this.transform.y}px) scale(${this.scale})`;
+    }
+
+    static wasEventStartedOnContainer(event: PointerEvent) {
+        return (event.target as unknown as HTMLElement).classList.contains("graph-container");
+    }
+    static wasEventStartedOnNodeContainer(event: PointerEvent) {
+        return (event.target as unknown as HTMLElement).classList.contains("node-container");
     }
 }
