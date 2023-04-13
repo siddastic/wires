@@ -24,7 +24,7 @@ export class GraphContainer {
         document.addEventListener("pointermove", this.onPointerMove);
 
         // add wheel scroll event listener to change grid size
-        document.addEventListener("wheel", this.onWheel);
+        document.addEventListener("wheel", this.onWheel, { passive: false });
     }
 
     // set canMoveContainer to true on pointerdown
@@ -52,15 +52,12 @@ export class GraphContainer {
     // change container scale on wheel and dont let scale go below 0.1
     @bind
     private onWheel(event: WheelEvent) {
-        if (event.deltaY > 0) {
-            this.scale -= 0.1;
-        } else {
-            this.scale += 0.1;
-        }
-        if (this.scale < 0.1) {
-            this.scale = 0.1;
-        }
-        this.updateTransform();
+        event.preventDefault();
+       if(event.ctrlKey){
+           this.scale += event.deltaY * -0.01;
+           this.scale = Math.min(Math.max(0.1, this.scale), 4);
+           this.updateTransform();
+       }
     }
 
     private updateTransform() {

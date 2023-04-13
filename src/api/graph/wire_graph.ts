@@ -1,19 +1,69 @@
 import { GraphBackground } from "./graph_background";
 import "../../styles/main.css";
 import { GraphContainer } from "./graph_container";
+import { UniqueIdGenerator } from "../uid";
+import { StatusBar, StatusBarAlignment } from "../status-bar";
+
+declare global {
+    var uniqueIdGenerator: UniqueIdGenerator;
+    var statusBar: StatusBar;
+}
+
+globalThis.uniqueIdGenerator = new UniqueIdGenerator();
 
 export class WireGraph {
     rootGraph!: HTMLDivElement;
     graphBackground!: GraphBackground;
     graphContainer!: GraphContainer;
     elementTree!: { nodeContainer: HTMLDivElement; svgContainer: SVGElement };
-    constructor(element: HTMLDivElement) {
+    graphOptions: GraphOptions = {
+        showGridEnabled: true,
+        statusBarEnabled: true,
+    };
+
+    constructor(element: HTMLDivElement, options?: GraphOptions) {
         this.rootGraph = element;
         this.rootGraph.classList.contains("wire-graph")
             ? void 0
             : this.rootGraph.classList.add("wire-graph");
         this.init();
         this.createElementTree();
+
+        // check if graph options are available
+        if(options){
+            this.graphOptions = options;
+        }
+
+        // apply the provided or else default graph options
+        this.applyGraphOptions(this.graphOptions);
+
+
+        // TODO : remove default status bar item
+        let nodeCount = globalThis.statusBar.addStatusBarItem({
+            alignment: StatusBarAlignment.left,
+            label: "Node Count : 0",
+            iconClass: "codicon codicon-git-branch",
+        });
+    }
+
+    public applyGraphOptions(options : GraphOptions){
+        if(globalThis.statusBar === undefined){
+            globalThis.statusBar = new StatusBar();
+        }
+
+        if(options.statusBarEnabled){
+            globalThis.statusBar.element.style.display = "block";
+        }else{
+            globalThis.statusBar.element.style.display = "none";
+        }
+
+        if(options.showGridEnabled){
+            this.graphBackground.showGrid();
+        }else{
+            this.graphBackground.hideGrid();
+        }
+
+        this.graphOptions = options;
     }
 
     private init() {

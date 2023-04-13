@@ -5,7 +5,7 @@
     height: 100%;
     user-select: none;
     cursor: move;
-    transform-origin: top left;
+    transform-origin: left top;
 }
 
 /* styling for element tree */

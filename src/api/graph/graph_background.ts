@@ -25,7 +25,7 @@ export class GraphBackground {
         document.addEventListener("pointermove", this.onPointerMove);
 
         // add wheel scroll event listener to change grid size
-        document.addEventListener("wheel", this.onWheel);
+        document.addEventListener("wheel", this.onWheel, { passive: false });
     }
 
     public setGridColor(color: string) {
@@ -39,7 +39,8 @@ export class GraphBackground {
 
     // set canMoveBackground to true on pointerdown
     @bind
-    private onPointerDown() {
+    private onPointerDown(ev : PointerEvent) {
+        console.log(ev);
         this.canMoveBackground = true;
     }
 
@@ -67,20 +68,24 @@ export class GraphBackground {
     // change grid size on wheel scroll
     @bind
     private onWheel(event: WheelEvent) {
-        // change grid size
-        this.backgroundSize.x += event.deltaY / 100;
-        this.backgroundSize.y += event.deltaY / 100;
+        event.preventDefault();
+        if (event.ctrlKey) {
+            // change grid size
+            this.backgroundSize.x += event.deltaY * -0.1;
+            this.backgroundSize.y += event.deltaY * -0.1;
 
-        // clamp grid size
-        if (this.backgroundSize.x < 10) {
-            this.backgroundSize.x = 10;
-        }
-        if (this.backgroundSize.y < 10) {
-            this.backgroundSize.y = 10;
-        }
+            // dont let grid size go below 1
+            this.backgroundSize.x = Math.max(1, this.backgroundSize.x);
+            this.backgroundSize.y = Math.max(1, this.backgroundSize.y);
 
-        // update background size
-        this.setGridSize(this.backgroundSize);
+            // update background size
+            this.setGridSize(this.backgroundSize);
+
+            // update background position
+            this.backgroundPosition.x += event.deltaY * -0.1;
+            this.backgroundPosition.y += event.deltaY * -0.1;
+            this.updateBackgroundPosition();
+        }
     }
 
     public resetZoom() {
@@ -96,5 +101,17 @@ export class GraphBackground {
     public reset() {
         this.resetZoom();
         this.resetPosition();
+    }
+
+    public showGrid() {
+        this.setGridColor("#242424");
+    }
+
+    public hideGrid() {
+        this.setGridColor("transparent");
+    }
+
+    static wasEventStartedOnBackground(event: PointerEvent) {
+        return event.target;
     }
 }
