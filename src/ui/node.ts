@@ -7,6 +7,9 @@ export class NodeUI {
     public footer!: HTMLElement;
     constructor(public id: string, public title : string) {
         this.nodeElement = this.buildNodeElement();
+
+        // hide the footer by default
+        this.hideFooter();
     }
 
     private buildNodeElement() : HTMLElement{
@@ -51,5 +54,21 @@ export class NodeUI {
         const div = document.createElement("div");
         div.classList.add("wire-node-footer");
         return div;
+    }
+
+    public showFooter(){
+        this.footer.style.display = "block";
+    }
+
+    public hideFooter(){
+        this.footer.style.display = "none";
+    }
+
+    public showBody(){
+        this.body.style.display = "block";
+    }
+
+    public hideBody(){
+        this.body.style.display = "none";
     }
 }

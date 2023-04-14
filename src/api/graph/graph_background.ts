@@ -113,7 +113,7 @@ export class GraphBackground {
         this.setGridColor("transparent");
     }
 
-    static wasEventStartedOnBackground(event: PointerEvent) {
+    static wasEventStartedOnBackground(event: PointerEvent | MouseEvent) {
         return (event.target as unknown as HTMLElement).classList.contains("graph-background");
     }
 }

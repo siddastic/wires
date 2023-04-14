@@ -67,10 +67,10 @@ export class GraphContainer {
         this.graphContainer.style.transform = `translate(${this.transform.x}px, ${this.transform.y}px) scale(${this.scale})`;
     }
 
-    static wasEventStartedOnContainer(event: PointerEvent) {
+    static wasEventStartedOnContainer(event: PointerEvent | MouseEvent) {
         return (event.target as unknown as HTMLElement).classList.contains("graph-container");
     }
-    static wasEventStartedOnNodeContainer(event: PointerEvent) {
+    static wasEventStartedOnNodeContainer(event: PointerEvent | MouseEvent) {
         return (event.target as unknown as HTMLElement).classList.contains("node-container");
     }
 }

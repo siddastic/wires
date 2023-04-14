@@ -39,9 +39,17 @@ export class WireGraph {
 
 
         // TODO : remove default status bar item
-        let nodeCount = globalThis.statusBar.addStatusBarItem({
+        globalThis.statusBar.addStatusBarItem({
             alignment: StatusBarAlignment.left,
             label: "Node Count : 0",
+            iconClass: "codicon codicon-git-branch",
+        });
+
+
+        // TODO : remove default status bar item
+        statusBar.addStatusBarItem({
+            alignment: StatusBarAlignment.right,
+            label: "Graph Flow",
             iconClass: "codicon codicon-git-branch",
         });
     }
@@ -52,7 +60,7 @@ export class WireGraph {
         }
 
         if(options.statusBarEnabled){
-            globalThis.statusBar.element.style.display = "block";
+            globalThis.statusBar.element.style.display = "flex";
         }else{
             globalThis.statusBar.element.style.display = "none";
         }
