@@ -73,4 +73,9 @@ export class GraphContainer {
     static wasEventStartedOnNodeContainer(event: PointerEvent | MouseEvent) {
         return (event.target as unknown as HTMLElement).classList.contains("node-container");
     }
+
+    public setZoom(zoom: number) {
+        this.scale = zoom;
+        this.updateTransform();
+    }
 }

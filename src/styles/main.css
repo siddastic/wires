@@ -5,11 +5,6 @@
     padding: 0px;
 }
 
-:root{
-    --background-color: #1a1a1a;
-    --grid-color : #242424;
-}
-
 /* width */
 ::-webkit-scrollbar {
     width: 10px;
@@ -22,7 +17,7 @@
 
 /* Handle */
 ::-webkit-scrollbar-thumb {
-    background: var(--background-color);
+    background: var(--graph-background-color);
 }
 
 /* Handle on hover */
@@ -33,9 +28,9 @@
 .wire-graph{
     font-family: Inter, Avenir, Helvetica, Arial, sans-serif;
     letter-spacing: 1px;
-    background-color: var(--background-color);
+    background-color: var(--graph-background-color);
     width: 100%;
     height: 100vh;
-    color: white;
+    color: var(--text-color);
     user-select: none;
 }

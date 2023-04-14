@@ -1,5 +1,6 @@
-import { CheckboxTile } from "../../ui/checkbox_tile";
 import { NodeUI } from "../../ui/node";
+import { NodeField } from "../../ui/node_field";
+import { UIElement } from "../../ui/ui_element";
 import { bind } from "../decorators";
 import { DraggableUIElement } from "../draggable_ui_element";
 import { WireGraph } from "../graph/wire_graph";
@@ -21,7 +22,12 @@ export abstract class WireNode {
         this.nodeUi = this.createNodeUI();
 
         // call the build method
-        this.build();
+        var fields = this.build();
+        if (fields) {
+            fields.forEach((field) => {
+                this.nodeUi.body.appendChild(field.element);
+            });
+        }
     }
 
     // set the name of the node
@@ -31,7 +37,7 @@ export abstract class WireNode {
     }
 
     // build method is the main method that is called after the node ui is created and node is ready to expect fields to be added to it
-    abstract build(): [] | void;
+    abstract build(): UIElement[] | void;
 
     @bind
     onDragStart(position: Vector2) {
@@ -78,7 +84,6 @@ export abstract class WireNode {
 }
 
 export class VariableNode extends WireNode {
-
     constructor(positionInWorld: Vector2, graphInstance: WireGraph) {
         super(positionInWorld, graphInstance);
         this.setName("Variable Node");
@@ -86,17 +91,24 @@ export class VariableNode extends WireNode {
     build() {
         console.log("building variable node");
         console.log(this);
-        
 
-        this.nodeUi.body.innerHTML = `
-        <fast-switch>
-    Theme
-    <span slot="checked-message">Dark</span>
-    <span slot="unchecked-message">Light</span>
-</fast-switch>
-        `;
+        var nodeField1 = new NodeField(
+            {
+                label: "Variable Name",
+                placeholder: "Enter variable name",
+            },
+            this.graphInstance
+        );
+
+        var nodeField2 = new NodeField(
+            {
+                label: "Variable Value",
+                placeholder: "Enter variable value",
+            },
+            this.graphInstance
+        );
+
+        return [nodeField1,nodeField2];
+
     }
 }
-
-
-new CheckboxTile();

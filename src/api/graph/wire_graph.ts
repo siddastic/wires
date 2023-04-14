@@ -3,6 +3,7 @@ import "../../styles/main.css";
 import { GraphContainer } from "./graph_container";
 import { UniqueIdGenerator } from "../uid";
 import { StatusBar, StatusBarAlignment } from "../status-bar";
+import { DefaultGraphTheme } from "./theme";
 
 declare global {
     var uniqueIdGenerator: UniqueIdGenerator;
@@ -20,6 +21,7 @@ export class WireGraph {
         showGridEnabled: true,
         statusBarEnabled: true,
     };
+    theme : DefaultGraphTheme;
 
     constructor(element: HTMLDivElement, options?: GraphOptions) {
         this.rootGraph = element;
@@ -52,6 +54,10 @@ export class WireGraph {
             label: "Graph Flow",
             iconClass: "codicon codicon-git-branch",
         });
+
+
+        // define theme
+        this.theme = new DefaultGraphTheme();
     }
 
     public applyGraphOptions(options : GraphOptions){
