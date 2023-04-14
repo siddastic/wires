@@ -1,6 +1,6 @@
 .wire-node {
     /* min-height: 300px; */
-    min-width: 250px;
+    min-width: 275px;
     background-color: var(--node-background-color);
     border-radius: 5px;
     position: absolute;

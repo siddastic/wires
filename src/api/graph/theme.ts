@@ -29,7 +29,7 @@ export class DefaultGraphTheme implements Theme {
 
     /* fast design variables */
     readonly designUnit = "3";
-    readonly neutralFillInputRest = "#3b3b3b";
+    readonly neutralFillInputRest = "#1a1a1a";
 
     constructor() {
         this.applyTheme(this);

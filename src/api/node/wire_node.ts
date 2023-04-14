@@ -94,7 +94,7 @@ export class VariableNode extends WireNode {
 
         var nodeField1 = new NodeField(
             {
-                label: "Variable Name",
+                label: "x",
                 placeholder: "Enter variable name",
             },
             this.graphInstance
@@ -102,7 +102,7 @@ export class VariableNode extends WireNode {
 
         var nodeField2 = new NodeField(
             {
-                label: "Variable Value",
+                label: "y",
                 placeholder: "Enter variable value",
             },
             this.graphInstance
