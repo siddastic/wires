@@ -1,4 +1,5 @@
 import { NodeUI } from "../../ui/node";
+import { NodeButton } from "../../ui/node_button";
 import { NodeField } from "../../ui/node_field";
 import { UIElement } from "../../ui/ui_element";
 import { bind } from "../decorators";
@@ -108,7 +109,15 @@ export class VariableNode extends WireNode {
             this.graphInstance
         );
 
-        return [nodeField1,nodeField2];
+        var btn = new NodeButton({
+            label: "Add",
+            onClick: () => {
+                console.log("clicked");
+                console.log(this);
+            },
+        },this.graphInstance);
+
+        return [nodeField1,nodeField2,btn];
 
     }
 }

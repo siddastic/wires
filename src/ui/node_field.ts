@@ -35,14 +35,14 @@ export class NodeField extends UIElement{
         return div;
     }
 
-    buildLabel(){
+    private buildLabel(){
         let label = document.createElement("div");
         label.classList.add("node-field-label");
         label.innerText = this.data.label ?? "";
         return label;
     }
 
-    buildInput(){
+    private buildInput(){
         let field = document.createElement("wires-text-field");
         field.id = this.id;
         field.classList.add("node-field");
