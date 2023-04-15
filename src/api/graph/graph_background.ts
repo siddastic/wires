@@ -1,3 +1,4 @@
+import { Vector2 } from "../../interfaces/basics";
 import "../../styles/graph_background.css";
 import { bind } from "../decorators";
 import { GraphContainer } from "./graph_container";

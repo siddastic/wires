@@ -1,6 +1,7 @@
 import { bind } from "../decorators";
 import "../../styles/graph_container.css";
 import { GraphBackground } from "./graph_background";
+import { Vector2 } from "../../interfaces/basics";
 
 export class GraphContainer {
     graphContainer!: HTMLDivElement;

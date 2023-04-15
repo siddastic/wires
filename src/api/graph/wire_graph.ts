@@ -4,6 +4,7 @@ import { GraphContainer } from "./graph_container";
 import { UniqueIdGenerator } from "../uid";
 import { StatusBar, StatusBarAlignment } from "../status-bar";
 import { DefaultGraphTheme } from "./theme";
+import { GraphOptions } from "../../interfaces/graph";
 
 declare global {
     var uniqueIdGenerator: UniqueIdGenerator;

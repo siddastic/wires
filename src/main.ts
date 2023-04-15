@@ -2,6 +2,7 @@ import { GraphBackground } from "./api/graph/graph_background";
 import { GraphContainer } from "./api/graph/graph_container";
 import { WireGraph } from "./api/graph/wire_graph";
 import { VariableNode } from "./api/node/wire_node";
+import { Vector2 } from "./interfaces/basics";
 
 declare global {
     var graph: WireGraph;
@@ -23,3 +24,5 @@ window.addEventListener("contextmenu", (event) => {
         new VariableNode(instancePoint, graph);
     }
 });
+
+// TODO : add exports in entry file so that they can be imported from other packages

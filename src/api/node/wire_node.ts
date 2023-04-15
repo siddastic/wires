@@ -1,3 +1,4 @@
+import { Vector2 } from "../../interfaces/basics";
 import { NodeUI } from "../../ui/node";
 import { NodeButton } from "../../ui/node_button";
 import { NodeField } from "../../ui/node_field";
@@ -104,20 +105,23 @@ export class VariableNode extends WireNode {
         var nodeField2 = new NodeField(
             {
                 label: "y",
-                placeholder: "Enter variable value",
+                placeholder: "Enter your nationality",
+                options: ["Indian", "American", "Chinese", "Japanese", "Russian", "Swiss"],
             },
             this.graphInstance
         );
 
-        var btn = new NodeButton({
-            label: "Add",
-            onClick: () => {
-                console.log("clicked");
-                console.log(this);
+        var btn = new NodeButton(
+            {
+                label: "Add",
+                onClick: () => {
+                    console.log("clicked");
+                    console.log(this);
+                },
             },
-        },this.graphInstance);
+            this.graphInstance
+        );
 
-        return [nodeField1,nodeField2,btn];
-
+        return [nodeField1, nodeField2, btn];
     }
 }
