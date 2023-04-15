@@ -124,8 +124,7 @@ export class VariableNode extends WireNode {
             {
                 label: "Add",
                 onClick: () => {
-                    console.log("clicked");
-                    console.log(this);
+                    nodeField1.toggleVisibility();
                 },
             },
             this.graphInstance
