@@ -8,7 +8,7 @@ import { WireGraph } from "../api/graph/wire_graph";
 import { UIElement } from "./ui_element";
 import "../styles/ui/node_switch.css";
 
-provideFASTDesignSystem().withPrefix("wires").register(fastSwitch({}));
+provideFASTDesignSystem().withPrefix("wires").register(fastSwitch());
 
 export interface NodeSwitchData{
     label: string;
@@ -20,7 +20,7 @@ export class NodeSwitch extends UIElement {
         this.element = this.build();
     }
 
-    build() {
+    protected build() {
         let container = document.createElement("div");
         container.id = this.id;
         container.classList.add("node-switch-container");
@@ -33,14 +33,14 @@ export class NodeSwitch extends UIElement {
         return container;
     }
 
-    private buildLabel(){
+    protected buildLabel(){
         let label = document.createElement("div");
         label.classList.add("node-switch-label");
         label.innerText = this.data.label;
         return label;
     }
 
-    private buildSwitch(){
+    protected buildSwitch(){
         let switchElement = document.createElement("wires-switch");
         return switchElement;
     }

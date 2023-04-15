@@ -1,4 +1,4 @@
 export interface GraphOptions{
-    showGridEnabled : boolean;
-    statusBarEnabled : boolean;
+    showGridEnabled? : boolean;
+    statusBarEnabled? : boolean;
 }

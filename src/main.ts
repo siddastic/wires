@@ -8,7 +8,9 @@ declare global {
     var graph: WireGraph;
 }
 
-const graph = new WireGraph(document.querySelector(".graph") as HTMLDivElement);
+const graph = new WireGraph(document.querySelector(".graph") as HTMLDivElement,{
+    showGridEnabled: false,
+});
 window.graph = graph;
 
 // creating a sample node on context menu event

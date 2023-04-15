@@ -22,7 +22,7 @@ export class WireGraph {
         showGridEnabled: true,
         statusBarEnabled: true,
     };
-    theme : DefaultGraphTheme;
+    theme: DefaultGraphTheme;
 
     constructor(element: HTMLDivElement, options?: GraphOptions) {
         this.rootGraph = element;
@@ -32,14 +32,18 @@ export class WireGraph {
         this.init();
         this.createElementTree();
 
+        // define theme
+        this.theme = new DefaultGraphTheme();
+
+
+        // applying graph options in last after defining theme cause theme resets the grid color and if grid was hidden in options it won't be hidden
         // check if graph options are available
-        if(options){
-            this.graphOptions = options;
+        if (options) {
+            Object.assign(this.graphOptions, options);
         }
 
         // apply the provided or else default graph options
         this.applyGraphOptions(this.graphOptions);
-
 
         // TODO : remove default status bar item
         globalThis.statusBar.addStatusBarItem({
@@ -48,7 +52,6 @@ export class WireGraph {
             iconClass: "codicon codicon-git-branch",
         });
 
-
         // TODO : remove default status bar item
         statusBar.addStatusBarItem({
             alignment: StatusBarAlignment.right,
@@ -56,25 +59,26 @@ export class WireGraph {
             iconClass: "codicon codicon-git-branch",
         });
 
-
-        // define theme
-        this.theme = new DefaultGraphTheme();
     }
 
-    public applyGraphOptions(options : GraphOptions){
-        if(globalThis.statusBar === undefined){
+    public applyGraphOptions(options: GraphOptions) {
+        console.log(options);
+        console.log("applying graph options");
+        if (globalThis.statusBar === undefined) {
             globalThis.statusBar = new StatusBar();
         }
 
-        if(options.statusBarEnabled){
+        if (options.statusBarEnabled) {
             globalThis.statusBar.element.style.display = "flex";
-        }else{
+        } else {
             globalThis.statusBar.element.style.display = "none";
         }
 
-        if(options.showGridEnabled){
+        if (options.showGridEnabled === true) {
+            console.log("showing grid");
             this.graphBackground.showGrid();
-        }else{
+        } else {
+            console.log("hiding grid");
             this.graphBackground.hideGrid();
         }
 

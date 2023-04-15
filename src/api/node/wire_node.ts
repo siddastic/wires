@@ -1,6 +1,7 @@
 import { Vector2 } from "../../interfaces/basics";
 import { NodeUI } from "../../ui/node";
 import { NodeButton } from "../../ui/node_button";
+import { NodeDropdown } from "../../ui/node_dropdown";
 import { NodeField } from "../../ui/node_field";
 import { NodeSwitch } from "../../ui/node_switch";
 import { UIElement } from "../../ui/ui_element";
@@ -116,9 +117,12 @@ export class VariableNode extends WireNode {
             this.graphInstance
         );
 
-        let ns = new NodeSwitch({
-            label: "Switch",
-        },this.graphInstance);
+        let ns = new NodeSwitch(
+            {
+                label: "Switch",
+            },
+            this.graphInstance
+        );
 
         var btn = new NodeButton(
             {
@@ -130,6 +134,14 @@ export class VariableNode extends WireNode {
             this.graphInstance
         );
 
-        return [nodeField1, nodeField2, ns, btn];
+        let dropdown = new NodeDropdown(
+            {
+                label: "Dropdown",
+                options: ["Option 1", "Option 2", "Option 3", "Option 4", "Option 5", "Option 6", "Option 7", "Option 8", "Option 9", "Option 10"],
+            },
+            this.graphInstance
+        );
+
+        return [nodeField1, nodeField2, ns, dropdown, btn];
     }
 }

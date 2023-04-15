@@ -81,13 +81,13 @@ export class DefaultGraphTheme implements Theme {
     private applyUninheritableTheme(theme: Theme) {
         // these styles are defined separately because for some reason they don't inherit from the root
         const styles = `
-        wires-combobox wires-option{
+        wires-option{
             padding-left: 7px;
             background-color: ${theme.inputBaseColor};
             opacity: 0.75;
         }
 
-        wires-combobox wires-option:hover {
+        wires-option:hover {
             opacity: 1;
         }
 
@@ -110,7 +110,16 @@ export class DefaultGraphTheme implements Theme {
         wires-switch::part(switch){
             border:none;
         }
-        
+
+        wires-select{
+            --design-unit : ${theme.designUnit};
+            --neutral-fill-input-rest: ${theme.inputBaseColor};
+            --neutral-fill-input-hover: ${theme.inputHoverColor};
+        }
+
+        wires-select::part(listbox){
+            background-color: ${theme.inputBaseColor};
+        }
         `;
 
         this.uninheritableStylesheet.innerHTML = styles;

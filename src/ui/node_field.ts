@@ -31,7 +31,7 @@ export class NodeField extends UIElement {
         return this.data.options && this.data.options.length > 0;
     }
 
-    build() {
+    protected build() {
         let div = document.createElement("div");
         div.classList.add("node-field-container");
         this.labelElement = this.buildLabel();
@@ -43,14 +43,14 @@ export class NodeField extends UIElement {
         return div;
     }
 
-    private buildLabel() {
+    protected buildLabel() {
         let label = document.createElement("div");
         label.classList.add("node-field-label");
         label.innerText = this.data.label ?? "";
         return label;
     }
 
-    private buildInput() {
+    protected buildInput() {
         let field = document.createElement("wires-text-field");
         field.id = this.id;
         field.classList.add("node-field");
@@ -69,7 +69,7 @@ export class NodeField extends UIElement {
         this.data.options = options.map((option) => option ?? "");
     }
 
-    private buildComboBox() {
+    protected buildComboBox() {
         let field = document.createElement("wires-combobox");
         field.id = this.id;
         field.setAttribute("autocomplete", "both");

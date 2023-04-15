@@ -21,7 +21,7 @@ export class NodeButton extends UIElement{
         this.element = this.build();
     }
 
-    build(){
+    protected build(){
         let button = document.createElement("wires-button");
         button.innerText = this.data.label;
         this.data.onClick && button.addEventListener("click",this.data.onClick);
