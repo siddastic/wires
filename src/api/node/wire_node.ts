@@ -91,8 +91,6 @@ export class VariableNode extends WireNode {
         this.setName("Variable Node");
     }
     build() {
-        console.log("building variable node");
-        console.log(this);
 
         var nodeField1 = new NodeField(
             {

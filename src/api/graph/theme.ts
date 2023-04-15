@@ -13,6 +13,7 @@ export interface Theme {
     /* fast design variables */
     designUnit?: string;
     neutralFillInputRest?: string;
+    neutralFillInputHover?: string;
 }
 
 export class DefaultGraphTheme implements Theme {
@@ -30,9 +31,14 @@ export class DefaultGraphTheme implements Theme {
     /* fast design variables */
     readonly designUnit = "3";
     readonly neutralFillInputRest = "#1a1a1a";
+    readonly neutralFillInputHover = "#1a1a1a";
+
+    uninheritableStylesheet = document.createElement("style");
 
     constructor() {
         this.applyTheme(this);
+
+        document.head.appendChild(this.uninheritableStylesheet);
     }
 
     createThemeObject(theme: Theme) {
@@ -52,6 +58,7 @@ export class DefaultGraphTheme implements Theme {
             /* fast design variables */
             "--design-unit": theme.designUnit!,
             "--neutral-fill-input-rest": theme.neutralFillInputRest!,
+            "--neutral-fill-input-hover": theme.neutralFillInputHover!,
         };
     }
 
@@ -60,9 +67,37 @@ export class DefaultGraphTheme implements Theme {
         for (const [key, value] of Object.entries(themeObject)) {
             document.documentElement.style.setProperty(key, value);
         }
+
+        this.applyUninheritableTheme(theme);
     }
 
     copyWith(override: Theme) {
         return Object.assign({}, this, override);
+    }
+
+    private applyUninheritableTheme(theme: Theme) {
+        // these styles are defined separately because for some reason they don't inherit from the root
+        const styles = `
+        wires-combobox wires-option{
+            padding-left: 7px;
+            background-color: ${theme.neutralFillInputRest};
+            opacity: 0.75;
+        }
+
+        wires-combobox wires-option:hover {
+            opacity: 1;
+        }
+
+        wires-combobox::part(listbox){
+            background-color: ${theme.neutralFillInputRest};
+        }
+
+        wires-combobox{
+            --design-unit : ${theme.designUnit};
+            --neutral-fill-input-rest: ${theme.neutralFillInputRest};
+            --neutral-fill-input-hover: ${theme.neutralFillInputHover};
+        }`;
+
+        this.uninheritableStylesheet.innerHTML = styles;
     }
 }
