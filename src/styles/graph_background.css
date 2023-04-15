@@ -6,6 +6,6 @@
     background-position: 0px 0px;
     background-size: 10px 10px;
     user-select: none;
-    cursor: move;
+    cursor: default;
     overflow: hidden;
 }

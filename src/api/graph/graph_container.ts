@@ -32,7 +32,8 @@ export class GraphContainer {
     // set canMoveContainer to true on pointerdown
     @bind
     private onPointerDown(event : PointerEvent) {
-        if(GraphContainer.wasEventStartedOnContainer(event) || GraphBackground.wasEventStartedOnBackground(event) || GraphContainer.wasEventStartedOnNodeContainer(event)){
+        // only allow graph to move if ctrl key is pressed and event is started on graph
+        if(event.ctrlKey && (GraphContainer.wasEventStartedOnContainer(event) || GraphBackground.wasEventStartedOnBackground(event) || GraphContainer.wasEventStartedOnNodeContainer(event))){
             this.canMoveContainer = true;
         }
     }

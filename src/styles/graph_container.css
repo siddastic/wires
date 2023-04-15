@@ -4,7 +4,7 @@
     width: 100%;
     height: 100%;
     user-select: none;
-    cursor: move;
+    cursor: inherit;
     transform-origin: left top;
     /* transition: all 0.5s ease-in-out; */
 }

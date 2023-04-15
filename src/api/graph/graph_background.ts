@@ -28,6 +28,24 @@ export class GraphBackground {
 
         // add wheel scroll event listener to change grid size
         document.addEventListener("wheel", this.onWheel, { passive: false });
+
+        this.addCursorEventListeners();
+    }
+
+    private addCursorEventListeners() {
+        // add keydown event listener to detect control key and change cursor
+        document.addEventListener("keydown", (event) => {
+            if (event.key === "Control") {
+                this.background.style.cursor = "move";
+            }
+        });
+
+        // add keyup event listener to detect control key and change cursor
+        document.addEventListener("keyup", (event) => {
+            if (event.key === "Control") {
+                this.background.style.cursor = "default";
+            }
+        });
     }
 
     public setGridColor(color: string) {
@@ -42,7 +60,8 @@ export class GraphBackground {
     // set canMoveBackground to true on pointerdown
     @bind
     private onPointerDown(event : PointerEvent) {
-        if(GraphContainer.wasEventStartedOnContainer(event) || GraphBackground.wasEventStartedOnBackground(event) || GraphContainer.wasEventStartedOnNodeContainer(event)){
+        // only allow graph to move if ctrl key is pressed and event is started on graph
+        if(event.ctrlKey && (GraphContainer.wasEventStartedOnContainer(event) || GraphBackground.wasEventStartedOnBackground(event) || GraphContainer.wasEventStartedOnNodeContainer(event))){
             this.canMoveBackground = true;
         }
     }
