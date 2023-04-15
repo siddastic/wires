@@ -6,23 +6,45 @@ import {
 } from "@microsoft/fast-components";
 import { WireGraph } from "../api/graph/wire_graph";
 import { UIElement } from "./ui_element";
+import "../styles/ui/node_switch.css";
 
 provideFASTDesignSystem().withPrefix("wires").register(fastSwitch({}));
 
+export interface NodeSwitchData{
+    label: string;
+}
+
 export class NodeSwitch extends UIElement {
-    constructor(public graphInstance: WireGraph) {
+    constructor(public data : NodeSwitchData,public graphInstance: WireGraph) {
         super(graphInstance);
         this.element = this.build();
     }
 
     build() {
-        let e = document.createElement("wires-switch");
-        e.style.marginTop = "7px";
-        e.style.marginBottom = "7px";
-        e.classList.add("node-switch-container");
-        e.innerText = "Switch";
-        return e;
+        let container = document.createElement("div");
+        container.id = this.id;
+        container.classList.add("node-switch-container");
+
+        let label = this.buildLabel();
+        let switchElement = this.buildSwitch();
+
+        container.appendChild(label);
+        container.appendChild(switchElement);
+        return container;
     }
+
+    private buildLabel(){
+        let label = document.createElement("div");
+        label.classList.add("node-switch-label");
+        label.innerText = this.data.label;
+        return label;
+    }
+
+    private buildSwitch(){
+        let switchElement = document.createElement("wires-switch");
+        return switchElement;
+    }
+        
 
     // //         <fast-switch>
     //     Theme

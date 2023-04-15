@@ -1,4 +1,5 @@
 export interface Theme {
+    accentFillColor?: string;
     graphBackgroundColor?: string;
     gridColor?: string;
     nodeBackgroundColor?: string;
@@ -12,11 +13,12 @@ export interface Theme {
 
     /* fast design variables */
     designUnit?: string;
-    neutralFillInputRest?: string;
-    neutralFillInputHover?: string;
+    inputBaseColor?: string;
+    inputHoverColor?: string;
 }
 
 export class DefaultGraphTheme implements Theme {
+    readonly accentFillColor = "#646cff";
     readonly graphBackgroundColor = "#1a1a1a";
     readonly gridColor = "#242424";
     readonly nodeBackgroundColor = "#242424";
@@ -30,8 +32,8 @@ export class DefaultGraphTheme implements Theme {
 
     /* fast design variables */
     readonly designUnit = "3";
-    readonly neutralFillInputRest = "#1a1a1a";
-    readonly neutralFillInputHover = "#1a1a1a";
+    readonly inputBaseColor = "#1a1a1a";
+    readonly inputHoverColor = "#1a1a1a";
 
     uninheritableStylesheet = document.createElement("style");
 
@@ -43,6 +45,7 @@ export class DefaultGraphTheme implements Theme {
 
     createThemeObject(theme: Theme) {
         return {
+            "--accent-fill-rest": theme.accentFillColor!,
             "--graph-background-color": theme.graphBackgroundColor!,
             "--grid-color": theme.gridColor!,
             "--node-background-color": theme.nodeBackgroundColor!,
@@ -57,8 +60,8 @@ export class DefaultGraphTheme implements Theme {
 
             /* fast design variables */
             "--design-unit": theme.designUnit!,
-            "--neutral-fill-input-rest": theme.neutralFillInputRest!,
-            "--neutral-fill-input-hover": theme.neutralFillInputHover!,
+            "--neutral-fill-input-rest": theme.inputBaseColor!,
+            "--neutral-fill-input-hover": theme.inputHoverColor!,
         };
     }
 
@@ -80,7 +83,7 @@ export class DefaultGraphTheme implements Theme {
         const styles = `
         wires-combobox wires-option{
             padding-left: 7px;
-            background-color: ${theme.neutralFillInputRest};
+            background-color: ${theme.inputBaseColor};
             opacity: 0.75;
         }
 
@@ -89,14 +92,26 @@ export class DefaultGraphTheme implements Theme {
         }
 
         wires-combobox::part(listbox){
-            background-color: ${theme.neutralFillInputRest};
+            background-color: ${theme.inputBaseColor};
         }
 
         wires-combobox{
             --design-unit : ${theme.designUnit};
-            --neutral-fill-input-rest: ${theme.neutralFillInputRest};
-            --neutral-fill-input-hover: ${theme.neutralFillInputHover};
-        }`;
+            --neutral-fill-input-rest: ${theme.inputBaseColor};
+            --neutral-fill-input-hover: ${theme.inputHoverColor};
+        }
+        
+        wires-switch{
+            --accent-fill-rest: ${theme.accentFillColor};
+            --accent-fill-hover: ${theme.accentFillColor};
+            --accent-fill-active: ${theme.accentFillColor};
+        }
+
+        wires-switch::part(switch){
+            border:none;
+        }
+        
+        `;
 
         this.uninheritableStylesheet.innerHTML = styles;
     }

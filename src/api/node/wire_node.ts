@@ -2,6 +2,7 @@ import { Vector2 } from "../../interfaces/basics";
 import { NodeUI } from "../../ui/node";
 import { NodeButton } from "../../ui/node_button";
 import { NodeField } from "../../ui/node_field";
+import { NodeSwitch } from "../../ui/node_switch";
 import { UIElement } from "../../ui/ui_element";
 import { bind } from "../decorators";
 import { DraggableUIElement } from "../draggable_ui_element";
@@ -91,7 +92,6 @@ export class VariableNode extends WireNode {
         this.setName("Variable Node");
     }
     build() {
-
         var nodeField1 = new NodeField(
             {
                 label: "x",
@@ -104,10 +104,21 @@ export class VariableNode extends WireNode {
             {
                 label: "y",
                 placeholder: "Enter your nationality",
-                options: ["Indian", "American", "Chinese", "Japanese", "Russian", "Swiss"],
+                options: [
+                    "Indian",
+                    "American",
+                    "Chinese",
+                    "Japanese",
+                    "Russian",
+                    "Swiss",
+                ],
             },
             this.graphInstance
         );
+
+        let ns = new NodeSwitch({
+            label: "Switch",
+        },this.graphInstance);
 
         var btn = new NodeButton(
             {
@@ -120,6 +131,6 @@ export class VariableNode extends WireNode {
             this.graphInstance
         );
 
-        return [nodeField1, nodeField2, btn];
+        return [nodeField1, nodeField2, ns, btn];
     }
 }
