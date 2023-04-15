@@ -58,12 +58,26 @@ export class NodeField extends UIElement {
         return field;
     }
 
+    sortOptions() {
+        if(!this.data.options) return;
+        let options = Array.from(this.data.options);
+        options.sort((a, b) => {
+            let aText = a?.toLowerCase() ?? "";
+            let bText = b?.toLowerCase() ?? "";
+            return aText.localeCompare(bText);
+        });
+        this.data.options = options.map((option) => option ?? "");
+    }
+
     private buildComboBox() {
         let field = document.createElement("wires-combobox");
         field.id = this.id;
         field.setAttribute("autocomplete", "both");
         field.classList.add("node-field");
         field.setAttribute("placeholder", this.data.placeholder ?? "");
+
+        // sort options alphabetically
+        this.sortOptions();
 
         this.data.options?.forEach((option) => {
             let opt = document.createElement("wires-option");
