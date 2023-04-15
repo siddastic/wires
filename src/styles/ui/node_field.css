@@ -10,6 +10,7 @@
     /* default input border color on focus */
     --focus-stroke-outer: transparent;
     flex-grow: 2;
+    min-width: unset;
 }
 
 .node-field::part(control){

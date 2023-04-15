@@ -99,6 +99,7 @@ export class DefaultGraphTheme implements Theme {
             --design-unit : ${theme.designUnit};
             --neutral-fill-input-rest: ${theme.inputBaseColor};
             --neutral-fill-input-hover: ${theme.inputHoverColor};
+            min-width: unset;
         }
         
         wires-switch{
@@ -115,6 +116,7 @@ export class DefaultGraphTheme implements Theme {
             --design-unit : ${theme.designUnit};
             --neutral-fill-input-rest: ${theme.inputBaseColor};
             --neutral-fill-input-hover: ${theme.inputHoverColor};
+            min-width: unset;
         }
 
         wires-select::part(listbox){
