@@ -5,6 +5,7 @@ import { UniqueIdGenerator } from "../uid";
 import { StatusBar, StatusBarAlignment } from "../status-bar";
 import { DefaultGraphTheme } from "./theme";
 import { GraphOptions } from "../../interfaces/graph";
+import { NodeSelectionManager } from "./node_selection_manager";
 
 declare global {
     var uniqueIdGenerator: UniqueIdGenerator;
@@ -14,6 +15,7 @@ declare global {
 globalThis.uniqueIdGenerator = new UniqueIdGenerator();
 
 export class WireGraph {
+    nodeSelectionManager!: NodeSelectionManager;
     rootGraph!: HTMLDivElement;
     graphBackground!: GraphBackground;
     graphContainer!: GraphContainer;
@@ -58,6 +60,9 @@ export class WireGraph {
             label: "Graph Flow",
             iconClass: "codicon codicon-git-branch",
         });
+
+        // init node selection manager
+        this.nodeSelectionManager = new NodeSelectionManager(this);
 
     }
 

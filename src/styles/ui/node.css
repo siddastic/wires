@@ -49,3 +49,7 @@
     border-top: .5px solid var(--node-divider-color);
     padding: 10px 16px;
 }
+
+.wire-node-selected{
+    border: 1px solid var(--primary-color) !important;
+}
