@@ -32,6 +32,8 @@ export abstract class WireNode {
                 this.nodeUi.body.appendChild(field.element);
             });
         }
+
+        this.registerNodeInstance();
     }
 
     // set the name of the node
@@ -62,6 +64,7 @@ export abstract class WireNode {
     private createNodeUI(): NodeUI {
         // create node UI
         var node = new NodeUI(this.nodeId, "Node");
+        console.log(this.graphInstance);
         this.graphInstance.elementTree.nodeContainer.appendChild(
             node.nodeElement
         );
@@ -82,8 +85,18 @@ export abstract class WireNode {
             node.header
         );
 
+        // attach click listener to node which will select the node
+        node.nodeElement.addEventListener("click", () => {
+            this.graphInstance.nodeManager.nodeSelectionManager.deselectAllNodes();
+            this.graphInstance.nodeManager.nodeSelectionManager.selectNode(this);
+        });
+
         // return node ui so that can be used later to append fields to the node
         return node;
+    }
+
+    private registerNodeInstance() {
+        this.graphInstance.nodeManager.registerNodeInstance(this);
     }
 }
 

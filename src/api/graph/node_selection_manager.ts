@@ -2,9 +2,10 @@ import SelectionArea from "@viselect/vanilla";
 import { WireGraph } from "./wire_graph";
 import { GraphBackground } from "./graph_background";
 import { GraphContainer } from "./graph_container";
+import { WireNode } from "../node/wire_node";
 
 export class NodeSelectionManager {
-    // selectedNodes : Set<WireNode> = new Set();
+    selectedNodeIds: Set<string> = new Set();
     constructor(public graphInstance: WireGraph) {
         this.setupSelectionLibrary();
     }
@@ -47,7 +48,7 @@ export class NodeSelectionManager {
             },
         })
             .on("beforestart", (e) => {
-                if(e.event?.ctrlKey == true){
+                if (e.event?.ctrlKey == true) {
                     // cancel the selection if ctrl key is pressed to allow for panning
                     return false;
                 }
@@ -79,7 +80,7 @@ export class NodeSelectionManager {
                     }
 
                     selection.clearSelection();
-                    // globalThis.globalNodeRegistry.deselectAllNodes();
+                    this.deselectAllNodes();
                 }
             })
             .on(
@@ -91,6 +92,7 @@ export class NodeSelectionManager {
                 }) => {
                     for (const el of added) {
                         el.classList.add("wire-node-selected");
+                        this.selectedNodeIds.add(el.id);
                     }
 
                     for (const el of removed) {
@@ -100,8 +102,40 @@ export class NodeSelectionManager {
             )
             .on("stop", ({ store: { stored } }) => {
                 if (stored.length == 0) {
-                    // globalThis.globalNodeRegistry.deselectAllNodes();
+                    this.deselectAllNodes();
                 }
             });
+    }
+
+    private clearSelectionIds() {
+        this.selectedNodeIds.clear();
+    }
+
+    public deselectAllNodes() {
+        document
+            .querySelectorAll<HTMLDivElement>(".wire-node-selected")
+            .forEach((node) => {
+                node.classList.remove("wire-node-selected");
+            });
+        this.clearSelectionIds();
+    }
+
+    public selectNode(_node: WireNode) {
+        const node = document.getElementById(_node.nodeId);
+        if (node) {
+            node.classList.add("wire-node-selected");
+            this.selectedNodeIds.add(_node.nodeId);
+        }
+    }
+
+    public getSelectedNodeInstances(): WireNode[] {
+        const selectedNodes: WireNode[] = [];
+        for (const nodeId of this.selectedNodeIds) {
+            const node = this.graphInstance.nodeManager.getInstanceById(nodeId);
+            if (node) {
+                selectedNodes.push(node);
+            }
+        }
+        return selectedNodes;
     }
 }
