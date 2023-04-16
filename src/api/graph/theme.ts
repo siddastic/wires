@@ -1,4 +1,5 @@
 export interface Theme {
+    primaryColor?: string;
     accentFillColor?: string;
     graphBackgroundColor?: string;
     gridColor?: string;
@@ -18,6 +19,7 @@ export interface Theme {
 }
 
 export class DefaultGraphTheme implements Theme {
+    readonly primaryColor = "#2eaa56";
     readonly accentFillColor = "#646cff";
     readonly graphBackgroundColor = "#1a1a1a";
     readonly gridColor = "#242424";
@@ -45,6 +47,7 @@ export class DefaultGraphTheme implements Theme {
 
     createThemeObject(theme: Theme) {
         return {
+            "--primary-color": theme.primaryColor!,
             "--accent-fill-rest": theme.accentFillColor!,
             "--graph-background-color": theme.graphBackgroundColor!,
             "--grid-color": theme.gridColor!,
@@ -103,9 +106,9 @@ export class DefaultGraphTheme implements Theme {
         }
         
         wires-switch{
-            --accent-fill-rest: ${theme.accentFillColor};
-            --accent-fill-hover: ${theme.accentFillColor};
-            --accent-fill-active: ${theme.accentFillColor};
+            --accent-fill-rest: ${theme.primaryColor};
+            --accent-fill-hover: ${theme.primaryColor};
+            --accent-fill-active: ${theme.primaryColor};
         }
 
         wires-switch::part(switch){
