@@ -26,7 +26,7 @@ export class DefaultGraphTheme implements Theme {
     readonly nodeBackgroundColor = "#242424";
     readonly nodeDividerColor = "#1a1a1a";
     readonly nodeHoverBorderColor = "#646cff";
-    readonly nodeBorderColor = "#1a1a1a";
+    readonly nodeBorderColor = "black";
     readonly textColor = "#ffffff";
     readonly statusBarBgColor = "#242424";
     readonly statusBarItemHoverBgColor = "#1a1a1a";
