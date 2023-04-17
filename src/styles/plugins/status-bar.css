@@ -10,7 +10,6 @@
     color: var(--status-bar-text-color);
     align-items: center;
     font-size: 12px;
-    overflow: hidden;
     font-family: "Segoe WPC", "Segoe UI", sans-serif;
     z-index: 10;
 }
@@ -57,4 +56,10 @@
 
 .status-bar-item:is(.highlight){
     background-color: rgb(163, 111, 34);
+}
+
+.status-bar-item wires-listbox{
+    position: absolute;
+    bottom: 40px;
+    right: 5px;
 }

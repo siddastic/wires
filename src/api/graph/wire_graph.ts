@@ -47,6 +47,28 @@ export class WireGraph {
         // apply the provided or else default graph options
         this.applyGraphOptions(this.graphOptions);
 
+        // TODO : remove default status bar item
+        globalThis.statusBar.addStatusBarItem({
+            alignment: StatusBarAlignment.left,
+            label: "Node Count : 0",
+            iconClass: "codicon codicon-git-branch",
+        });
+
+        // TODO : remove default status bar item
+        statusBar.addStatusBarItem({
+            alignment: StatusBarAlignment.right,
+            label: "Graph Flow",
+            iconClass: "codicon codicon-git-branch",
+            options : [
+                "Graph Flow",
+                "Node Flow",
+                "Node Flow 2",
+            ],
+            onOptionSelect : (selectedOption) => {
+                console.log(selectedOption);
+            },
+        });
+
         // init node selection manager
         this.nodeManager = new NodeManager(this);
 

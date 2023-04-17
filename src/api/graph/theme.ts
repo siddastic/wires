@@ -86,6 +86,7 @@ export class DefaultGraphTheme implements Theme {
         const styles = `
         wires-option{
             padding-left: 7px;
+            padding-right: 7px;
             background-color: ${theme.inputBaseColor};
             opacity: 0.75;
         }
