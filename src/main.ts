@@ -6,7 +6,7 @@ declare global {
 }
 
 const graph = new WireGraph(document.querySelector(".graph") as HTMLDivElement,{
-    showGridEnabled: false,
+    showGridEnabled: true,
 });
 window.graph = graph;
 

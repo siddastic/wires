@@ -1,4 +1,5 @@
 import "../styles/ui/node.css";
+import { UIElement } from "./ui_element";
 
 export class NodeUI {
     public nodeElement: HTMLElement;
@@ -61,7 +62,7 @@ export class NodeUI {
     }
 
     public hideFooter(){
-        this.footer.style.display = "none";
+        this.footer.style.display = "unset";
     }
 
     public showBody(){
@@ -70,5 +71,10 @@ export class NodeUI {
 
     public hideBody(){
         this.body.style.display = "none";
+    }
+
+    public addFooterElement(element : UIElement){
+        this.footer.appendChild(element.element);
+        this.showFooter();
     }
 }
