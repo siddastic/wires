@@ -16,6 +16,8 @@ export class StatusBar {
     element: HTMLElement;
     leftContainer!: HTMLElement;
     rightContainer!: HTMLElement;
+
+    items: StatusBarItem[] = [];
     constructor() {
         this.element = this.createStatusBarItem();
     }
@@ -41,7 +43,16 @@ export class StatusBar {
         } else {
             this.rightContainer.appendChild(item.build());
         }
+        this.items.push(item);
         return item;
+    }
+
+    public removeStatusBarItem(item: StatusBarItem) {
+        let index = this.items.indexOf(item);
+        if (index !== -1) {
+            this.items.splice(index, 1);
+        }
+        item.rootElement.remove();
     }
 }
 
