@@ -116,6 +116,8 @@ export class VariableNode extends WireNode {
             {
                 label: "x",
                 placeholder: "Enter variable name",
+                type: "connect-in",
+                connectorStyle: "on-inside",
             },
             this.graphInstance
         );
@@ -123,6 +125,8 @@ export class VariableNode extends WireNode {
         var nodeField2 = new NodeField(
             {
                 label: "y",
+                type: "connect-out",
+                connectorStyle: "on-inside",
                 placeholder: "Enter your nationality",
                 options: [
                     "Indian",
@@ -161,6 +165,6 @@ export class VariableNode extends WireNode {
             this.graphInstance
         );
 
-        return [nodeField1, nodeField2, ns, dropdown, btn];
+        return [nodeField1, nodeField2,];
     }
 }

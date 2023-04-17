@@ -5,7 +5,10 @@ import "../styles/ui/node_connector.css";
 
 export interface NodeConnectorData{
     direction: "input" | "output";
+    style : NodeConnectorStyle;
 }
+
+export type NodeConnectorStyle = "on-edge" | "on-inside";
 
 export class NodeConnector extends UIElement {
     connectorColors = [
@@ -22,6 +25,11 @@ export class NodeConnector extends UIElement {
     protected build(): HTMLElement {
         const connector = document.createElement("div");
         connector.classList.add("node-connector");
+
+        if(this.data.style == "on-inside"){
+            // remove absolute positioning and set to default
+            connector.style.position = "unset";
+        }
         if(this.data.direction == "output"){
             connector.classList.add("node-connector-right");
         }

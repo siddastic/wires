@@ -8,27 +8,35 @@ import {
 import { UIElement } from "./ui_element";
 import { WireGraph } from "../api/graph/wire_graph";
 import "../styles/ui/node_field.css";
-import { NodeConnector } from "./node_connector";
+import { NodeConnector, NodeConnectorStyle } from "./node_connector";
 
 provideFASTDesignSystem()
     .withPrefix("wires")
     .register(fastTextField(), fastCombobox(), fastOption());
 
-type NodeConnectorType = "input" | "output";
+type NodeFieldType = "connect-in" | "input" | "connect-out";
 
 interface NodeFieldData {
     label?: string;
     placeholder?: string;
     options?: string[];
+    type?: NodeFieldType;
+    connectorStyle?: NodeConnectorStyle;
 }
 
 export class NodeField extends UIElement {
     connector!: NodeConnector;
-    type : NodeConnectorType = "input";
     labelElement!: HTMLDivElement;
     inputElement!: HTMLElement;
     constructor(public data: NodeFieldData, public graphInstance: WireGraph) {
         super(graphInstance);
+        // set a default type
+        if (!this.data.type) {
+            this.data.type = "input";
+        }
+        if (!this.data.connectorStyle) {
+            this.data.connectorStyle = "on-edge";
+        }
         this.element = this.build();
     }
 
@@ -40,11 +48,47 @@ export class NodeField extends UIElement {
         let div = document.createElement("div");
         div.classList.add("node-field-container");
         this.labelElement = this.buildLabel();
-        this.inputElement = this.shouldBuildComboBox ? this.buildComboBox() : this.buildInput();
+        this.inputElement = this.shouldBuildComboBox
+            ? this.buildComboBox()
+            : this.buildInput();
 
+        if (this.data.type != "input") {
+            this.connector = new NodeConnector(
+                {
+                    direction:
+                        this.data.type == "connect-in" ? "input" : "output",
+                    style: this.data.connectorStyle!,
+                },
+                this.graphInstance
+            );
 
+            // append connector to the left side
+            if(this.data.connectorStyle == "on-inside"){
+                if(this.data.type == "connect-in"){
+                    div.appendChild(this.connector.element);
+                }
+            }else{
+                div.appendChild(this.connector.element);
+            }
+        }
         div.appendChild(this.labelElement);
-        div.appendChild(this.inputElement);
+        if (this.data.type == "input") {
+            div.appendChild(this.inputElement);
+        }
+
+        // append connector to the right side
+        if(this.data.connectorStyle == "on-inside"){
+            if(this.data.type == "connect-out"){
+                this.connector.element.style.marginRight = "unset";
+                div.appendChild(this.connector.element);
+            }
+
+        }
+
+        // if its an out connector.. align label to the right
+        if(this.data.type == "connect-out"){
+            div.style.justifyContent = "flex-end";
+        }
 
         return div;
     }
@@ -52,6 +96,9 @@ export class NodeField extends UIElement {
     protected buildLabel() {
         let label = document.createElement("div");
         label.classList.add("node-field-label");
+        if(this.data.type == "connect-out" && this.data.connectorStyle == "on-edge"){
+            label.style.marginRight = "unset";
+        }
         label.innerText = this.data.label ?? "";
         return label;
     }
@@ -65,7 +112,7 @@ export class NodeField extends UIElement {
     }
 
     sortOptions() {
-        if(!this.data.options) return;
+        if (!this.data.options) return;
         let options = Array.from(this.data.options);
         options.sort((a, b) => {
             let aText = a?.toLowerCase() ?? "";
