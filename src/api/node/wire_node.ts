@@ -86,9 +86,11 @@ export abstract class WireNode {
         );
 
         // attach click listener to node which will select the node
-        node.nodeElement.addEventListener("click", () => {
+        node.nodeElement.addEventListener("click", (e) => {
             this.graphInstance.nodeManager.nodeSelectionManager.deselectAllNodes();
-            this.graphInstance.nodeManager.nodeSelectionManager.selectNode(this);
+            if((e.target as HTMLElement).classList.contains("wire-node-header") || (e.target as HTMLElement).parentElement!.classList.contains("wire-node-header")){
+                this.graphInstance.nodeManager.nodeSelectionManager.selectNode(this);
+            }
         });
 
         // return node ui so that can be used later to append fields to the node
