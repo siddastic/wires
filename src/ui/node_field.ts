@@ -8,10 +8,13 @@ import {
 import { UIElement } from "./ui_element";
 import { WireGraph } from "../api/graph/wire_graph";
 import "../styles/ui/node_field.css";
+import { NodeConnector } from "./node_connector";
 
 provideFASTDesignSystem()
     .withPrefix("wires")
     .register(fastTextField(), fastCombobox(), fastOption());
+
+type NodeConnectorType = "input" | "output";
 
 interface NodeFieldData {
     label?: string;
@@ -20,6 +23,8 @@ interface NodeFieldData {
 }
 
 export class NodeField extends UIElement {
+    connector!: NodeConnector;
+    type : NodeConnectorType = "input";
     labelElement!: HTMLDivElement;
     inputElement!: HTMLElement;
     constructor(public data: NodeFieldData, public graphInstance: WireGraph) {
@@ -36,6 +41,7 @@ export class NodeField extends UIElement {
         div.classList.add("node-field-container");
         this.labelElement = this.buildLabel();
         this.inputElement = this.shouldBuildComboBox ? this.buildComboBox() : this.buildInput();
+
 
         div.appendChild(this.labelElement);
         div.appendChild(this.inputElement);

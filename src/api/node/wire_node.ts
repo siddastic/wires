@@ -1,5 +1,5 @@
 import { Vector2 } from "../../interfaces/basics";
-import { NodeUI } from "../../ui/node";
+import { NodeUI } from "../../ui/node_ui";
 import { NodeButton } from "../../ui/node_button";
 import { NodeDropdown } from "../../ui/node_dropdown";
 import { NodeField } from "../../ui/node_field";
