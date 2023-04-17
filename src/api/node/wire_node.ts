@@ -98,6 +98,10 @@ export abstract class WireNode {
     private registerNodeInstance() {
         this.graphInstance.nodeManager.registerNodeInstance(this);
     }
+
+    destroy() {
+        this.nodeUi.nodeElement.remove();
+    }
 }
 
 export class VariableNode extends WireNode {

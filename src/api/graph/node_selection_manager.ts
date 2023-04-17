@@ -8,6 +8,8 @@ export class NodeSelectionManager {
     selectedNodeIds: Set<string> = new Set();
     constructor(public graphInstance: WireGraph) {
         this.setupSelectionLibrary();
+
+        this.setupDeleteKeyListener();
     }
 
     private setupSelectionLibrary() {
@@ -107,6 +109,14 @@ export class NodeSelectionManager {
             });
     }
 
+    private setupDeleteKeyListener() {
+        document.addEventListener("keydown", (e) => {
+            if (e.key == "Delete" && this.selectedNodeIds.size > 0) {
+                this.deleteSelectedNodes();
+            }
+        });
+    }
+
     private clearSelectionIds() {
         this.selectedNodeIds.clear();
     }
@@ -137,5 +147,13 @@ export class NodeSelectionManager {
             }
         }
         return selectedNodes;
+    }
+
+    public deleteSelectedNodes() {
+        const selectedNodes = this.getSelectedNodeInstances();
+        for (const node of selectedNodes) {
+            node.destroy();
+            this.graphInstance.nodeManager.removeNodeInstance(node);
+        }
     }
 }
