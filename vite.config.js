@@ -11,7 +11,7 @@ export default defineConfig({
             entry: resolve(__dirname, "src/main.ts"),
             name: "WireGraph",
             // the proper extensions will be added
-            fileName: "wires",
+            fileName: "wiregraph",
         },
         // rollupOptions: {
         //   output: {

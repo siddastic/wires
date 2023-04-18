@@ -1,17 +1,17 @@
 {
-  "name": "wires",
+  "name": "wiregraph",
   "private": true,
   "version": "0.0.5",
   "type": "module",
   "files": [
     "dist"
   ],
-  "main": "./dist/wires.js",
-  "module": "./dist/wires.js",
+  "main": "./dist/wiregraph.js",
+  "module": "./dist/wiregraph.js",
   "exports": {
     ".": {
-      "import": "./dist/wires.js",
-      "require": "./dist/wires.umd.cjs"
+      "import": "./dist/wiregraph.js",
+      "require": "./dist/wiregraph.umd.cjs"
     },
     "./dist/style.css": "./dist/style.css",
     "./dist/codeicon.ttf": "./dist/codeicon.ttf",
