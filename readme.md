@@ -32,7 +32,7 @@ It'll show you the server address (which is usually http://localhost:5173/), ope
 
 - /src
     - /api
-        - includes all the files that contribute to the main fuctionality of the framework
+        - includes all the files that contribute to the main functionality of the framework
     - /interfaces
         - contains type files
     - /internal
