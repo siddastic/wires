@@ -1,0 +1,12 @@
+.node-switch-container{
+    display: flex;
+    flex-direction: row;
+    margin-bottom: 7px;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.node-switch-container .node-switch-label{
+    margin-right: 10px;
+    align-self: center;
+}

@@ -1,22 +1,31 @@
-import "../styles/ui/status-bar.css";
-import { Widget } from "./widgets";
+import {
+    fastListbox,
+    provideFASTDesignSystem,
+} from "@microsoft/fast-components";
+import "../styles/plugins/status-bar.css";
+
+provideFASTDesignSystem().withPrefix("wires").register(fastListbox());
 
 export enum StatusBarAlignment {
     left,
     right,
 }
 
-interface StatusBarItemData {
+export interface StatusBarItemData {
     label: string;
     alignment: StatusBarAlignment;
     iconClass?: string;
     onClick?: Function;
+    options?: string[];
+    onOptionSelect?: (selectedOption: string) => void;
 }
 
 export class StatusBar {
     element: HTMLElement;
     leftContainer!: HTMLElement;
     rightContainer!: HTMLElement;
+
+    items: StatusBarItem[] = [];
     constructor() {
         this.element = this.createStatusBarItem();
     }
@@ -42,18 +51,27 @@ export class StatusBar {
         } else {
             this.rightContainer.appendChild(item.build());
         }
+        this.items.push(item);
         return item;
+    }
+
+    public removeStatusBarItem(item: StatusBarItem) {
+        let index = this.items.indexOf(item);
+        if (index !== -1) {
+            this.items.splice(index, 1);
+        }
+        item.rootElement.remove();
     }
 }
 
-class StatusBarItem extends Widget {
+class StatusBarItem {
     id: string = uniqueIdGenerator.create();
     labelElement!: HTMLSpanElement;
     isVisible: boolean = true;
     rootElement!: HTMLElement;
-    constructor(public data: StatusBarItemData) {
-        super();
-    }
+    optionsListbox?: HTMLElement;
+    optionsListboxVisible: boolean = false;
+    constructor(public data: StatusBarItemData) {}
     build(): HTMLElement {
         let item = document.createElement("div");
         let innerContainer = document.createElement("div");
@@ -67,15 +85,42 @@ class StatusBarItem extends Widget {
         }
         this.labelElement = document.createElement("span");
         this.labelElement.innerText = this.data.label;
+        if (this.data.options !== undefined && this.data.options.length > 0) {
+            this.optionsListbox = this.buildOptionsListbox();
+        }
         item.addEventListener("click", () => {
             if (this.data.onClick) {
                 this.data.onClick();
             }
+            if (
+                this.data.options !== undefined &&
+                this.data.options.length > 0
+            ) {
+                if (this.optionsListboxVisible) {
+                    this.hideOptionsListbox();
+                } else {
+                    this.showOptionsListbox();
+                }
+            }
         });
+
+        if (this.optionsListbox) {
+            item.appendChild(this.optionsListbox);
+        }
         innerContainer.appendChild(this.labelElement);
         item.appendChild(innerContainer);
         this.rootElement = item;
         return item;
+    }
+
+    public showOptionsListbox() {
+        this.optionsListbox!.style.display = "inline-flex";
+        this.optionsListboxVisible = true;
+    }
+
+    public hideOptionsListbox() {
+        this.optionsListbox!.style.display = "none";
+        this.optionsListboxVisible = false;
     }
 
     setLabel(label: string, transitionValueUpdate?: boolean) {
@@ -92,6 +137,24 @@ class StatusBarItem extends Widget {
 
         this.data.label = label;
         this.labelElement.innerText = label;
+    }
+
+    protected buildOptionsListbox() {
+        let listbox = document.createElement("wires-listbox");
+        listbox.setAttribute("appearance", "filled");
+        listbox.style.display = "none";
+        for (let option of this.data.options!) {
+            let optionElement = document.createElement("wires-option");
+            optionElement.setAttribute("value", option);
+            optionElement.innerText = option;
+            optionElement.addEventListener("click", () => {
+                if (this.data.onOptionSelect) {
+                    this.data.onOptionSelect(option);
+                }
+            });
+            listbox.appendChild(optionElement);
+        }
+        return listbox;
     }
 
     hide() {

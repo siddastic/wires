@@ -1,4 +1,4 @@
-import { Vector2 } from "../interfaces/node";
+import { Vector2 } from "../interfaces/basics";
 import { bind } from "./decorators";
 
 export class DraggableUIElement {

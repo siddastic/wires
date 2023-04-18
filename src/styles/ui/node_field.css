@@ -1,0 +1,29 @@
+.node-field {
+    display: flex;
+    flex-direction: column;
+    /* default input border color */
+    --accent-fill-rest: transparent;
+
+    /* default input border color on hover */
+    --accent-fill-hover: var(--node-hover-border-color);
+
+    /* default input border color on focus */
+    --focus-stroke-outer: transparent;
+    flex-grow: 2;
+    min-width: unset;
+}
+
+.node-field::part(control){
+    caret-color: #646cff !important;
+}
+
+.node-field-container{
+    display: flex;
+    margin-bottom: 7px;
+}
+
+.node-field-label{
+    font-size: 16px;
+    margin-right: 10px;
+    align-self: center;
+}

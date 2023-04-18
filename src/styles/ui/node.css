@@ -1,0 +1,55 @@
+.wire-node {
+    /* min-height: 300px; */
+    min-width: 275px;
+    background-color: var(--node-background-color);
+    border-radius: 5px;
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    border: .5px solid var(--node-border-color);
+    z-index: 1;
+    opacity: .9;
+}
+
+.wire-node:has(.wire-node-header:active) {
+    opacity: 0.75;
+}
+
+.wire-node:hover {
+    border: 1px solid var(--node-hover-border-color);
+    z-index: 2;
+}
+
+.wire-node .wire-node-header {
+    height: 50px;
+    width: 100%;
+    background-color: var(--node-background-color);
+    display: flex;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    justify-content: center;
+    align-items: center;
+    font-size: 20px;
+    border-bottom: .5px solid var(--node-divider-color);
+    cursor: move;
+}
+
+.wire-node .wire-node-body {
+    padding: 5px 16px;
+    /* min-height: 225px; */
+}
+
+.wire-node .wire-node-body {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 7px;
+}
+
+.wire-node-footer {
+    /* border-top: .5px solid var(--node-divider-color); */
+    padding: 10px 16px;
+}
+
+.wire-node-selected{
+    border: 1px solid var(--primary-color) !important;
+}

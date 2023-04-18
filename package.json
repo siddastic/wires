@@ -1,33 +1,39 @@
 {
-  "name": "wires",
+  "name": "wiregraph",
   "private": true,
-  "version": "0.0.4",
+  "version": "0.0.5",
   "type": "module",
   "files": [
     "dist"
   ],
-  "main": "./dist/wires.umd.cjs",
-  "module": "./dist/wires.js",
+  "main": "./dist/wiregraph.js",
+  "module": "./dist/wiregraph.js",
   "exports": {
     ".": {
-      "import": "./dist/wires.js",
-      "require": "./dist/wires.umd.cjs"
+      "import": "./dist/wiregraph.js",
+      "require": "./dist/wiregraph.umd.cjs"
     },
     "./dist/style.css": "./dist/style.css",
+    "./dist/codeicon.ttf": "./dist/codeicon.ttf",
     "./dist/main": "./dist/main"
   },
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "test": "vitest run --environment jsdom"
   },
   "devDependencies": {
     "@types/uuid": "^8.3.4",
+    "@vitest/coverage-c8": "^0.30.1",
+    "jsdom": "^21.1.1",
     "typescript": "^4.6.4",
     "vite": "^3.1.0",
-    "vite-plugin-dts": "^1.6.6"
+    "vite-plugin-dts": "^1.6.6",
+    "vitest": "^0.30.1"
   },
   "dependencies": {
-    "@viselect/vanilla": "^3.1.1"
+    "@microsoft/fast-components": "^2.30.6",
+    "@viselect/vanilla": "^3.2.7"
   }
 }

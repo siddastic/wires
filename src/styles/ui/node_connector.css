@@ -1,0 +1,21 @@
+.node-connector {
+    min-height: 10px;
+    min-width: 10px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-self: center;
+    margin-right: 10px;
+    position: absolute;
+    left: -6px;
+    background-color: var(--node-background-color);
+}
+
+.node-connector:hover {
+    border-color: #646cff;
+}
+
+.node-connector-right {
+    left: auto;
+    right: -16px;
+}

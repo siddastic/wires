@@ -1,0 +1,26 @@
+/* styling for graph container */
+
+.graph-container{
+    width: 100%;
+    height: 100%;
+    user-select: none;
+    cursor: inherit;
+    transform-origin: left top;
+    /* transition: all 0.5s ease-in-out; */
+}
+
+/* styling for element tree */
+
+.node-container{
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+
+.svg-container{
+    position: relative;
+    width: 100%;
+    height: 100%;
+    overflow: visible;
+    pointer-events: none;
+}
