@@ -10,12 +10,14 @@ import "../styles/ui/node_switch.css";
 
 provideFASTDesignSystem().withPrefix("wires").register(fastSwitch());
 
-export interface NodeSwitchData{
+export interface NodeSwitchData {
     label: string;
+    value?: boolean;
+    onChange?: (newValue: boolean) => void;
 }
 
 export class NodeSwitch extends UIElement {
-    constructor(public data : NodeSwitchData,public graphInstance: WireGraph) {
+    constructor(private data: NodeSwitchData, public graphInstance: WireGraph) {
         super(graphInstance);
         this.element = this.build();
     }
@@ -33,22 +35,28 @@ export class NodeSwitch extends UIElement {
         return container;
     }
 
-    protected buildLabel(){
+    protected buildLabel() {
         let label = document.createElement("div");
         label.classList.add("node-switch-label");
         label.innerText = this.data.label;
         return label;
     }
 
-    protected buildSwitch(){
-        let switchElement = document.createElement("wires-switch");
+    protected buildSwitch() {
+        // force the type to be HTMLInputElement so that we can use the checked property
+        let switchElement = document.createElement("wires-switch") as unknown as HTMLInputElement;
+        switchElement.setAttribute(
+            "checked",
+            (this.data.value ?? false).toString()
+        );
+
+        if (this.data.onChange !== undefined) {
+            switchElement.addEventListener("change", () => {
+                this.data.onChange!(
+                    switchElement.checked
+                );
+            });
+        }
         return switchElement;
     }
-        
-
-    // //         <fast-switch>
-    //     Theme
-    //     <span slot="checked-message">Dark</span>
-    //     <span slot="unchecked-message">Light</span>
-    // </fast-switch>
 }

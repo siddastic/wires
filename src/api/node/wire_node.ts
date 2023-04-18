@@ -88,8 +88,17 @@ export abstract class WireNode {
         // attach click listener to node which will select the node
         node.nodeElement.addEventListener("click", (e) => {
             this.graphInstance.nodeManager.nodeSelectionManager.deselectAllNodes();
-            if((e.target as HTMLElement).classList.contains("wire-node-header") || (e.target as HTMLElement).parentElement!.classList.contains("wire-node-header")){
-                this.graphInstance.nodeManager.nodeSelectionManager.selectNode(this);
+            if (
+                (e.target as HTMLElement).classList.contains(
+                    "wire-node-header"
+                ) ||
+                (e.target as HTMLElement).parentElement!.classList.contains(
+                    "wire-node-header"
+                )
+            ) {
+                this.graphInstance.nodeManager.nodeSelectionManager.selectNode(
+                    this
+                );
             }
         });
 
@@ -143,6 +152,9 @@ export class VariableNode extends WireNode {
         let ns = new NodeSwitch(
             {
                 label: "Switch",
+                onChange: (value) => {
+                    console.log(value);
+                },
             },
             this.graphInstance
         );
@@ -160,7 +172,18 @@ export class VariableNode extends WireNode {
         let dropdown = new NodeDropdown(
             {
                 label: "Dropdown",
-                options: ["Option 1", "Option 2", "Option 3", "Option 4", "Option 5", "Option 6", "Option 7", "Option 8", "Option 9", "Option 10"],
+                options: [
+                    "Option 1",
+                    "Option 2",
+                    "Option 3",
+                    "Option 4",
+                    "Option 5",
+                    "Option 6",
+                    "Option 7",
+                    "Option 8",
+                    "Option 9",
+                    "Option 10",
+                ],
             },
             this.graphInstance
         );
@@ -168,6 +191,6 @@ export class VariableNode extends WireNode {
         this.nodeUi.addFooterElement(nodeField2);
         this.nodeUi.addFooterElement(nodeField2);
 
-        return [nodeField1,ns,dropdown,btn];
+        return [nodeField1, ns, dropdown, btn];
     }
 }
