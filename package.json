@@ -1,12 +1,12 @@
 {
   "name": "wires",
   "private": true,
-  "version": "0.0.4",
+  "version": "0.0.5",
   "type": "module",
   "files": [
     "dist"
   ],
-  "main": "./dist/wires.umd.cjs",
+  "main": "./dist/wires.js",
   "module": "./dist/wires.js",
   "exports": {
     ".": {
@@ -14,6 +14,7 @@
       "require": "./dist/wires.umd.cjs"
     },
     "./dist/style.css": "./dist/style.css",
+    "./dist/codeicon.ttf": "./dist/codeicon.ttf",
     "./dist/main": "./dist/main"
   },
   "scripts": {

@@ -14,9 +14,9 @@ provideFASTDesignSystem()
     .withPrefix("wires")
     .register(fastTextField(), fastCombobox(), fastOption());
 
-type NodeFieldType = "connect-in" | "input" | "connect-out";
+export type NodeFieldType = "connect-in" | "input" | "connect-out";
 
-interface NodeFieldData {
+export interface NodeFieldData {
     label?: string;
     placeholder?: string;
     options?: string[];

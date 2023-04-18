@@ -11,7 +11,7 @@ export enum StatusBarAlignment {
     right,
 }
 
-interface StatusBarItemData {
+export interface StatusBarItemData {
     label: string;
     alignment: StatusBarAlignment;
     iconClass?: string;

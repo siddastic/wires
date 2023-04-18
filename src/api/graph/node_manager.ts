@@ -54,7 +54,7 @@ export class NodeManager {
                 // TODO : remove this
                 // creating a new node instance from the first available node
                 var v = this.availableNodes.values().next().value;
-                var node = new v(instancePoint, this.graphInstance);
+                new v(instancePoint, this.graphInstance);
             }
         });
     }
