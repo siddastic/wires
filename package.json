@@ -21,11 +21,12 @@
     "dev": "vite",
     "build": "tsc && vite build",
     "preview": "vite preview",
-    "test": "vitest run --coverage"
+    "test": "vitest run --environment jsdom"
   },
   "devDependencies": {
     "@types/uuid": "^8.3.4",
     "@vitest/coverage-c8": "^0.30.1",
+    "jsdom": "^21.1.1",
     "typescript": "^4.6.4",
     "vite": "^3.1.0",
     "vite-plugin-dts": "^1.6.6",

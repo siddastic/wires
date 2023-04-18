@@ -4,6 +4,12 @@ import { defineConfig } from "vite";
 import dts from "vite-plugin-dts";
 
 export default defineConfig({
+    test: {
+        include: ["src/tests/**/*.test.ts"],
+        environment: "jsdom",
+        setupFiles: [resolve(__dirname, "src/tests/mock.ts")],
+        reporters: "dot",
+    },
     build: {
         minify: false,
         lib: {
