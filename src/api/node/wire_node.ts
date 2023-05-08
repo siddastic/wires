@@ -50,7 +50,6 @@ export abstract class WireNode {
 
     @bind
     onDrag(dragEvent: MouseEvent) {
-        void dragEvent;
         // this.updateConnectedPathsOnDrag();
         this.moveAllSelectedNodes(dragEvent);
     }
@@ -106,13 +105,12 @@ export abstract class WireNode {
 
         // attach click listener to node which will select the node
         node.nodeElement.addEventListener("click", (e) => {
-            if (!e.ctrlKey)
-                {
-                    // deselect all nodes if ctrl key is not pressed while clicking on node
-                    // this will make sure that only one node is selected at a time
-                    // unless user wants to select multiple nodes by pressing ctrl key  
-                    this.graphInstance.nodeManager.nodeSelectionManager.deselectAllNodes();
-                }
+            if (!e.ctrlKey) {
+                // deselect all nodes if ctrl key is not pressed while clicking on node
+                // this will make sure that only one node is selected at a time
+                // unless user wants to select multiple nodes by pressing ctrl key
+                this.graphInstance.nodeManager.nodeSelectionManager.deselectAllNodes();
+            }
             if (
                 (e.target as HTMLElement).classList.contains(
                     "wire-node-header"
