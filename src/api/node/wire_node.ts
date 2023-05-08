@@ -106,6 +106,12 @@ export abstract class WireNode {
 
     private registerNodeInstance() {
         this.graphInstance.nodeManager.registerNodeInstance(this);
+
+        // add node to the graph
+        this.graphInstance.globalNodeTree.registerNode({
+            nodeID: this.nodeId,
+            nodeFields: [],
+        });
     }
 
     destroy() {
@@ -118,9 +124,9 @@ export class VariableNode extends WireNode {
         super(positionInWorld, graphInstance);
         this.setName("Variable Node");
 
-        setTimeout(()=>{
+        setTimeout(() => {
             console.log(this);
-        },2000);
+        }, 2000);
     }
     build() {
         var nodeField1 = new NodeField(
@@ -139,14 +145,9 @@ export class VariableNode extends WireNode {
                 type: "connect-out",
                 // connectorStyle: "on-inside",
                 placeholder: "Enter your nationality",
-                options: [
-                    "Indian",
-                    "American",
-                    "Chinese",
-                    "Japanese",
-                    "Russian",
-                    "Swiss",
-                ],
+                valueToSend: () => {
+                    return nodeField1.getValueFromFieldInput();
+                },
             },
             this.graphInstance
         );

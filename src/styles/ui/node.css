@@ -17,7 +17,6 @@
 
 .wire-node:hover {
     border: 1px solid var(--node-hover-border-color);
-    z-index: 5;
 }
 
 .wire-node .wire-node-header {

@@ -9,6 +9,8 @@ export interface NodeConnectorData {
     direction: "input" | "output";
     allowMultidrop?: boolean;
     style: NodeConnectorStyle;
+    onBeforeValueSend?: () => any;
+    onBeforeValueReceive?: (value: any) => any;
 }
 
 export type NodeConnectorStyle = "on-edge" | "on-inside";
@@ -41,6 +43,15 @@ export class NodeConnector extends UIElement {
         }
 
         this.initConnectorElementAttributes();
+
+        if (
+            data.onBeforeValueReceive === undefined &&
+            data.onBeforeValueSend === undefined
+        ) {
+            throw new Error(
+                "onBeforeValueReceive or onBeforeValueSend must be defined for node connector"
+            );
+        }
     }
 
     private getElementOffset(el: HTMLElement | SVGSVGElement): Vector2 {
@@ -171,12 +182,36 @@ export class NodeConnector extends UIElement {
                         ) == "false"
                     ) {
                         this.resetConnector();
+                        return;
                     }
-                } else {
-                    targetInConnector.classList.add("connected");
-                    targetInConnector.style.backgroundColor =
-                        targetInConnector.style.borderColor;
                 }
+                targetInConnector.classList.add("connected");
+                targetInConnector.style.backgroundColor =
+                    targetInConnector.style.borderColor;
+
+                // do the data transfer part here
+                // find the node id of the target connector
+                let targetNodeId = targetInConnector.closest(".wire-node")!.id;
+                // then find the field id of the target connector
+                let targetFieldId = targetInConnector.closest(
+                    ".node-field-container"
+                )!.id;
+
+                // find the target connector instance
+                let targetConnectorInstance =
+                    this.graphInstance.globalNodeTree.getNodeField(
+                        targetNodeId,
+                        targetFieldId
+                    )!;
+
+                // call the onBeforeValueReceive function of the target connector if it exists and pass the value of the current connector's onBeforeValueSend function
+                targetConnectorInstance.connector.data.onBeforeValueReceive !=
+                    null &&
+                    targetConnectorInstance.connector.data.onBeforeValueReceive(
+                        this.data.onBeforeValueSend != null
+                            ? this.data.onBeforeValueSend()
+                            : null
+                    );
             } else {
                 // if the target is not a connector, then remove the line and reset the connector
                 this.resetConnector();
