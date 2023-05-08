@@ -123,13 +123,18 @@ export class NodeConnector extends UIElement {
             this.graphInstance.graphContainer.transform
         );
 
+        let subtractedEndPos = Vector.subtract(
+            endPosition,
+            this.graphInstance.graphContainer.transform
+        );
+
         this.path.setAttribute(
             "d",
             `M ${subtractedCurrentPos.x} ${subtractedCurrentPos.y}  L ${
                 subtractedCurrentPos.x + 50
             } ${subtractedCurrentPos.y} ${startPointCurve} L ${
-                endPosition.x - 50
-            } ${endPosition.y} L ${endPosition.x} ${endPosition.y}`
+                subtractedEndPos.x - 50
+            } ${subtractedEndPos.y} L ${subtractedEndPos.x} ${subtractedEndPos.y}`
         );
 
         if (!this.element.classList.contains("connected")) {
