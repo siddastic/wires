@@ -133,5 +133,12 @@ export class WireGraph {
         this.graphContainer.graphContainer.appendChild(
             this.elementTree.svgContainer
         );
+
+        // create base defs for svg
+        const defs = document.createElementNS(
+            "http://www.w3.org/2000/svg",
+            "defs"
+        );
+        this.elementTree.svgContainer.appendChild(defs);
     }
 }

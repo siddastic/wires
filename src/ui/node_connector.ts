@@ -2,7 +2,7 @@ import { WireGraph } from "../api/graph/wire_graph";
 import { UIElement } from "./ui_element";
 
 import "../styles/ui/node_connector.css";
-import { Vector2, bind } from "../main";
+import { NodeField, Vector2, bind } from "../main";
 import { Vector } from "../api/vector_operations";
 
 export interface NodeConnectorData {
@@ -134,7 +134,9 @@ export class NodeConnector extends UIElement {
                 subtractedCurrentPos.x + 50
             } ${subtractedCurrentPos.y} ${startPointCurve} L ${
                 subtractedEndPos.x - 50
-            } ${subtractedEndPos.y} L ${subtractedEndPos.x} ${subtractedEndPos.y}`
+            } ${subtractedEndPos.y} L ${subtractedEndPos.x} ${
+                subtractedEndPos.y
+            }`
         );
 
         if (!this.element.classList.contains("connected")) {
@@ -161,6 +163,60 @@ export class NodeConnector extends UIElement {
         }`;
 
         return connector;
+    }
+
+    private createGradientPathForConnections(targetNodeField: NodeField) {
+        if (
+            this.element.style.borderColor ==
+            targetNodeField.connector.element.style.borderColor
+        ) {
+            // if the connector colors are same, then don't create a gradient path
+            return;
+        }
+
+        // find if a gradient with the same colors already exists, then use that
+        const gradients =
+            this.graphInstance.elementTree.svgContainer.querySelectorAll<SVGLinearGradientElement>(
+                "linearGradient"
+            );
+        for (let i = 0; i < gradients.length; i++) {
+            const stopElements =
+                gradients[i].querySelectorAll<SVGStopElement>("stop");
+            if (
+                stopElements[0].style.stopColor ==
+                    this.element.style.borderColor &&
+                stopElements[1].style.stopColor == targetNodeField.connector.element.style.borderColor
+            ) {
+                this.path.setAttribute(
+                    "style",
+                    `stroke:url(#${gradients[i].id});stroke-width:2;fill:none`
+                );
+                return;
+            }
+        }
+
+        // if no gradient exists, then create a new one
+        const gradient = document.createElementNS(
+            "http://www.w3.org/2000/svg",
+            "linearGradient"
+        );
+        gradient.id = uniqueIdGenerator.create();
+        const stop1 = document.createElementNS(
+            "http://www.w3.org/2000/svg",
+            "stop"
+        );
+        stop1.setAttribute("offset", "0%");
+        stop1.style.stopColor = this.element.style.borderColor;
+        const stop2 = document.createElementNS(
+            "http://www.w3.org/2000/svg",
+            "stop"
+        );
+        stop2.setAttribute("offset", "100%");
+        stop2.style.stopColor = targetNodeField.connector.element.style.borderColor;
+        gradient.appendChild(stop1);
+        gradient.appendChild(stop2);
+        this.graphInstance.elementTree.svgContainer.querySelector("defs")!.appendChild(gradient);
+        this.path.style.stroke = `url(#${gradient.id})`;
     }
 
     @bind
@@ -217,6 +273,8 @@ export class NodeConnector extends UIElement {
                             ? this.data.onBeforeValueSend()
                             : null
                     );
+
+                this.createGradientPathForConnections(targetConnectorInstance);
             } else {
                 // if the target is not a connector, then remove the line and reset the connector
                 this.resetConnector();
