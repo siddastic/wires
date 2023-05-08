@@ -31,9 +31,14 @@ export class GraphContainer {
 
     // set canMoveContainer to true on pointerdown
     @bind
-    private onPointerDown(event : PointerEvent) {
+    private onPointerDown(event: PointerEvent) {
         // only allow graph to move if ctrl key is pressed and event is started on graph
-        if(event.ctrlKey && (GraphContainer.wasEventStartedOnContainer(event) || GraphBackground.wasEventStartedOnBackground(event) || GraphContainer.wasEventStartedOnNodeContainer(event))){
+        if (
+            event.ctrlKey &&
+            (GraphContainer.wasEventStartedOnContainer(event) ||
+                GraphBackground.wasEventStartedOnBackground(event) ||
+                GraphContainer.wasEventStartedOnNodeContainer(event))
+        ) {
             this.canMoveContainer = true;
         }
     }
@@ -58,11 +63,13 @@ export class GraphContainer {
     @bind
     private onWheel(event: WheelEvent) {
         event.preventDefault();
-       if(event.ctrlKey){
-           this.scale += event.deltaY * -0.01;
-           this.scale = Math.min(Math.max(0.1, this.scale), 4);
-           this.updateTransform();
-       }
+        // TODO : scaling is turned off until node connectors are compatible with it
+        return;
+        if (event.ctrlKey) {
+            this.scale += event.deltaY * -0.01;
+            this.scale = Math.min(Math.max(0.1, this.scale), 4);
+            this.updateTransform();
+        }
     }
 
     private updateTransform() {
@@ -70,10 +77,14 @@ export class GraphContainer {
     }
 
     static wasEventStartedOnContainer(event: PointerEvent | MouseEvent) {
-        return (event.target as unknown as HTMLElement).classList.contains("graph-container");
+        return (event.target as unknown as HTMLElement).classList.contains(
+            "graph-container"
+        );
     }
     static wasEventStartedOnNodeContainer(event: PointerEvent | MouseEvent) {
-        return (event.target as unknown as HTMLElement).classList.contains("node-container");
+        return (event.target as unknown as HTMLElement).classList.contains(
+            "node-container"
+        );
     }
 
     public setZoom(zoom: number) {

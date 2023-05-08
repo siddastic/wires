@@ -59,9 +59,14 @@ export class GraphBackground {
 
     // set canMoveBackground to true on pointerdown
     @bind
-    private onPointerDown(event : PointerEvent) {
+    private onPointerDown(event: PointerEvent) {
         // only allow graph to move if ctrl key is pressed and event is started on graph
-        if(event.ctrlKey && (GraphContainer.wasEventStartedOnContainer(event) || GraphBackground.wasEventStartedOnBackground(event) || GraphContainer.wasEventStartedOnNodeContainer(event))){
+        if (
+            event.ctrlKey &&
+            (GraphContainer.wasEventStartedOnContainer(event) ||
+                GraphBackground.wasEventStartedOnBackground(event) ||
+                GraphContainer.wasEventStartedOnNodeContainer(event))
+        ) {
             this.canMoveBackground = true;
         }
     }
@@ -91,6 +96,8 @@ export class GraphBackground {
     @bind
     private onWheel(event: WheelEvent) {
         event.preventDefault();
+        // TODO : scaling is turned off until node connectors are compatible with it
+        return;
         if (event.ctrlKey) {
             // change grid size
             this.backgroundSize.x += event.deltaY * -0.1;
@@ -134,6 +141,8 @@ export class GraphBackground {
     }
 
     static wasEventStartedOnBackground(event: PointerEvent | MouseEvent) {
-        return (event.target as unknown as HTMLElement).classList.contains("graph-background");
+        return (event.target as unknown as HTMLElement).classList.contains(
+            "graph-background"
+        );
     }
 }

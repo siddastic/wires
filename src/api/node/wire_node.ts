@@ -1,9 +1,6 @@
 import { Vector2 } from "../../interfaces/basics";
 import { NodeUI } from "../../ui/node_ui";
-import { NodeButton } from "../../ui/node_button";
-import { NodeDropdown } from "../../ui/node_dropdown";
 import { NodeField } from "../../ui/node_field";
-import { NodeSwitch } from "../../ui/node_switch";
 import { UIElement } from "../../ui/ui_element";
 import { bind } from "../decorators";
 import { DraggableUIElement } from "../draggable_ui_element";
@@ -40,6 +37,7 @@ export abstract class WireNode {
     setName(name: string) {
         this.nodeUi.header.querySelector<HTMLDivElement>(".title")!.innerText =
             name;
+        this.nodeUi.title = name;
     }
 
     // build method is the main method that is called after the node ui is created and node is ready to expect fields to be added to it
@@ -119,13 +117,17 @@ export class VariableNode extends WireNode {
     constructor(positionInWorld: Vector2, graphInstance: WireGraph) {
         super(positionInWorld, graphInstance);
         this.setName("Variable Node");
+
+        setTimeout(()=>{
+            console.log(this);
+        },2000);
     }
     build() {
         var nodeField1 = new NodeField(
             {
                 label: "x",
                 placeholder: "Enter variable name",
-                type: "connect-in",
+                type: "input-in",
                 // connectorStyle: "on-inside",
             },
             this.graphInstance
@@ -149,48 +151,9 @@ export class VariableNode extends WireNode {
             this.graphInstance
         );
 
-        let ns = new NodeSwitch(
-            {
-                label: "Switch",
-                onChange: (value) => {
-                    console.log(value);
-                },
-            },
-            this.graphInstance
-        );
-
-        var btn = new NodeButton(
-            {
-                label: "Add",
-                onClick: () => {
-                    nodeField1.toggleVisibility();
-                },
-            },
-            this.graphInstance
-        );
-
-        let dropdown = new NodeDropdown(
-            {
-                label: "Dropdown",
-                options: [
-                    "Option 1",
-                    "Option 2",
-                    "Option 3",
-                    "Option 4",
-                    "Option 5",
-                    "Option 6",
-                    "Option 7",
-                    "Option 8",
-                    "Option 9",
-                    "Option 10",
-                ],
-            },
-            this.graphInstance
-        );
-
         this.nodeUi.addFooterElement(nodeField2);
         this.nodeUi.addFooterElement(nodeField2);
 
-        return [nodeField1, ns, dropdown, btn];
+        return [nodeField1];
     }
 }

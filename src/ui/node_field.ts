@@ -14,7 +14,7 @@ provideFASTDesignSystem()
     .withPrefix("wires")
     .register(fastTextField(), fastCombobox(), fastOption());
 
-export type NodeFieldType = "connect-in" | "input" | "connect-out";
+export type NodeFieldType = "connect-in" | "input" | "connect-out" | "input-in";
 
 export interface NodeFieldData {
     label?: string;
@@ -57,7 +57,7 @@ export class NodeField extends UIElement {
             this.connector = new NodeConnector(
                 {
                     direction:
-                        this.data.type == "connect-in" ? "input" : "output",
+                        this.data.type == "connect-in" || this.data.type == "input-in" ? "input" : "output",
                     style: this.data.connectorStyle!,
                     allowMultidrop: this.data.allowMultidrop,
                 },
@@ -66,7 +66,7 @@ export class NodeField extends UIElement {
 
             // append connector to the left side
             if(this.data.connectorStyle == "on-inside"){
-                if(this.data.type == "connect-in"){
+                if(this.data.type == "connect-in" || this.data.type == "input-in"){
                     div.appendChild(this.connector.element);
                 }
             }else{
@@ -74,7 +74,7 @@ export class NodeField extends UIElement {
             }
         }
         div.appendChild(this.labelElement);
-        if (this.data.type == "input") {
+        if (this.data.type == "input" || this.data.type == "input-in") {
             div.appendChild(this.inputElement);
         }
 
