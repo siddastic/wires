@@ -5,11 +5,11 @@ import { UIElement } from "../../ui/ui_element";
 import { bind } from "../decorators";
 import { DraggableUIElement } from "../draggable_ui_element";
 import { WireGraph } from "../graph/wire_graph";
+import { Vector } from "../vector_operations";
 
 export abstract class WireNode {
     nodeUi: NodeUI;
     nodeId = globalThis.uniqueIdGenerator.create();
-
     static doc() {
         throw new Error(
             "Documentation is not implemented for node type: " + this.name
@@ -52,11 +52,32 @@ export abstract class WireNode {
     onDrag(dragEvent: MouseEvent) {
         void dragEvent;
         // this.updateConnectedPathsOnDrag();
+        this.moveAllSelectedNodes(dragEvent);
     }
 
     @bind
     onDragEnd(position: Vector2) {
         void position;
+    }
+
+    private moveAllSelectedNodes(dragEvent: MouseEvent) {
+        let movement: Vector2 = {
+            x: dragEvent.movementX,
+            y: dragEvent.movementY,
+        };
+        this.graphInstance.nodeManager.nodeSelectionManager
+            .getSelectedNodeInstances()
+            .forEach((node) => {
+                if (node === this) return;
+                node.positionInWorld = Vector.add(
+                    node.positionInWorld,
+                    movement
+                );
+                node.nodeUi.nodeElement.style.left =
+                    node.positionInWorld.x + "px";
+                node.nodeUi.nodeElement.style.top =
+                    node.positionInWorld.y + "px";
+            });
     }
 
     private createNodeUI(): NodeUI {
@@ -85,7 +106,13 @@ export abstract class WireNode {
 
         // attach click listener to node which will select the node
         node.nodeElement.addEventListener("click", (e) => {
-            this.graphInstance.nodeManager.nodeSelectionManager.deselectAllNodes();
+            if (!e.ctrlKey)
+                {
+                    // deselect all nodes if ctrl key is not pressed while clicking on node
+                    // this will make sure that only one node is selected at a time
+                    // unless user wants to select multiple nodes by pressing ctrl key  
+                    this.graphInstance.nodeManager.nodeSelectionManager.deselectAllNodes();
+                }
             if (
                 (e.target as HTMLElement).classList.contains(
                     "wire-node-header"

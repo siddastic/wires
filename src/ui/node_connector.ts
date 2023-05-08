@@ -292,7 +292,7 @@ export class NodeConnector extends UIElement {
     @bind
     resetConnector() {
         this.element.classList.remove("connected");
-        this.element.style.backgroundColor = "unset";
+        this.element.style.backgroundColor = "var(--node-background-color)";
         this.path.remove();
     }
 }
