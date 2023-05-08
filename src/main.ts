@@ -6,9 +6,11 @@ import { NodeManager } from "./api/graph/node_manager";
 import { NodeSelectionManager } from "./api/graph/node_selection_manager";
 import { DefaultGraphTheme, Theme } from "./api/graph/theme";
 import { WireGraph } from "./api/graph/wire_graph";
+import { GlobalNodeTree, NodeMetadata } from "./api/node/global_node_tree";
 import { VariableNode, WireNode } from "./api/node/wire_node";
 import { StatusBar, StatusBarAlignment, StatusBarItemData } from "./api/status-bar";
 import { UniqueIdGenerator } from "./api/uid";
+import { Vector } from "./api/vector_operations";
 import { Vector2 } from "./interfaces/basics";
 import { GraphOptions } from "./interfaces/graph";
 import { NodeButton, NodeButtonData } from "./ui/node_button";
@@ -50,6 +52,8 @@ export {
     NodeField,
     NodeSwitch,
     UniqueIdGenerator,
+    Vector,
+    GlobalNodeTree,
 };
 export type {
     Theme,
@@ -63,4 +67,5 @@ export type {
     StatusBarItemData,
     Vector2,
     GraphOptions,
+    NodeMetadata,
 };
