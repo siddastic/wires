@@ -22,6 +22,7 @@ export interface NodeFieldData {
     options?: string[];
     type?: NodeFieldType;
     connectorStyle?: NodeConnectorStyle;
+    allowMultidrop?: boolean;
 }
 
 export class NodeField extends UIElement {
@@ -58,6 +59,7 @@ export class NodeField extends UIElement {
                     direction:
                         this.data.type == "connect-in" ? "input" : "output",
                     style: this.data.connectorStyle!,
+                    allowMultidrop: this.data.allowMultidrop,
                 },
                 this.graphInstance
             );
