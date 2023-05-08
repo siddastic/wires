@@ -6,6 +6,7 @@ import { bind } from "../decorators";
 import { DraggableUIElement } from "../draggable_ui_element";
 import { WireGraph } from "../graph/wire_graph";
 import { Vector } from "../vector_operations";
+import { NodeConnector } from "../../main";
 
 export abstract class WireNode {
     nodeUi: NodeUI;
@@ -52,11 +53,23 @@ export abstract class WireNode {
     onDrag(dragEvent: MouseEvent) {
         // this.updateConnectedPathsOnDrag();
         this.moveAllSelectedNodes(dragEvent);
+        this.moveNestedPaths();
     }
 
     @bind
     onDragEnd(position: Vector2) {
         void position;
+    }
+
+    protected moveNestedPaths() {
+        let nodeFields =
+            this.graphInstance.globalNodeTree.getNodeMetadata(this.nodeId)
+                ?.nodeFields ?? [];
+        nodeFields.forEach((field) => {
+            field.connector.movePathWithConnector();
+        });
+
+        this.updateAllConnectedPaths();
     }
 
     private moveAllSelectedNodes(dragEvent: MouseEvent) {
@@ -76,7 +89,52 @@ export abstract class WireNode {
                     node.positionInWorld.x + "px";
                 node.nodeUi.nodeElement.style.top =
                     node.positionInWorld.y + "px";
+
+                node.moveNestedPaths();
             });
+    }
+
+    protected updateAllConnectedPaths() {
+        // get all the input connectors
+        let connectors = this.nodeUi.nodeElement.querySelectorAll(
+            ".node-connector[connector-direction='input']"
+        );
+        connectors.forEach((connector) => {
+            // get the connected path ids
+            let connectedPathIds = connector.getAttribute(
+                "data-connected-pathIds"
+            );
+            if (!connectedPathIds) return;
+            let pathIds = JSON.parse(connectedPathIds) as string[];
+            pathIds.forEach((pathId) => {
+                // get the path element
+                let path = document.querySelector<SVGPathElement>("#" + pathId);
+                if (!path) return;
+
+                // get the path start position
+                let pathPosition = NodeConnector.getPathPosition(path);
+                let { startPoint } = pathPosition;
+
+                // recalculate new end position
+                let endPoint: Vector2 =
+                    NodeConnector.getElementOffset(connector);
+
+                let subtractedEndPos = Vector.subtract(
+                    endPoint,
+                    this.graphInstance.graphContainer.transform
+                );
+
+                // update the path with new end position
+                path.setAttribute(
+                    "d",
+                    `M ${startPoint.x} ${startPoint.y}  L ${
+                        startPoint.x + 50
+                    } ${startPoint.y} L ${subtractedEndPos.x - 50} ${
+                        subtractedEndPos.y
+                    } L ${subtractedEndPos.x} ${subtractedEndPos.y}`
+                );
+            });
+        });
     }
 
     private createNodeUI(): NodeUI {
@@ -139,7 +197,38 @@ export abstract class WireNode {
         });
     }
 
+    // this function runs when user either presses delete key while this node is selected by default, its also safe to call this function to delete the node
     destroy() {
+        // remove all the paths emerging from this node
+        this.graphInstance.globalNodeTree
+            .getNodeMetadata(this.nodeId)
+            ?.nodeFields.forEach((field) => {
+                field.connector.destroy();
+            });
+
+        // remove all paths connected to this node
+        let inputConnectors = this.nodeUi.nodeElement.querySelectorAll(
+            ".node-connector"
+        );
+
+        inputConnectors.forEach((inputConnector) => {
+            let connectedPathIds = inputConnector.getAttribute(
+                "data-connected-pathIds"
+            );
+
+            if (!connectedPathIds) return;
+            let pathIds = JSON.parse(connectedPathIds) as string[];
+            pathIds.forEach((pathId) => {
+                // get the path element
+                let path = document.querySelector<SVGPathElement>("#" + pathId);
+                if (!path) return;
+
+                // remove the path
+                path.remove();
+            });
+        });
+
+        // remove node from the graph
         this.nodeUi.nodeElement.remove();
     }
 }
@@ -159,7 +248,7 @@ export class VariableNode extends WireNode {
                 label: "x",
                 placeholder: "Enter variable name",
                 type: "input-in",
-                // connectorStyle: "on-inside",
+                connectorStyle: "on-inside",
             },
             this.graphInstance
         );
@@ -168,7 +257,7 @@ export class VariableNode extends WireNode {
             {
                 label: "(out)",
                 type: "connect-out",
-                // connectorStyle: "on-inside",
+                connectorStyle: "on-inside",
                 placeholder: "Enter your nationality",
                 valueToSend: () => {
                     return nodeField1.getValueFromFieldInput();
@@ -177,8 +266,20 @@ export class VariableNode extends WireNode {
             this.graphInstance
         );
 
+        var nodeField3 = new NodeField(
+            {
+                label: "(out)",
+                type: "connect-out",
+                connectorStyle: "on-inside",
+                valueToSend: () => {
+                    return nodeField1.getValueFromFieldInput();
+                },
+            },
+            this.graphInstance
+        );
+
         this.nodeUi.addFooterElement(nodeField2);
-        this.nodeUi.addFooterElement(nodeField2);
+        this.nodeUi.addFooterElement(nodeField3);
 
         return [nodeField1];
     }

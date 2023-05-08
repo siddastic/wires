@@ -4,26 +4,27 @@ export abstract class UIElement {
     element!: HTMLElement;
     visible = true;
     id = globalThis.uniqueIdGenerator.create();
-    constructor(public graphInstance: WireGraph) {
-    }
+    constructor(public graphInstance: WireGraph) {}
 
     protected abstract build(): HTMLElement;
 
-    hide(){
+    hide() {
         this.element.style.display = "none";
         this.visible = false;
     }
 
-    show(){
+    show() {
         this.element.style.display = "";
         this.visible = true;
     }
 
-    toggleVisibility(){
-        if(this.visible){
+    toggleVisibility() {
+        if (this.visible) {
             this.hide();
-        }else{
+        } else {
             this.show();
         }
     }
+
+    destroy(): void {}
 }

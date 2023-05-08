@@ -43,4 +43,8 @@ export class GlobalNodeTree {
 
         return node.nodeFields.find((nodeField) => nodeField.id == nodeFieldID);
     }
+
+    getNodeMetadata(nodeId : string) : NodeMetadata | undefined {
+        return this.nodeTree.find((node) => node.nodeID == nodeId);
+    }
 }
