@@ -6,9 +6,11 @@ import { NodeManager } from "./api/graph/node_manager";
 import { NodeSelectionManager } from "./api/graph/node_selection_manager";
 import { DefaultGraphTheme, Theme } from "./api/graph/theme";
 import { WireGraph } from "./api/graph/wire_graph";
+import { GlobalNodeTree, NodeMetadata } from "./api/node/global_node_tree";
 import { VariableNode, WireNode } from "./api/node/wire_node";
 import { StatusBar, StatusBarAlignment, StatusBarItemData } from "./api/status-bar";
 import { UniqueIdGenerator } from "./api/uid";
+import { Vector } from "./api/vector_operations";
 import { Vector2 } from "./interfaces/basics";
 import { GraphOptions } from "./interfaces/graph";
 import { NodeButton, NodeButtonData } from "./ui/node_button";
@@ -19,14 +21,14 @@ import { NodeSwitch, NodeSwitchData } from "./ui/node_switch";
 import { NodeUI } from "./ui/node_ui";
 import { UIElement } from "./ui/ui_element";
 
-// declare global {
-//     var graph: WireGraph;
-// }
-// const graph = new WireGraph(document.querySelector(".graph") as HTMLDivElement,{
-//     showGridEnabled: true,
-// });
-// window.graph = graph;
-// graph.nodeManager.addAvailableNode(VariableNode);
+declare global {
+    var graph: WireGraph;
+}
+const graph = new WireGraph(document.querySelector(".graph") as HTMLDivElement,{
+    showGridEnabled: true,
+});
+window.graph = graph;
+graph.nodeManager.addAvailableNode(VariableNode);
 // TODO : add exports in entry file so that they can be imported from other packages
 export {
     WireGraph,
@@ -50,6 +52,8 @@ export {
     NodeField,
     NodeSwitch,
     UniqueIdGenerator,
+    Vector,
+    GlobalNodeTree,
 };
 export type {
     Theme,
@@ -63,4 +67,5 @@ export type {
     StatusBarItemData,
     Vector2,
     GraphOptions,
+    NodeMetadata,
 };

@@ -7,7 +7,7 @@
     top: 10px;
     left: 10px;
     border: .5px solid var(--node-border-color);
-    z-index: 1;
+    z-index: 2;
     opacity: .9;
 }
 
@@ -17,7 +17,6 @@
 
 .wire-node:hover {
     border: 1px solid var(--node-hover-border-color);
-    z-index: 2;
 }
 
 .wire-node .wire-node-header {

@@ -6,6 +6,7 @@ import { StatusBar, StatusBarAlignment } from "../status-bar";
 import { DefaultGraphTheme } from "./theme";
 import { GraphOptions } from "../../interfaces/graph";
 import { NodeManager } from "./node_manager";
+import { GlobalNodeTree } from "../node/global_node_tree";
 
 declare global {
     var uniqueIdGenerator: UniqueIdGenerator;
@@ -20,6 +21,7 @@ export class WireGraph {
     graphBackground!: GraphBackground;
     graphContainer!: GraphContainer;
     elementTree!: { nodeContainer: HTMLDivElement; svgContainer: SVGElement };
+    globalNodeTree!: GlobalNodeTree;
     graphOptions: GraphOptions = {
         showGridEnabled: true,
         statusBarEnabled: true,
@@ -71,6 +73,9 @@ export class WireGraph {
 
         // init node selection manager
         this.nodeManager = new NodeManager(this);
+
+        // init global node tree
+        this.globalNodeTree = new GlobalNodeTree(this);
 
     }
 
@@ -128,5 +133,12 @@ export class WireGraph {
         this.graphContainer.graphContainer.appendChild(
             this.elementTree.svgContainer
         );
+
+        // create base defs for svg
+        const defs = document.createElementNS(
+            "http://www.w3.org/2000/svg",
+            "defs"
+        );
+        this.elementTree.svgContainer.appendChild(defs);
     }
 }
