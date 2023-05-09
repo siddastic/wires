@@ -68,7 +68,7 @@ export abstract class WireNode {
             this.graphInstance.globalNodeTree.getNodeMetadata(this.nodeId)
                 ?.nodeFields ?? [];
         nodeFields.forEach((field) => {
-            field.connector.movePathWithConnector();
+            field.connector.updatedConnectorPath();
         });
 
         this.updateAllConnectedPaths();
@@ -251,6 +251,7 @@ export class VariableNode extends WireNode {
                 placeholder: "Enter variable name",
                 type: "input-in",
                 // connectorStyle: "on-inside",
+                allowMultidrop: true,
             },
             this.graphInstance
         );

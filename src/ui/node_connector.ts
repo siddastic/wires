@@ -100,7 +100,7 @@ export class NodeConnector extends UIElement {
     }
 
     // this method is called when the node is being dragged
-    public movePathWithConnector() {
+    public updatedConnectorPath() {
         let newStartPosition = NodeConnector.getElementOffset(this.element);
         let newEndPosition = this.connectedTo
             ? NodeConnector.getElementOffset(this.connectedTo!.element)
@@ -261,7 +261,14 @@ export class NodeConnector extends UIElement {
             window.onmousemove = null;
             window.onmouseup = null;
 
+            let targetElement = e.target as unknown as HTMLElement;
             let targetInConnector = e.target as unknown as HTMLElement;
+            if(!targetElement.classList.contains("node-connector") && targetElement.closest(".node-field-container") !== null){
+                // if the target has node field as a parent but is not particularily the node connector, then auto assign the node connector
+                // this acts as a feature if user left mouse on anywhere else mistakingly wires will auto-connect to that connector inside that node field
+                let targetNodeField = targetElement.closest(".node-field-container")!;
+                targetInConnector = targetNodeField.querySelector(".node-connector")!;
+            }
 
             if (
                 targetInConnector.classList.contains("node-connector") &&
@@ -325,6 +332,9 @@ export class NodeConnector extends UIElement {
                     JSON.stringify(connectedPathIds)
                 );
                 this.connectedTo = targetConnectorInstance.connector;
+
+                // updating node path again in-case user dropped connector on a node-field instead of another connector directly                
+                this.updatedConnectorPath();
             } else {
                 // if the target is not a connector, then remove the line and reset the connector
                 this.resetConnector();
