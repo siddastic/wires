@@ -2,15 +2,15 @@ import { GraphBackground } from "./graph_background";
 import "../../styles/main.css";
 import { GraphContainer } from "./graph_container";
 import { UniqueIdGenerator } from "../uid";
-import { StatusBar, StatusBarAlignment } from "../status-bar";
 import { DefaultGraphTheme } from "./theme";
 import { GraphOptions } from "../../interfaces/graph";
 import { NodeManager } from "./node_manager";
 import { GlobalNodeTree } from "../node/global_node_tree";
+import {ExtensionManager} from "../extension/plugin_manager";
+import { StatusBar } from "../../extensions/status_bar/status-bar";
 
 declare global {
     var uniqueIdGenerator: UniqueIdGenerator;
-    var statusBar: StatusBar;
 }
 
 globalThis.uniqueIdGenerator = new UniqueIdGenerator();
@@ -21,10 +21,10 @@ export class WireGraph {
     graphBackground!: GraphBackground;
     graphContainer!: GraphContainer;
     elementTree!: { nodeContainer: HTMLDivElement; svgContainer: SVGElement };
+    extensionManager : ExtensionManager;
     globalNodeTree!: GlobalNodeTree;
     graphOptions: GraphOptions = {
         showGridEnabled: true,
-        statusBarEnabled: true,
     };
     theme: DefaultGraphTheme;
 
@@ -49,48 +49,21 @@ export class WireGraph {
         // apply the provided or else default graph options
         this.applyGraphOptions(this.graphOptions);
 
-        // TODO : remove default status bar item
-        globalThis.statusBar.addStatusBarItem({
-            alignment: StatusBarAlignment.left,
-            label: "Node Count : 0",
-            iconClass: "codicon codicon-git-branch",
-        });
-
-        // TODO : remove default status bar item
-        statusBar.addStatusBarItem({
-            alignment: StatusBarAlignment.right,
-            label: "Graph Flow",
-            iconClass: "codicon codicon-git-branch",
-            options : [
-                "Graph Flow",
-                "Node Flow",
-                "Node Flow 2",
-            ],
-            onOptionSelect : (selectedOption) => {
-                console.log(selectedOption);
-            },
-        });
-
         // init node selection manager
         this.nodeManager = new NodeManager(this);
 
         // init global node tree
         this.globalNodeTree = new GlobalNodeTree(this);
 
+        // init plugin manager
+        this.extensionManager = new ExtensionManager(this);
+
+        this.initDefaultExtensions();
     }
 
     public applyGraphOptions(options: GraphOptions) {
         console.log(options);
         console.log("applying graph options");
-        if (globalThis.statusBar === undefined) {
-            globalThis.statusBar = new StatusBar();
-        }
-
-        if (options.statusBarEnabled) {
-            globalThis.statusBar.element.style.display = "flex";
-        } else {
-            globalThis.statusBar.element.style.display = "none";
-        }
 
         if (options.showGridEnabled === true) {
             console.log("showing grid");
@@ -140,5 +113,9 @@ export class WireGraph {
             "defs"
         );
         this.elementTree.svgContainer.appendChild(defs);
+    }
+
+    private initDefaultExtensions(){
+        this.extensionManager.useExtension(StatusBar);
     }
 }
