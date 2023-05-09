@@ -59,6 +59,8 @@ export abstract class WireNode {
     @bind
     onDragEnd(position: Vector2) {
         void position;
+        // calling it here again as thing function is called even after the node is snapped to the grid so that it updates the paths again
+        this.moveNestedPaths();
     }
 
     protected moveNestedPaths() {
@@ -248,7 +250,7 @@ export class VariableNode extends WireNode {
                 label: "x",
                 placeholder: "Enter variable name",
                 type: "input-in",
-                connectorStyle: "on-inside",
+                // connectorStyle: "on-inside",
             },
             this.graphInstance
         );
@@ -257,7 +259,7 @@ export class VariableNode extends WireNode {
             {
                 label: "(out)",
                 type: "connect-out",
-                connectorStyle: "on-inside",
+                // connectorStyle: "on-inside",
                 placeholder: "Enter your nationality",
                 valueToSend: () => {
                     return nodeField1.getValueFromFieldInput();
@@ -270,7 +272,7 @@ export class VariableNode extends WireNode {
             {
                 label: "(out)",
                 type: "connect-out",
-                connectorStyle: "on-inside",
+                // connectorStyle: "on-inside",
                 valueToSend: () => {
                     return nodeField1.getValueFromFieldInput();
                 },
