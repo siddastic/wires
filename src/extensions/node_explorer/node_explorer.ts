@@ -3,8 +3,10 @@ import { GraphExtension } from "../../api/extension/graphExtension";
 import { GraphBackground } from "../../api/graph/graph_background";
 import { GraphContainer } from "../../api/graph/graph_container";
 import { WireGraph } from "../../api/graph/wire_graph";
+import { WireNode } from "../../api/node/wire_node";
 import { Vector } from "../../api/vector_operations";
 import { Vector2 } from "../../interfaces/basics";
+import { NodeDocumentation } from "../../interfaces/node";
 import { UIElement } from "../../ui/ui_element";
 
 import "./node_explorer.css";
@@ -21,6 +23,7 @@ export class NodeExplorer extends GraphExtension {
     ui: ExplorerUI = new ExplorerUI(this.graphInstance);
     lastSpawnInstancePoint: Vector2 = { x: 0, y: 0 };
     currentSelectedTileIndex: number = 0;
+    nameFilter: string = "";
 
     activate(): void {
         this.graphInstance.rootGraph.appendChild(this.ui.element);
@@ -31,17 +34,17 @@ export class NodeExplorer extends GraphExtension {
 
         window.addEventListener("keydown", this.toggleExplorerOnKeydown);
 
-        this.ui.container.addEventListener("click", this.hideExplorerOnBackgroundClick);
+        this.ui.container.addEventListener(
+            "click",
+            this.hideExplorerOnBackgroundClick
+        );
 
         this.ui.body.searchInput.addEventListener(
             "input",
             this.onSearchInputChanged
         );
 
-        this.ui.body.searchInput.addEventListener(
-            "keydown",
-            this.navigateTile
-        );
+        this.ui.body.searchInput.addEventListener("keydown", this.navigateTile);
 
         // hide by default
         this.ui.hide();
@@ -88,6 +91,9 @@ export class NodeExplorer extends GraphExtension {
 
         // clear the selected tile index
         this.currentSelectedTileIndex = 0;
+
+        // set the name filter
+        this.nameFilter = nameFilter ?? "";
 
         // populate the list
         Array.from(this.graphInstance.nodeManager.availableNodes).forEach(
@@ -143,24 +149,29 @@ export class NodeExplorer extends GraphExtension {
     }
 
     @bind
-    navigateTile(event : KeyboardEvent){
-        if(event.key === "ArrowDown"){
+    navigateTile(event: KeyboardEvent) {
+        if (event.key === "ArrowDown") {
             this.currentSelectedTileIndex++;
 
-            if(this.currentSelectedTileIndex >= this.ui.body.bodyList.children.length){
+            if (
+                this.currentSelectedTileIndex >=
+                this.ui.body.bodyList.children.length
+            ) {
                 this.currentSelectedTileIndex = 0;
             }
         }
-        if(event.key === "ArrowUp"){
+        if (event.key === "ArrowUp") {
             this.currentSelectedTileIndex--;
 
-            if(this.currentSelectedTileIndex < 0){
-                this.currentSelectedTileIndex = this.ui.body.bodyList.children.length - 1;
+            if (this.currentSelectedTileIndex < 0) {
+                this.currentSelectedTileIndex =
+                    this.ui.body.bodyList.children.length - 1;
             }
         }
-        if(event.key === "Enter"){
-            let tile = this.ui.body.bodyList.children[this.currentSelectedTileIndex];
-            if(tile){
+        if (event.key === "Enter") {
+            let tile =
+                this.ui.body.bodyList.children[this.currentSelectedTileIndex];
+            if (tile) {
                 tile.dispatchEvent(new MouseEvent("click"));
             }
         }
@@ -168,15 +179,28 @@ export class NodeExplorer extends GraphExtension {
     }
 
     // this function can be called after updating currentSelectedTileIndex to update the UI
-    updateTilesUI() : void{
+    updateTilesUI(): void {
         let tiles = this.ui.body.bodyList.children;
-        for(let i = 0; i < tiles.length; i++){
+        for (let i = 0; i < tiles.length; i++) {
             let tile = tiles[i];
-            if(i === this.currentSelectedTileIndex){
+            if (i === this.currentSelectedTileIndex) {
                 tile.classList.add("selected");
-            }else{
+            } else {
                 tile.classList.remove("selected");
             }
+        }
+
+        // get the current selected node
+        let selectedNode : typeof WireNode | undefined;
+        let availableNodes = Array.from(this.graphInstance.nodeManager.availableNodes);
+
+        if(this.nameFilter.length == 0){
+            selectedNode = availableNodes[this.currentSelectedTileIndex];
+        }else{
+            selectedNode = availableNodes.find(node => node.doc().name.toLowerCase().startsWith(this.nameFilter.toLowerCase()));
+        }
+        if(selectedNode != undefined){
+            this.ui.documentationViewer.updateNodeDocumentation(selectedNode.doc());
         }
     }
 
@@ -198,6 +222,7 @@ class ExplorerUI extends UIElement {
     container!: HTMLDivElement;
     modal!: HTMLDivElement;
     body!: ExplorerBody;
+    documentationViewer!: DocumentationViewer;
     constructor(graphInstance: WireGraph) {
         super(graphInstance);
 
@@ -205,7 +230,10 @@ class ExplorerUI extends UIElement {
     }
 
     show(): void {
-        super.show();
+        // override the default show function to show the explorer modal instead
+        // to set display to flex instead of unset
+        this.visible = true;
+        this.element.style.display = "flex";
 
         // focus the search input when the explorer is shown
         this.body.searchInput.focus();
@@ -232,9 +260,11 @@ class ExplorerUI extends UIElement {
         let container = this.buildContainer();
         let modal = this.buildModal();
         this.body = new ExplorerBody(this.graphInstance);
+        this.documentationViewer = new DocumentationViewer(this.graphInstance);
 
         modal.appendChild(this.body.element);
         container.appendChild(modal);
+        container.appendChild(this.documentationViewer.element);
         return container;
     }
 
@@ -375,5 +405,70 @@ class ExplorerBody extends UIElement {
         explorer.appendChild(this.buildBody());
         explorer.appendChild(this.buildFooter());
         return explorer;
+    }
+}
+
+class DocumentationViewer extends UIElement {
+    headerLabel!: HTMLSpanElement;
+    headerIcon!: HTMLSpanElement;
+    body!: HTMLDivElement;
+
+    constructor(graphInstance: WireGraph) {
+        super(graphInstance);
+        this.element = this.build();
+    }
+
+    private buildHeader() {
+        let header = document.createElement("div");
+        header.classList.add("documentation-viewer-header");
+
+        let headerLabel = document.createElement("span");
+        headerLabel.innerText = "Node Documentation";
+        this.headerLabel = headerLabel;
+
+        let headerIcon = document.createElement("span");
+        headerIcon.classList.add(..."codicon codicon-info".split(" "));
+        this.headerIcon = headerIcon;
+
+        header.appendChild(headerLabel);
+        header.appendChild(headerIcon);
+        return header;
+    }
+    private buildBody() {
+        let body = document.createElement("div");
+        body.classList.add("documentation-viewer-body");
+        body.innerText = "Select a node to view its documentation";
+        this.body = body;
+        return body;
+    }
+    protected build(): HTMLElement {
+        let documentationViewer = document.createElement("div");
+        documentationViewer.classList.add("documentation-viewer");
+
+        documentationViewer.appendChild(this.buildHeader());
+        documentationViewer.appendChild(this.buildBody());
+        return documentationViewer;
+    }
+
+    public updateNodeDocumentation(doc : NodeDocumentation){
+        this.headerLabel.innerText = doc.name;
+        this.headerIcon.setAttribute("class", "");
+        this.headerIcon.style.fontSize = "24px";
+        if(doc.icon){
+            this.headerIcon.classList.add(...doc.icon.split(" "));
+
+            if(doc.iconColor){
+                this.headerIcon.style.color = doc.iconColor;
+            }else{
+                this.headerIcon.style.color = "var(--text-color)";
+            }
+        }else{
+            this.headerIcon.classList.add(..."codicon codicon-info".split(" "));
+        }
+        if(doc.description){
+            this.body.innerText = doc.description;
+        }else{
+            this.body.innerText = "No documentation available for this node";
+        }
     }
 }

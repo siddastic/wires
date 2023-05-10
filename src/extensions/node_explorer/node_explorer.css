@@ -7,14 +7,18 @@
     height: 100%;
     z-index: 20;
     overflow: hidden;
+    display: flex;
 }
 
 .explorer-modal {
     max-width: 560px;
+    width: 450px;
     /* background-color: #242424; */
     background-color: var(--node-background-color);
     border-radius: 6px;
-    margin: 60px auto auto;
+    margin-top: 60px;
+    margin-left: auto;
+    margin-bottom: auto;
     box-shadow: inset 1px 1px 0 0 #2c2e40, 0 3px 8px 0 #000309;
 }
 
@@ -152,4 +156,37 @@
     margin-right: .4em;
     padding-bottom: 1px;
     width: 20px;
+}
+
+
+/* documentation viewer styles underneath */
+
+.documentation-viewer{
+    max-width: 300px;
+    width: 300px;
+    background-color: var(--node-background-color);
+    border-radius: 6px;
+    margin-left: 10px;
+    margin-right: auto;
+    margin-top: 60px;
+    margin-bottom: auto;
+    box-shadow: inset 1px 1px 0 0 #2c2e40, 0 3px 8px 0 #000309;
+}
+
+.documentation-viewer-header{
+    padding: 12px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid var(--node-divider-color);
+}
+
+.documentation-viewer-body{
+    overflow-y: auto;
+    min-height: 100px;
+    max-height: 60vh;
+    padding: 10px 12px;
+    font-size: 0.8em;
+    opacity: 0.8;
 }
