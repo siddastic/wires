@@ -8,7 +8,7 @@ import { Vector } from "../../api/vector_operations";
 import { Vector2 } from "../../interfaces/basics";
 import { NodeDocumentation } from "../../interfaces/node";
 import { UIElement } from "../../ui/ui_element";
-
+import { Converter } from "showdown";
 import "./node_explorer.css";
 
 interface ExplorerBodyListTileData {
@@ -191,16 +191,25 @@ export class NodeExplorer extends GraphExtension {
         }
 
         // get the current selected node
-        let selectedNode : typeof WireNode | undefined;
-        let availableNodes = Array.from(this.graphInstance.nodeManager.availableNodes);
+        let selectedNode: typeof WireNode | undefined;
+        let availableNodes = Array.from(
+            this.graphInstance.nodeManager.availableNodes
+        );
 
-        if(this.nameFilter.length == 0){
+        if (this.nameFilter.length == 0) {
             selectedNode = availableNodes[this.currentSelectedTileIndex];
-        }else{
-            selectedNode = availableNodes.find(node => node.doc().name.toLowerCase().startsWith(this.nameFilter.toLowerCase()));
+        } else {
+            selectedNode = availableNodes.find((node) =>
+                node
+                    .doc()
+                    .name.toLowerCase()
+                    .startsWith(this.nameFilter.toLowerCase())
+            );
         }
-        if(selectedNode != undefined){
-            this.ui.documentationViewer.updateNodeDocumentation(selectedNode.doc());
+        if (selectedNode != undefined) {
+            this.ui.documentationViewer.updateNodeDocumentation(
+                selectedNode.doc()
+            );
         }
     }
 
@@ -450,24 +459,25 @@ class DocumentationViewer extends UIElement {
         return documentationViewer;
     }
 
-    public updateNodeDocumentation(doc : NodeDocumentation){
+    public updateNodeDocumentation(doc: NodeDocumentation) {
         this.headerLabel.innerText = doc.name;
         this.headerIcon.setAttribute("class", "");
         this.headerIcon.style.fontSize = "24px";
-        if(doc.icon){
+        if (doc.icon) {
             this.headerIcon.classList.add(...doc.icon.split(" "));
 
-            if(doc.iconColor){
+            if (doc.iconColor) {
                 this.headerIcon.style.color = doc.iconColor;
-            }else{
+            } else {
                 this.headerIcon.style.color = "var(--text-color)";
             }
-        }else{
+        } else {
             this.headerIcon.classList.add(..."codicon codicon-info".split(" "));
         }
-        if(doc.description){
-            this.body.innerText = doc.description;
-        }else{
+        if (doc.description) {
+            let mkdownConverter = new Converter();
+            this.body.innerHTML = mkdownConverter.makeHtml(doc.description);
+        } else {
             this.body.innerText = "No documentation available for this node";
         }
     }
