@@ -30,6 +30,8 @@ export class NodeExplorer extends GraphExtension {
 
         window.addEventListener("keydown", this.toggleExplorerOnKeydown);
 
+        this.ui.container.addEventListener("click", this.hideExplorerOnBackgroundClick);
+
         this.ui.body.searchInput.addEventListener(
             "input",
             this.onSearchInputChanged
@@ -124,6 +126,13 @@ export class NodeExplorer extends GraphExtension {
         );
     }
 
+    @bind
+    hideExplorerOnBackgroundClick(event: MouseEvent): void {
+        if (event.target === this.ui.container) {
+            this.ui.hide();
+        }
+    }
+
     deactivate(): void {
         this.ui.destroy();
         window.removeEventListener(
@@ -139,6 +148,7 @@ export class NodeExplorer extends GraphExtension {
 }
 
 class ExplorerUI extends UIElement {
+    container!: HTMLDivElement;
     modal!: HTMLDivElement;
     body!: ExplorerBody;
     constructor(graphInstance: WireGraph) {
@@ -150,6 +160,7 @@ class ExplorerUI extends UIElement {
     private buildContainer() {
         let explorerContainer = document.createElement("div");
         explorerContainer.classList.add("explorer-container");
+        this.container = explorerContainer;
         return explorerContainer;
     }
 
