@@ -4,7 +4,7 @@ import {
 } from "@microsoft/fast-components";
 
 import "./status-bar.css";
-import {Extension} from "../../api/extension/extension";
+import {GraphExtension} from "../../api/extension/graphExtension";
 import {WireGraph} from "../../api/graph/wire_graph";
 
 provideFASTDesignSystem().withPrefix("wires").register(fastListbox());
@@ -23,7 +23,7 @@ export interface StatusBarItemData {
     onOptionSelect?: (selectedOption: string) => void;
 }
 
-export class StatusBar extends Extension {
+export class StatusBar extends GraphExtension {
     id = "graph-status-bar";
     element: HTMLElement;
     leftContainer!: HTMLElement;
@@ -37,13 +37,13 @@ export class StatusBar extends Extension {
     }
 
     activate() {
-        document.body.appendChild(this.element);
+        this.graphInstance.rootGraph.appendChild(this.element);
         // add default items
         this.addStatusBarItem({
             alignment: StatusBarAlignment.right,
             label: "Deactivate All Extensions",
             onClick: () => {
-                this.graphInstance.extensionManager.deactivateAllExtentions();
+                this.graphInstance.extensionManager.deactivateAllExtensions();
             },
         });
     }

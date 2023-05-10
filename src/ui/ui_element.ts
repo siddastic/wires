@@ -14,7 +14,7 @@ export abstract class UIElement {
     }
 
     show() {
-        this.element.style.display = "";
+        this.element.style.display = "unset";
         this.visible = true;
     }
 

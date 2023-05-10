@@ -2,11 +2,11 @@ import {WireGraph} from "../graph/wire_graph";
 
 export enum ExtensionState{
     active,
-    deactive,
+    inactive,
     neutral
 };
 
-export abstract class Extension {
+export abstract class GraphExtension {
     extensionState : ExtensionState = ExtensionState.neutral;
     abstract id: string;
 

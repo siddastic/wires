@@ -6,8 +6,9 @@ import { DefaultGraphTheme } from "./theme";
 import { GraphOptions } from "../../interfaces/graph";
 import { NodeManager } from "./node_manager";
 import { GlobalNodeTree } from "../node/global_node_tree";
-import {ExtensionManager} from "../extension/plugin_manager";
+import { ExtensionManager } from "../extension/plugin_manager";
 import { StatusBar } from "../../extensions/status_bar/status-bar";
+import { NodeExplorer } from "../../extensions/node_explorer/node_explorer";
 
 declare global {
     var uniqueIdGenerator: UniqueIdGenerator;
@@ -21,7 +22,7 @@ export class WireGraph {
     graphBackground!: GraphBackground;
     graphContainer!: GraphContainer;
     elementTree!: { nodeContainer: HTMLDivElement; svgContainer: SVGElement };
-    extensionManager : ExtensionManager;
+    extensionManager: ExtensionManager;
     globalNodeTree!: GlobalNodeTree;
     graphOptions: GraphOptions = {
         showGridEnabled: true,
@@ -38,7 +39,6 @@ export class WireGraph {
 
         // define theme
         this.theme = new DefaultGraphTheme();
-
 
         // applying graph options in last after defining theme cause theme resets the grid color and if grid was hidden in options it won't be hidden
         // check if graph options are available
@@ -115,7 +115,7 @@ export class WireGraph {
         this.elementTree.svgContainer.appendChild(defs);
     }
 
-    private initDefaultExtensions(){
-        this.extensionManager.useExtension(StatusBar);
+    private initDefaultExtensions() {
+        this.extensionManager.useExtension(StatusBar, NodeExplorer);
     }
 }
