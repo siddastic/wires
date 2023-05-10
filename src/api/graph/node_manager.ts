@@ -1,3 +1,4 @@
+import { Vector2 } from "../../main";
 import { WireNode } from "../node/wire_node";
 import { NodeSelectionManager } from "./node_selection_manager";
 import { WireGraph } from "./wire_graph";
@@ -33,5 +34,10 @@ export class NodeManager {
 
     public getInstanceById(id: string): WireNode | undefined {
         return this.getInstanceWhere((node) => node.nodeId === id);
+    }
+
+    public spawnNode(node : typeof WireNode,instancePoint : Vector2){
+        // @ts-ignore
+        new node(instancePoint,this.graphInstance);
     }
 }

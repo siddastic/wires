@@ -62,7 +62,15 @@ export class GraphContainer {
     // change container scale on wheel and dont let scale go below 0.1
     @bind
     private onWheel(event: WheelEvent) {
-        event.preventDefault();
+        // prevent default if event is started on graph container
+        // this allows other scrollable elements to scroll
+        if (
+            GraphContainer.wasEventStartedOnContainer(event) ||
+            GraphBackground.wasEventStartedOnBackground(event) ||
+            GraphContainer.wasEventStartedOnNodeContainer(event)
+        ) {
+            event.preventDefault();
+        }
         // TODO : scaling is turned off until node connectors are compatible with it
         return;
         if (event.ctrlKey) {

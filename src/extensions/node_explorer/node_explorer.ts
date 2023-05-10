@@ -3,14 +3,23 @@ import { GraphExtension } from "../../api/extension/graphExtension";
 import { GraphBackground } from "../../api/graph/graph_background";
 import { GraphContainer } from "../../api/graph/graph_container";
 import { WireGraph } from "../../api/graph/wire_graph";
+import { Vector } from "../../api/vector_operations";
 import { Vector2 } from "../../interfaces/basics";
 import { UIElement } from "../../ui/ui_element";
 
 import "./node_explorer.css";
 
+interface ExplorerBodyListTileData {
+    icon: string;
+    title: string;
+    iconColor: string;
+    onClick?: () => void;
+}
+
 export class NodeExplorer extends GraphExtension {
     id = "graph-node-explorer";
     ui: ExplorerUI = new ExplorerUI(this.graphInstance);
+    lastSpawnInstancePoint: Vector2 = { x: 0, y: 0 };
 
     activate(): void {
         this.graphInstance.rootGraph.appendChild(this.ui.element);
@@ -20,6 +29,14 @@ export class NodeExplorer extends GraphExtension {
         );
 
         window.addEventListener("keydown", this.toggleExplorerOnKeydown);
+
+        this.ui.body.searchInput.addEventListener(
+            "input",
+            this.onSearchInputChanged
+        );
+
+        // hide by default
+        this.ui.hide();
     }
 
     @bind
@@ -33,8 +50,9 @@ export class NodeExplorer extends GraphExtension {
             this.graphInstance.nodeManager.nodeSelectionManager.deselectAllNodes();
             const instancePoint: Vector2 = { x: event.x, y: event.y };
 
-            this.ui.menuSpawnLocation = instancePoint;
-            this.ui.toggleVisibility();
+            this.lastSpawnInstancePoint = instancePoint;
+            this.ui.show();
+            this.populateExplorerList();
             this.ui.body.searchInput.focus();
         } else {
             this.ui.visible ? this.ui.hide() : null;
@@ -51,9 +69,59 @@ export class NodeExplorer extends GraphExtension {
         if (event.code === "Space") {
             if (event.ctrlKey) {
                 this.ui.toggleVisibility();
+                this.populateExplorerList();
                 this.ui.body.searchInput.focus();
             }
         }
+    }
+
+    @bind
+    populateExplorerList(nameFilter?: string): void {
+        // clear the list
+        this.ui.body.bodyList.innerHTML = "";
+
+        // populate the list
+        Array.from(this.graphInstance.nodeManager.availableNodes).forEach(
+            (node) => {
+                let doc = node.doc();
+                var expBody = this.ui.body;
+                let tile = expBody.buildBodyListTile({
+                    icon: doc.icon ?? "codicon codicon-misc",
+                    title: doc.name,
+                    iconColor: doc.iconColor ?? "white",
+                    onClick: () => {
+                        this.graphInstance.nodeManager.spawnNode(
+                            node,
+                            Vector.subtract(
+                                this.lastSpawnInstancePoint,
+                                this.graphInstance.graphContainer.transform
+                            )
+                        );
+                        this.ui.hide();
+                    },
+                });
+
+                if (nameFilter) {
+                    if (
+                        doc.name
+                            .toLowerCase()
+                            .startsWith(nameFilter.toLowerCase())
+                    ) {
+                        expBody.bodyList.appendChild(tile);
+                    }
+                } else {
+                    expBody.bodyList.appendChild(tile);
+                }
+            }
+        );
+    }
+
+    @bind
+    onSearchInputChanged(event: Event): void {
+        let target = event.target as HTMLInputElement;
+        this.populateExplorerList(
+            target.value.length > 0 ? target.value : undefined
+        );
     }
 
     deactivate(): void {
@@ -63,14 +131,14 @@ export class NodeExplorer extends GraphExtension {
             this.toggleExplorerOnContextMenu
         );
         window.removeEventListener("keydown", this.toggleExplorerOnKeydown);
+        this.ui.body.searchInput.removeEventListener(
+            "input",
+            this.onSearchInputChanged
+        );
     }
 }
 
 class ExplorerUI extends UIElement {
-    menuSpawnLocation: Vector2 = {
-        x: window.innerWidth / 2,
-        y: window.innerHeight / 2,
-    };
     modal!: HTMLDivElement;
     body!: ExplorerBody;
     constructor(graphInstance: WireGraph) {
@@ -110,6 +178,7 @@ class ExplorerUI extends UIElement {
 
 class ExplorerBody extends UIElement {
     searchInput!: HTMLInputElement;
+    bodyList!: HTMLUListElement;
     constructor(public graphInstance: WireGraph) {
         super(graphInstance);
         this.element = this.build();
@@ -143,13 +212,42 @@ class ExplorerBody extends UIElement {
         return searchBar;
     }
 
-    buildBody(){
+    private buildBody() {
         let body = document.createElement("div");
         body.classList.add("explorer-body");
+
+        let bodyList = document.createElement("ul");
+        bodyList.classList.add("explorer-body-list");
+        bodyList.role = "listbox";
+        this.bodyList = bodyList;
+
+        body.appendChild(bodyList);
         return body;
     }
 
-    buildFooter() {
+    buildBodyListTile(data: ExplorerBodyListTileData) {
+        let bodyListTile = document.createElement("li");
+        bodyListTile.classList.add("explorer-body-list-tile");
+
+        let bodyListTileIcon = document.createElement("span");
+        bodyListTileIcon.classList.add("explorer-body-list-tile-icon");
+        bodyListTileIcon.classList.add(...data.icon.split(" "));
+        bodyListTileIcon.style.color = data.iconColor;
+
+        let bodyListTileLabel = document.createElement("div");
+        bodyListTileLabel.classList.add("explorer-body-list-tile-label");
+        bodyListTileLabel.innerText = data.title;
+
+        bodyListTile.appendChild(bodyListTileIcon);
+        bodyListTile.appendChild(bodyListTileLabel);
+
+        if (data.onClick) {
+            bodyListTile.addEventListener("click", data.onClick);
+        }
+        return bodyListTile;
+    }
+
+    private buildFooter() {
         let footer = document.createElement("div");
         footer.classList.add("explorer-footer");
 
@@ -164,11 +262,9 @@ class ExplorerBody extends UIElement {
             this.buildFooterCommand("codicon codicon-newline", "to select")
         );
 
-        let arrowDown =  this.buildFooterCommand("codicon codicon-arrow-down");
+        let arrowDown = this.buildFooterCommand("codicon codicon-arrow-down");
         arrowDown.style.marginRight = "unset";
-        footerCommands.appendChild(
-           arrowDown
-        );
+        footerCommands.appendChild(arrowDown);
 
         footerCommands.appendChild(
             this.buildFooterCommand("codicon codicon-arrow-up", "to navigate")

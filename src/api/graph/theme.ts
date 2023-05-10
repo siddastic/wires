@@ -23,9 +23,7 @@ export class DefaultGraphTheme implements Theme {
     readonly accentFillColor = "#646cff";
     readonly graphBackgroundColor = "#1a1a1a";
     readonly gridColor = "#242424";
-    // TODO : decide which background color to keep
-    // readonly nodeBackgroundColor = "#242424";
-    readonly nodeBackgroundColor = "#1b1b1d";
+    readonly nodeBackgroundColor = "#242424";
     readonly nodeDividerColor = "#1a1a1a";
     readonly nodeHoverBorderColor = "#646cff";
     readonly nodeBorderColor = "black";

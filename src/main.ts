@@ -7,7 +7,7 @@ import {NodeSelectionManager} from "./api/graph/node_selection_manager";
 import {DefaultGraphTheme, Theme} from "./api/graph/theme";
 import {WireGraph} from "./api/graph/wire_graph";
 import {GlobalNodeTree, NodeMetadata} from "./api/node/global_node_tree";
-import {VariableNode, WireNode} from "./api/node/wire_node";
+import {AddNode, MultiplyNode, PowerNode, SubtractNode, VariableNode, WireNode} from "./api/node/wire_node";
 import {UniqueIdGenerator} from "./api/uid";
 import {Vector} from "./api/vector_operations";
 import {StatusBar, StatusBarAlignment, StatusBarItemData} from "./extensions/status_bar/status-bar";
@@ -29,6 +29,10 @@ const graph = new WireGraph(document.querySelector(".graph") as HTMLDivElement, 
 });
 window.graph = graph;
 graph.nodeManager.addAvailableNode(VariableNode);
+graph.nodeManager.addAvailableNode(AddNode);
+graph.nodeManager.addAvailableNode(SubtractNode);
+graph.nodeManager.addAvailableNode(MultiplyNode);
+graph.nodeManager.addAvailableNode(PowerNode);
 // TODO : add exports in entry file so that they can be imported from other packages
 export {
     WireGraph,
