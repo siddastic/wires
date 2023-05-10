@@ -20,6 +20,7 @@ export class NodeExplorer extends GraphExtension {
     id = "graph-node-explorer";
     ui: ExplorerUI = new ExplorerUI(this.graphInstance);
     lastSpawnInstancePoint: Vector2 = { x: 0, y: 0 };
+    currentSelectedTileIndex: number = 0;
 
     activate(): void {
         this.graphInstance.rootGraph.appendChild(this.ui.element);
@@ -35,6 +36,11 @@ export class NodeExplorer extends GraphExtension {
         this.ui.body.searchInput.addEventListener(
             "input",
             this.onSearchInputChanged
+        );
+
+        this.ui.body.searchInput.addEventListener(
+            "keydown",
+            this.navigateTile
         );
 
         // hide by default
@@ -55,7 +61,6 @@ export class NodeExplorer extends GraphExtension {
             this.lastSpawnInstancePoint = instancePoint;
             this.ui.show();
             this.populateExplorerList();
-            this.ui.body.searchInput.focus();
         } else {
             this.ui.visible ? this.ui.hide() : null;
         }
@@ -72,7 +77,6 @@ export class NodeExplorer extends GraphExtension {
             if (event.ctrlKey) {
                 this.ui.toggleVisibility();
                 this.populateExplorerList();
-                this.ui.body.searchInput.focus();
             }
         }
     }
@@ -81,6 +85,9 @@ export class NodeExplorer extends GraphExtension {
     populateExplorerList(nameFilter?: string): void {
         // clear the list
         this.ui.body.bodyList.innerHTML = "";
+
+        // clear the selected tile index
+        this.currentSelectedTileIndex = 0;
 
         // populate the list
         Array.from(this.graphInstance.nodeManager.availableNodes).forEach(
@@ -116,6 +123,8 @@ export class NodeExplorer extends GraphExtension {
                 }
             }
         );
+
+        this.updateTilesUI();
     }
 
     @bind
@@ -130,6 +139,44 @@ export class NodeExplorer extends GraphExtension {
     hideExplorerOnBackgroundClick(event: MouseEvent): void {
         if (event.target === this.ui.container) {
             this.ui.hide();
+        }
+    }
+
+    @bind
+    navigateTile(event : KeyboardEvent){
+        if(event.key === "ArrowDown"){
+            this.currentSelectedTileIndex++;
+
+            if(this.currentSelectedTileIndex >= this.ui.body.bodyList.children.length){
+                this.currentSelectedTileIndex = 0;
+            }
+        }
+        if(event.key === "ArrowUp"){
+            this.currentSelectedTileIndex--;
+
+            if(this.currentSelectedTileIndex < 0){
+                this.currentSelectedTileIndex = this.ui.body.bodyList.children.length - 1;
+            }
+        }
+        if(event.key === "Enter"){
+            let tile = this.ui.body.bodyList.children[this.currentSelectedTileIndex];
+            if(tile){
+                tile.dispatchEvent(new MouseEvent("click"));
+            }
+        }
+        this.updateTilesUI();
+    }
+
+    // this function can be called after updating currentSelectedTileIndex to update the UI
+    updateTilesUI() : void{
+        let tiles = this.ui.body.bodyList.children;
+        for(let i = 0; i < tiles.length; i++){
+            let tile = tiles[i];
+            if(i === this.currentSelectedTileIndex){
+                tile.classList.add("selected");
+            }else{
+                tile.classList.remove("selected");
+            }
         }
     }
 
@@ -155,6 +202,15 @@ class ExplorerUI extends UIElement {
         super(graphInstance);
 
         this.element = this.build();
+    }
+
+    show(): void {
+        super.show();
+
+        // focus the search input when the explorer is shown
+        this.body.searchInput.focus();
+        // clear the search input
+        this.body.searchInput.value = "";
     }
 
     private buildContainer() {
