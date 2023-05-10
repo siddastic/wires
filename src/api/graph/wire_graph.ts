@@ -9,6 +9,7 @@ import { GlobalNodeTree } from "../node/global_node_tree";
 import { ExtensionManager } from "../extension/plugin_manager";
 import { StatusBar } from "../../extensions/status_bar/status-bar";
 import { NodeExplorer } from "../../extensions/node_explorer/node_explorer";
+import { GraphMinimap } from "../../extensions/graph_minimap/graph_minimap";
 
 declare global {
     var uniqueIdGenerator: UniqueIdGenerator;
@@ -116,6 +117,6 @@ export class WireGraph {
     }
 
     private initDefaultExtensions() {
-        this.extensionManager.useExtension(StatusBar, NodeExplorer);
+        this.extensionManager.useExtension(StatusBar, NodeExplorer, GraphMinimap);
     }
 }
