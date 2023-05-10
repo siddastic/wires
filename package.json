@@ -15,6 +15,7 @@
     },
     "./dist/style.css": "./dist/style.css",
     "./dist/codeicon.ttf": "./dist/codeicon.ttf",
+    "./dist/jetbrains_mono_regular.ttf": "./dist/jetbrains_mono_regular.ttf",
     "./dist/main": "./dist/main"
   },
   "scripts": {

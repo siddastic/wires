@@ -10,7 +10,6 @@
     color: var(--status-bar-text-color);
     align-items: center;
     font-size: 12px;
-    font-family: "Segoe WPC", "Segoe UI", sans-serif;
     z-index: 10;
 }
 
