@@ -76,8 +76,13 @@ class MinimapUI extends UIElement {
     }
 
     draw(): void {
+        // resetting the transform to identity matrix to clear it whole efficiently
+        this.ctx.setTransform(1, 0, 0, 1, 0, 0);
         // clear canvas first
         this.ctx.clearRect(0, 0, this.element.width, this.element.height);
+
+        // restoring the transform later
+        this.ctx.restore();
 
         // set transform to ensure canvas moves with graph
         this.updateCanvasTransform();

@@ -17,6 +17,8 @@ import {
 } from "./api/node/wire_node";
 import { UniqueIdGenerator } from "./api/uid";
 import { Vector } from "./api/vector_operations";
+import { GraphMinimap } from "./extensions/graph_minimap/graph_minimap";
+import { NodeExplorer } from "./extensions/node_explorer/node_explorer";
 import {
     StatusBar,
     StatusBarAlignment,
@@ -51,6 +53,12 @@ graph.nodeManager.addAvailableNode(AddNode);
 graph.nodeManager.addAvailableNode(SubtractNode);
 graph.nodeManager.addAvailableNode(MultiplyNode);
 graph.nodeManager.addAvailableNode(PowerNode);
+
+
+// init default graph extensions
+graph.extensionManager.useExtension(StatusBar);
+graph.extensionManager.useExtension(NodeExplorer);
+graph.extensionManager.useExtension(GraphMinimap);
 // TODO : add exports in entry file so that they can be imported from other packages
 export {
     WireGraph,
