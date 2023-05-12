@@ -58,14 +58,9 @@ export class WireGraph {
     }
 
     public applyGraphOptions(options: GraphOptions) {
-        console.log(options);
-        console.log("applying graph options");
-
         if (options.showGridEnabled === true) {
-            console.log("showing grid");
             this.graphBackground.showGrid();
         } else {
-            console.log("hiding grid");
             this.graphBackground.hideGrid();
         }
 

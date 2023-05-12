@@ -31,8 +31,6 @@ export class GlobalNodeTree {
         }
 
         node.nodeFields.push(nodeField);
-
-        console.log(this.nodeTree);
     }
 
     getNodeField(nodeID: string, nodeFieldID: string) {

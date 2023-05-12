@@ -143,7 +143,6 @@ export abstract class WireNode {
     private createNodeUI(): NodeUI {
         // create node UI
         var node = new NodeUI(this.nodeId, "Node");
-        console.log(this.graphInstance);
         this.graphInstance.elementTree.nodeContainer.appendChild(
             node.nodeElement
         );
@@ -245,10 +244,6 @@ export class VariableNode extends WireNode {
     constructor(positionInWorld: Vector2, graphInstance: WireGraph) {
         super(positionInWorld, graphInstance);
         this.setName("Variable Node");
-
-        setTimeout(() => {
-            console.log(this);
-        }, 2000);
     }
     build() {
         var nodeField1 = new NodeField(
