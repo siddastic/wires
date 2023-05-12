@@ -1,3 +1,4 @@
+import { marked } from "marked";
 import { bind } from "../../api/decorators";
 import { GraphExtension } from "../../api/extension/graphExtension";
 import { GraphBackground } from "../../api/graph/graph_background";
@@ -8,8 +9,9 @@ import { Vector } from "../../api/vector_operations";
 import { Vector2 } from "../../interfaces/basics";
 import { NodeDocumentation } from "../../interfaces/node";
 import { UIElement } from "../../ui/ui_element";
-import { Converter } from "showdown";
 import "./node_explorer.css";
+import hljs from "highlight.js";
+import 'highlight.js/styles/github.css';
 
 interface ExplorerBodyListTileData {
     icon: string;
@@ -475,8 +477,13 @@ class DocumentationViewer extends UIElement {
             this.headerIcon.classList.add(..."codicon codicon-info".split(" "));
         }
         if (doc.description) {
-            let mkdownConverter = new Converter();
-            this.body.innerHTML = mkdownConverter.makeHtml(doc.description);
+              marked.use({
+                highlight: function(code,lang) {
+                    const language = hljs.getLanguage(lang) ? lang : 'plaintext';
+                  return hljs.highlight(code, { language }).value;
+                  }
+              });
+            this.body.innerHTML = marked.parse(doc.description);
         } else {
             this.body.innerText = "No documentation available for this node";
         }

@@ -236,7 +236,15 @@ export abstract class WireNode {
 
 @doc({
     name: "Variable Node",
-    description: "This node is used to create a variable",
+    description: `
+> This node is used to create a variable in the graph.
+<br>
+> Its the same as write the below line in any programming language:
+<br>
+\`\`\`js
+var x = 10;
+\`\`\`
+`,
     icon: "codicon codicon-symbol-variable",
     iconColor: "mediumseagreen",
 })
@@ -277,7 +285,17 @@ export class VariableNode extends WireNode {
 
 @doc({
     name: "Add Node",
-    description: "This node is used to add two numbers",
+    description: `
+> This is a functional node which adds two numbers
+<br>
+> Its the same as write the below line in any programming language:
+<br>
+\`\`\`js
+function add({input 1} : x, {input 2} : y}) {
+    return x + y;
+}
+\`\`\`
+`,
     icon: "codicon codicon-symbol-method",
     iconColor: "purple",
 })
@@ -320,7 +338,17 @@ export class AddNode extends WireNode {
 
 @doc({
     name: "Subtract Node",
-    description: "This node is used to subtract two numbers",
+    description: `
+> This is a functional node which subtracts two numbers
+<br>
+> Its the same as write the below line in any programming language:
+<br>
+\`\`\`js
+function subtract({input 1} : x, {input 2} : y}) {
+    return x - y;
+}
+\`\`\`
+`,
     icon: "codicon codicon-symbol-method",
     iconColor: "purple",
 })
@@ -362,8 +390,18 @@ export class SubtractNode extends WireNode {
 }
 
 @doc({
-    name: "Multiply Node",
-    description: "This node is used to subtract two numbers",
+    name: "Multiply",
+    description: `
+> This is a functional node which multiplies two numbers
+<br>
+> Its the same as write the below line in any programming language:
+<br>
+\`\`\`js
+function multiply({input 1} : x, {input 2} : y}) {
+    return x * y;
+}
+\`\`\`
+`,
     icon: "codicon codicon-symbol-method",
     iconColor: "purple",
 })
@@ -406,7 +444,17 @@ export class MultiplyNode extends WireNode {
 
 @doc({
     name: "Power Node",
-    description: "This node is used to subtract two numbers",
+    description: `
+> This is an operational node which raises x to the power of y
+<br>
+> Its the same as write the below line in any programming language:
+<br>
+\`\`\`js
+function power({input 1} : x, {input 2} : y}) {
+    return x ** y;
+}
+\`\`\`
+`,
     icon: "codicon codicon-symbol-method",
     iconColor: "purple",
 })
