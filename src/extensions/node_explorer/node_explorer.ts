@@ -187,6 +187,7 @@ export class NodeExplorer extends GraphExtension {
             let tile = tiles[i];
             if (i === this.currentSelectedTileIndex) {
                 tile.classList.add("selected");
+                tile.scrollIntoView();
             } else {
                 tile.classList.remove("selected");
             }

@@ -1,5 +1,7 @@
-import { bind } from "./api/decorators";
+import { bind, doc } from "./api/decorators";
 import { DraggableUIElement } from "./api/draggable_ui_element";
+import { ExtensionState, GraphExtension } from "./api/extension/graphExtension";
+import { ExtensionManager } from "./api/extension/plugin_manager";
 import { GraphBackground } from "./api/graph/graph_background";
 import { GraphContainer } from "./api/graph/graph_container";
 import { NodeManager } from "./api/graph/node_manager";
@@ -26,6 +28,7 @@ import {
 } from "./extensions/status_bar/status-bar";
 import { Vector2 } from "./interfaces/basics";
 import { GraphOptions } from "./interfaces/graph";
+import { NodeDocumentation } from "./interfaces/node";
 import { NodeButton, NodeButtonData } from "./ui/node_button";
 import {
     NodeConnector,
@@ -67,13 +70,10 @@ export {
     NodeManager,
     NodeSelectionManager,
     WireNode,
-    // remove variable node
-    VariableNode,
     DefaultGraphTheme,
-    StatusBar,
-    StatusBarAlignment,
     DraggableUIElement,
     bind,
+    doc,
     UIElement,
     NodeUI,
     NodeButton,
@@ -84,6 +84,21 @@ export {
     UniqueIdGenerator,
     Vector,
     GlobalNodeTree,
+    ExtensionManager,
+    GraphExtension,
+    StatusBarAlignment,
+    ExtensionState,
+    // Prebuilt Nodes
+    VariableNode,
+    AddNode,
+    SubtractNode,
+    MultiplyNode,
+    PowerNode,
+    
+    // Extensions
+    GraphMinimap,
+    NodeExplorer,
+    StatusBar
 };
 export type {
     Theme,
@@ -98,4 +113,5 @@ export type {
     Vector2,
     GraphOptions,
     NodeMetadata,
+    NodeDocumentation,
 };
