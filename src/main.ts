@@ -41,27 +41,27 @@ import { NodeSwitch, NodeSwitchData } from "./ui/node_switch";
 import { NodeUI } from "./ui/node_ui";
 import { UIElement } from "./ui/ui_element";
 
-declare global {
-    var graph: WireGraph;
-}
-const graph = new WireGraph(
-    document.querySelector(".graph") as HTMLDivElement,
-    {
-        showGridEnabled: true,
-    }
-);
-window.graph = graph;
-graph.nodeManager.addAvailableNode(VariableNode);
-graph.nodeManager.addAvailableNode(AddNode);
-graph.nodeManager.addAvailableNode(SubtractNode);
-graph.nodeManager.addAvailableNode(MultiplyNode);
-graph.nodeManager.addAvailableNode(PowerNode);
+// declare global {
+//     var graph: WireGraph;
+// }
+// const graph = new WireGraph(
+//     document.querySelector(".graph") as HTMLDivElement,
+//     {
+//         showGridEnabled: true,
+//     }
+// );
+// window.graph = graph;
+// graph.nodeManager.addAvailableNode(VariableNode);
+// graph.nodeManager.addAvailableNode(AddNode);
+// graph.nodeManager.addAvailableNode(SubtractNode);
+// graph.nodeManager.addAvailableNode(MultiplyNode);
+// graph.nodeManager.addAvailableNode(PowerNode);
 
 
-// init default graph extensions
-graph.extensionManager.useExtension(StatusBar);
-graph.extensionManager.useExtension(NodeExplorer);
-graph.extensionManager.useExtension(GraphMinimap);
+// // init default graph extensions
+// graph.extensionManager.useExtension(StatusBar);
+// graph.extensionManager.useExtension(NodeExplorer);
+// graph.extensionManager.useExtension(GraphMinimap);
 // TODO : add exports in entry file so that they can be imported from other packages
 export {
     WireGraph,
