@@ -37,6 +37,7 @@
     "@microsoft/fast-components": "^2.30.6",
     "@viselect/vanilla": "^3.2.7",
     "highlight.js": "^11.8.0",
-    "marked": "^5.0.2"
+    "marked": "^5.0.2",
+    "nanoid": "^4.0.2"
   }
 }

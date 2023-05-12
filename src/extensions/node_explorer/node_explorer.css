@@ -199,5 +199,5 @@
     margin-bottom: 4px;
     font-family: "JetBrains Mono", monospace;
     font-size: 12px;
-    overflow-x: scroll;
+    overflow-x: auto;
 }
