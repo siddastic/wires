@@ -2,7 +2,10 @@ import {
     fastListbox,
     provideFASTDesignSystem,
 } from "@microsoft/fast-components";
-import "../styles/plugins/status-bar.css";
+
+import "./status-bar.css";
+import {GraphExtension} from "../../api/extension/graphExtension";
+import {WireGraph} from "../../api/graph/wire_graph";
 
 provideFASTDesignSystem().withPrefix("wires").register(fastListbox());
 
@@ -20,15 +23,31 @@ export interface StatusBarItemData {
     onOptionSelect?: (selectedOption: string) => void;
 }
 
-export class StatusBar {
+export class StatusBar extends GraphExtension {
+    id = "graph-status-bar";
     element: HTMLElement;
     leftContainer!: HTMLElement;
     rightContainer!: HTMLElement;
 
-    items: StatusBarItem[] = [];
-    constructor() {
+    readonly items: StatusBarItem[] = [];
+
+    constructor(public graphInstance: WireGraph) {
+        super(graphInstance);
         this.element = this.createStatusBarItem();
     }
+
+    activate() {
+        this.graphInstance.rootGraph.appendChild(this.element);
+        // add default items
+        this.addStatusBarItem({
+            alignment: StatusBarAlignment.right,
+            label: "Deactivate All Extensions",
+            onClick: () => {
+                this.graphInstance.extensionManager.deactivateAllExtensions();
+            },
+        });
+    }
+
     private createStatusBarItem() {
         let statusBar = document.createElement("div");
         this.leftContainer = document.createElement("div");
@@ -40,7 +59,6 @@ export class StatusBar {
         statusBar.appendChild(this.leftContainer);
         statusBar.appendChild(this.rightContainer);
         statusBar.classList.add("status-bar");
-        document.body.appendChild(statusBar);
         return statusBar;
     }
 
@@ -62,6 +80,10 @@ export class StatusBar {
         }
         item.rootElement.remove();
     }
+
+    deactivate() {
+        this.element.remove();
+    }
 }
 
 class StatusBarItem {
@@ -71,7 +93,10 @@ class StatusBarItem {
     rootElement!: HTMLElement;
     optionsListbox?: HTMLElement;
     optionsListboxVisible: boolean = false;
-    constructor(public data: StatusBarItemData) {}
+
+    constructor(public data: StatusBarItemData) {
+    }
+
     build(): HTMLElement {
         let item = document.createElement("div");
         let innerContainer = document.createElement("div");

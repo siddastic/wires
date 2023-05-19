@@ -1,0 +1,9 @@
+.graph-minimap{
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    border-radius: 6px;
+    box-shadow: inset 1px 1px 0 0 #2c2e40, 0 3px 8px 0 #000309;
+    z-index: 20;
+    pointer-events: none;
+}

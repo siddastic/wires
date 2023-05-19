@@ -2,15 +2,14 @@ import { GraphBackground } from "./graph_background";
 import "../../styles/main.css";
 import { GraphContainer } from "./graph_container";
 import { UniqueIdGenerator } from "../uid";
-import { StatusBar, StatusBarAlignment } from "../status-bar";
 import { DefaultGraphTheme } from "./theme";
 import { GraphOptions } from "../../interfaces/graph";
 import { NodeManager } from "./node_manager";
 import { GlobalNodeTree } from "../node/global_node_tree";
+import { ExtensionManager } from "../extension/plugin_manager";
 
 declare global {
     var uniqueIdGenerator: UniqueIdGenerator;
-    var statusBar: StatusBar;
 }
 
 globalThis.uniqueIdGenerator = new UniqueIdGenerator();
@@ -21,10 +20,10 @@ export class WireGraph {
     graphBackground!: GraphBackground;
     graphContainer!: GraphContainer;
     elementTree!: { nodeContainer: HTMLDivElement; svgContainer: SVGElement };
+    extensionManager: ExtensionManager;
     globalNodeTree!: GlobalNodeTree;
     graphOptions: GraphOptions = {
         showGridEnabled: true,
-        statusBarEnabled: true,
     };
     theme: DefaultGraphTheme;
 
@@ -39,7 +38,6 @@ export class WireGraph {
         // define theme
         this.theme = new DefaultGraphTheme();
 
-
         // applying graph options in last after defining theme cause theme resets the grid color and if grid was hidden in options it won't be hidden
         // check if graph options are available
         if (options) {
@@ -49,54 +47,20 @@ export class WireGraph {
         // apply the provided or else default graph options
         this.applyGraphOptions(this.graphOptions);
 
-        // TODO : remove default status bar item
-        globalThis.statusBar.addStatusBarItem({
-            alignment: StatusBarAlignment.left,
-            label: "Node Count : 0",
-            iconClass: "codicon codicon-git-branch",
-        });
-
-        // TODO : remove default status bar item
-        statusBar.addStatusBarItem({
-            alignment: StatusBarAlignment.right,
-            label: "Graph Flow",
-            iconClass: "codicon codicon-git-branch",
-            options : [
-                "Graph Flow",
-                "Node Flow",
-                "Node Flow 2",
-            ],
-            onOptionSelect : (selectedOption) => {
-                console.log(selectedOption);
-            },
-        });
-
         // init node selection manager
         this.nodeManager = new NodeManager(this);
 
         // init global node tree
         this.globalNodeTree = new GlobalNodeTree(this);
 
+        // init plugin manager
+        this.extensionManager = new ExtensionManager(this);
     }
 
     public applyGraphOptions(options: GraphOptions) {
-        console.log(options);
-        console.log("applying graph options");
-        if (globalThis.statusBar === undefined) {
-            globalThis.statusBar = new StatusBar();
-        }
-
-        if (options.statusBarEnabled) {
-            globalThis.statusBar.element.style.display = "flex";
-        } else {
-            globalThis.statusBar.element.style.display = "none";
-        }
-
         if (options.showGridEnabled === true) {
-            console.log("showing grid");
             this.graphBackground.showGrid();
         } else {
-            console.log("hiding grid");
             this.graphBackground.hideGrid();
         }
 

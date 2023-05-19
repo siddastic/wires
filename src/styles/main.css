@@ -1,5 +1,10 @@
 @import url('/codicon.css');
 
+@font-face {
+    font-family: "JetBrains Mono";
+    src: url("/jetbrains_mono_regular.ttf") format("truetype");
+}
+
 * {
     margin: 0px;
     padding: 0px;
@@ -25,8 +30,8 @@
     background: #555;
 }
 
-.wire-graph{
-    font-family: Inter, Avenir, Helvetica, Arial, sans-serif;
+.wire-graph {
+    font-family: "JetBrains Mono", Inter, Avenir, Helvetica, Arial, sans-serif;
     letter-spacing: 1px;
     background-color: var(--graph-background-color);
     width: 100%;

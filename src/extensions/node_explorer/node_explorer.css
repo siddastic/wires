@@ -1,0 +1,203 @@
+.explorer-container {
+    background-color: rgba(9, 10, 17, 0.5);
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    width: 100%;
+    height: 100%;
+    z-index: 20;
+    overflow: hidden;
+    display: flex;
+}
+
+.explorer-modal {
+    max-width: 560px;
+    width: 450px;
+    /* background-color: #242424; */
+    background-color: var(--node-background-color);
+    border-radius: 6px;
+    margin-top: 60px;
+    margin-left: auto;
+    margin-bottom: auto;
+    box-shadow: inset 1px 1px 0 0 #2c2e40, 0 3px 8px 0 #000309;
+}
+
+.explorer-search-bar {
+    display: flex;
+    padding: 12px 12px 0px;
+}
+
+.explorer-search-form {
+    align-items: center;
+    background-color: #000309;
+    border-radius: 4px;
+    box-shadow: inset 0 0 0 2px var(--node-hover-border-color);
+    /* box-shadow: inset 0 0 0 2px #fb356d; */
+    display: flex;
+    height: 56px;
+    margin: 0;
+    padding: 0 12px;
+    position: relative;
+    width: 100%;
+}
+
+.explorer-search-icon {
+    align-items: center;
+    display: flex;
+    justify-content: center;
+    color: var(--node-hover-border-color);
+    /* color: #fb356d; */
+    font-size: 25px !important;
+}
+
+.explorer-search-input {
+    appearance: none;
+    border: 0;
+    background-color: transparent;
+    color: var(--text-color);
+    flex: 1;
+    font-size: 1.2rem;
+    height: 100%;
+    outline: 0;
+    padding: 0 0 0 8px;
+    width: 80%;
+}
+
+.explorer-body {
+    overflow-y: auto;
+    min-height: 100px;
+    max-height: 60vh;
+    padding: 10px 12px;
+}
+
+.explorer-body-list-tile {
+    border-radius: 4px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin-bottom: 4px;
+    position: relative;
+    background-color: #090a11;
+    padding-left: 12px;
+    padding-right: 12px;
+    height: 40px;
+    border: 2px solid transparent;
+}
+
+.explorer-body-list-tile:is(.selected) {
+    border: 2px solid var(--node-hover-border-color);
+}
+
+.explorer-body-list-tile-icon {
+    height: 20px;
+    width: 20px;
+    font-size: 20px !important;
+}
+
+.explorer-body-list-tile-label {
+    display: flex;
+    flex: 1 1 auto;
+    flex-direction: column;
+    font-weight: 500;
+    justify-content: center;
+    margin: 0 8px;
+    overflow-x: hidden;
+    position: relative;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    width: 80%
+}
+
+.explorer-footer {
+    align-items: center;
+    background-color: #242526;
+    border-radius: 0 0 8px 8px;
+    display: flex;
+    flex-direction: row-reverse;
+    height: 44px;
+    justify-content: space-between;
+    padding: 0 12px;
+    position: relative;
+    user-select: none;
+    z-index: 30;
+    padding: 0 12px;
+    box-shadow: inset 0 1px 0 0 rgba(73, 76, 106, .5), 0 -4px 8px 0 rgba(0, 0, 0, .2);
+}
+
+.explorer-footer-label,
+.explorer-footer-command-label {
+    opacity: 0.5;
+    font-size: .75em;
+    line-height: 1.6rem;
+}
+
+
+.explorer-footer-commands {
+    display: flex;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.explorer-footer-commands li {
+    margin-right: 0.8em;
+    display: flex;
+    align-items: center;
+}
+
+.explorer-footer-command-key {
+    display: flex;
+    align-items: center;
+    background: linear-gradient(-26.5deg, var(--ifm-color-emphasis-200) 0%, var(--ifm-color-emphasis-100) 100%);
+    border-radius: 2px;
+    box-shadow: inset 0 -2px 0 0 #282d55, inset 0 0 1px 1px #51577d, 0 2px 2px 0 rgba(3, 4, 9, .3);
+    height: 18px;
+    justify-content: center;
+    margin-right: .4em;
+    padding-bottom: 1px;
+    width: 20px;
+}
+
+
+/* documentation viewer styles underneath */
+
+.documentation-viewer{
+    max-width: 300px;
+    width: 300px;
+    background-color: var(--node-background-color);
+    border-radius: 6px;
+    margin-left: 10px;
+    margin-right: auto;
+    margin-top: 60px;
+    margin-bottom: auto;
+    box-shadow: inset 1px 1px 0 0 #2c2e40, 0 3px 8px 0 #000309;
+}
+
+.documentation-viewer-header{
+    padding: 12px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid var(--node-divider-color);
+}
+
+.documentation-viewer-body{
+    overflow-y: auto;
+    min-height: 100px;
+    max-height: 60vh;
+    padding: 10px 12px;
+    font-size: 0.8em;
+    opacity: 0.8;
+}
+
+.documentation-viewer-body pre:has(code){
+    background-color: black;
+    border-radius: 4px;
+    padding: 12px;
+    margin-top: 4px;
+    margin-bottom: 4px;
+    font-family: "JetBrains Mono", monospace;
+    font-size: 12px;
+    overflow-x: auto;
+}

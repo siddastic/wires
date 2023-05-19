@@ -19,4 +19,11 @@ export class Vector {
     static get zero() {
         return { x: 0, y: 0 };
     }
+
+    static divideByScalar(a: Vector2, b: number): Vector2 {
+        return {
+            x: a.x / b,
+            y: a.y / b,
+        };
+    }
 }

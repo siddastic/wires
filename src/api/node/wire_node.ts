@@ -2,16 +2,17 @@ import { Vector2 } from "../../interfaces/basics";
 import { NodeUI } from "../../ui/node_ui";
 import { NodeField } from "../../ui/node_field";
 import { UIElement } from "../../ui/ui_element";
-import { bind } from "../decorators";
+import { bind, doc } from "../decorators";
 import { DraggableUIElement } from "../draggable_ui_element";
 import { WireGraph } from "../graph/wire_graph";
 import { Vector } from "../vector_operations";
 import { NodeConnector } from "../../main";
+import { NodeDocumentation } from "../../interfaces/node";
 
 export abstract class WireNode {
     nodeUi: NodeUI;
     nodeId = globalThis.uniqueIdGenerator.create();
-    static doc() {
+    static doc(): NodeDocumentation {
         throw new Error(
             "Documentation is not implemented for node type: " + this.name
         );
@@ -142,7 +143,6 @@ export abstract class WireNode {
     private createNodeUI(): NodeUI {
         // create node UI
         var node = new NodeUI(this.nodeId, "Node");
-        console.log(this.graphInstance);
         this.graphInstance.elementTree.nodeContainer.appendChild(
             node.nodeElement
         );
@@ -209,9 +209,8 @@ export abstract class WireNode {
             });
 
         // remove all paths connected to this node
-        let inputConnectors = this.nodeUi.nodeElement.querySelectorAll(
-            ".node-connector"
-        );
+        let inputConnectors =
+            this.nodeUi.nodeElement.querySelectorAll(".node-connector");
 
         inputConnectors.forEach((inputConnector) => {
             let connectedPathIds = inputConnector.getAttribute(
@@ -235,14 +234,24 @@ export abstract class WireNode {
     }
 }
 
+@doc({
+    name: "Variable Node",
+    description: `
+> This node is used to create a variable in the graph.
+<br>
+> Its the same as write the below line in any programming language:
+<br>
+\`\`\`js
+var x = 10;
+\`\`\`
+`,
+    icon: "codicon codicon-symbol-variable",
+    iconColor: "mediumseagreen",
+})
 export class VariableNode extends WireNode {
     constructor(positionInWorld: Vector2, graphInstance: WireGraph) {
         super(positionInWorld, graphInstance);
         this.setName("Variable Node");
-
-        setTimeout(() => {
-            console.log(this);
-        }, 2000);
     }
     build() {
         var nodeField1 = new NodeField(
@@ -252,19 +261,6 @@ export class VariableNode extends WireNode {
                 type: "input-in",
                 // connectorStyle: "on-inside",
                 allowMultidrop: true,
-            },
-            this.graphInstance
-        );
-
-        var nodeField2 = new NodeField(
-            {
-                label: "(out)",
-                type: "connect-out",
-                // connectorStyle: "on-inside",
-                placeholder: "Enter your nationality",
-                valueToSend: () => {
-                    return nodeField1.getValueFromFieldInput();
-                },
             },
             this.graphInstance
         );
@@ -281,9 +277,220 @@ export class VariableNode extends WireNode {
             this.graphInstance
         );
 
-        this.nodeUi.addFooterElement(nodeField2);
         this.nodeUi.addFooterElement(nodeField3);
 
         return [nodeField1];
+    }
+}
+
+@doc({
+    name: "Add Node",
+    description: `
+> This is a functional node which adds two numbers
+<br>
+> Its the same as write the below line in any programming language:
+<br>
+\`\`\`js
+function add({input 1} : x, {input 2} : y}) {
+    return x + y;
+}
+\`\`\`
+`,
+    icon: "codicon codicon-symbol-method",
+    iconColor: "purple",
+})
+export class AddNode extends WireNode {
+    build(): void | UIElement[] {
+        this.setName("Add Node");
+        var nodeField1 = new NodeField(
+            {
+                label: "x",
+                type: "input-in",
+            },
+            this.graphInstance
+        );
+        var nodeField2 = new NodeField(
+            {
+                label: "y",
+                type: "input-in",
+            },
+            this.graphInstance
+        );
+
+        var outfield = new NodeField(
+            {
+                label: "(out)",
+                type: "connect-out",
+                valueToSend: () => {
+                    return (
+                        Number(nodeField1.getValueFromFieldInput()) +
+                        Number(nodeField2.getValueFromFieldInput())
+                    );
+                },
+            },
+            this.graphInstance
+        );
+
+        this.nodeUi.addFooterElement(outfield);
+        return [nodeField1, nodeField2];
+    }
+}
+
+@doc({
+    name: "Subtract Node",
+    description: `
+> This is a functional node which subtracts two numbers
+<br>
+> Its the same as write the below line in any programming language:
+<br>
+\`\`\`js
+function subtract({input 1} : x, {input 2} : y}) {
+    return x - y;
+}
+\`\`\`
+`,
+    icon: "codicon codicon-symbol-method",
+    iconColor: "purple",
+})
+export class SubtractNode extends WireNode {
+    build(): void | UIElement[] {
+        this.setName("Subtract Node");
+        var nodeField1 = new NodeField(
+            {
+                label: "x",
+                type: "input-in",
+            },
+            this.graphInstance
+        );
+        var nodeField2 = new NodeField(
+            {
+                label: "y",
+                type: "input-in",
+            },
+            this.graphInstance
+        );
+
+        var outfield = new NodeField(
+            {
+                label: "(out)",
+                type: "connect-out",
+                valueToSend: () => {
+                    return (
+                        Number(nodeField1.getValueFromFieldInput()) -
+                        Number(nodeField2.getValueFromFieldInput())
+                    );
+                },
+            },
+            this.graphInstance
+        );
+
+        this.nodeUi.addFooterElement(outfield);
+        return [nodeField1, nodeField2];
+    }
+}
+
+@doc({
+    name: "Multiply",
+    description: `
+> This is a functional node which multiplies two numbers
+<br>
+> Its the same as write the below line in any programming language:
+<br>
+\`\`\`js
+function multiply({input 1} : x, {input 2} : y}) {
+    return x * y;
+}
+\`\`\`
+`,
+    icon: "codicon codicon-symbol-method",
+    iconColor: "purple",
+})
+export class MultiplyNode extends WireNode {
+    build(): void | UIElement[] {
+        this.setName("Multiply Node");
+        var nodeField1 = new NodeField(
+            {
+                label: "x",
+                type: "input-in",
+            },
+            this.graphInstance
+        );
+        var nodeField2 = new NodeField(
+            {
+                label: "y",
+                type: "input-in",
+            },
+            this.graphInstance
+        );
+
+        var outfield = new NodeField(
+            {
+                label: "(out)",
+                type: "connect-out",
+                valueToSend: () => {
+                    return (
+                        Number(nodeField1.getValueFromFieldInput()) *
+                        Number(nodeField2.getValueFromFieldInput())
+                    );
+                },
+            },
+            this.graphInstance
+        );
+
+        this.nodeUi.addFooterElement(outfield);
+        return [nodeField1, nodeField2];
+    }
+}
+
+@doc({
+    name: "Power Node",
+    description: `
+> This is an operational node which raises x to the power of y
+<br>
+> Its the same as write the below line in any programming language:
+<br>
+\`\`\`js
+function power({input 1} : x, {input 2} : y}) {
+    return x ** y;
+}
+\`\`\`
+`,
+    icon: "codicon codicon-symbol-method",
+    iconColor: "purple",
+})
+export class PowerNode extends WireNode {
+    build(): void | UIElement[] {
+        this.setName("Power Node");
+        var nodeField1 = new NodeField(
+            {
+                label: "x",
+                type: "input-in",
+            },
+            this.graphInstance
+        );
+        var nodeField2 = new NodeField(
+            {
+                label: "y",
+                type: "input-in",
+            },
+            this.graphInstance
+        );
+
+        var outfield = new NodeField(
+            {
+                label: "(out)",
+                type: "connect-out",
+                valueToSend: () => {
+                    return (
+                        Number(nodeField1.getValueFromFieldInput()) **
+                        Number(nodeField2.getValueFromFieldInput())
+                    );
+                },
+            },
+            this.graphInstance
+        );
+
+        this.nodeUi.addFooterElement(outfield);
+        return [nodeField1, nodeField2];
     }
 }

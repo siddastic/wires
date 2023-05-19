@@ -95,7 +95,15 @@ export class GraphBackground {
     // change grid size on wheel scroll
     @bind
     private onWheel(event: WheelEvent) {
-        event.preventDefault();
+        // prevent default if event is started on graph container
+        // this allows other scrollable elements to scroll
+        if (
+            GraphContainer.wasEventStartedOnContainer(event) ||
+            GraphBackground.wasEventStartedOnBackground(event) ||
+            GraphContainer.wasEventStartedOnNodeContainer(event)
+        ) {
+            event.preventDefault();
+        }
         // TODO : scaling is turned off until node connectors are compatible with it
         return;
         if (event.ctrlKey) {

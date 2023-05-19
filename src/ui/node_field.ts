@@ -43,9 +43,9 @@ export class NodeField extends UIElement {
         this.element = this.build();
 
         // register node field after the node is rendered in the dom so that we can find the node id
-        setTimeout(() => {
+        queueMicrotask(() => {
             this.registerNodeField();
-        }, 0);
+        });
     }
 
     get shouldBuildComboBox() {
@@ -82,8 +82,6 @@ export class NodeField extends UIElement {
                             // terminate the function if there is no value to receive
                             return;
                         }
-                        // console.log(value);
-                        // console.log(this.inputElement);
                         // TODO : remove when database is implemented
                         // if the connector is an input, we need to set the value of the input field
                         if (
